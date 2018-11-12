@@ -1,0 +1,5 @@
+<use name="SiPMCalib/SiPMCalc"/>
+<use name="UserUtils/PlotUtils"/>
+
+<bin file="Functor_plot.cc" name="Functor_plot"/>
+<bin file="Gentest.cc" name="SiPMGentest"/>
