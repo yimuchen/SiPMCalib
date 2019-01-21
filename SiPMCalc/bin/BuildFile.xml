@@ -1,5 +1,10 @@
+<use name="boost"/>
+<use name="boost_program_options"/>
+
 <use name="SiPMCalib/SiPMCalc"/>
 <use name="UserUtils/PlotUtils"/>
+<use name="UserUtils/Common"/>
 
-<bin file="Functor_plot.cc" name="Functor_plot"/>
-<bin file="Gentest.cc" name="SiPMGentest"/>
+<bin file="RunToy.cc"  name="SiPM_RunToy"/>
+<bin file="FitLbox.cc" name="SiPM_FitLbox"/>
+<bin file="PlotFunc.cc" name="SiPM_PlotFunc"/>
