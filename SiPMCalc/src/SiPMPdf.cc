@@ -211,10 +211,10 @@ SiPMPdf::gauss_k( const int k ) const
 
   if( k == 0 ){
     const double acpk = ped + gain * k - acshift;
-    return ( 1- acfrac ) * TMath::Gaus( x, pk, sk )
-           + acfrac * TMath::Gaus( x, acpk, acwidth );
+    return ( 1- acfrac ) * TMath::Gaus( x, pk, sk, kTRUE )
+           + acfrac * TMath::Gaus( x, acpk, acwidth, kTRUE );
   } else {
-    return TMath::Gaus( x, pk, sk );
+    return TMath::Gaus( x, pk, sk, kTRUE );
   }
 }
 
