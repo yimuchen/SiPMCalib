@@ -1,14 +1,18 @@
 #ifndef SIPMCALIB_SIPMCALC_SIPMPDF_HPP
 #define SIPMCALIB_SIPMCALC_SIPMPDF_HPP
 
+#include "SiPMCalib/SiPMCalc/interface/SiPMDarkFunc.hpp"
+
 #include "RooAbsPdf.h"
 #include "RooRealProxy.h"
 #include "RooTrace.h"
+
 #include <vector>
 
 class SiPMPdf : public RooAbsPdf
 {
 public:
+  // Full model constructor
   SiPMPdf( const char*, const char*,
            RooRealVar& x,
            RooRealVar& ped,
@@ -17,12 +21,12 @@ public:
            RooRealVar& s1,
            RooRealVar& mean,
            RooRealVar& lambda,
-           RooRealVar& acfrac,
-           RooRealVar& acshift,
-           RooRealVar& acwidth,
+           RooRealVar& dcfraction,
            RooRealVar& alpha,
            RooRealVar& beta
            );
+
+  // No dark current
   SiPMPdf( const char*, const char*,
            RooRealVar& x,
            RooRealVar& ped,
@@ -34,6 +38,8 @@ public:
            RooRealVar& alpha,
            RooRealVar& beta
            );
+
+  // No after pulsing
   SiPMPdf( const char*, const char*,
            RooRealVar& x,
            RooRealVar& ped,
@@ -42,10 +48,11 @@ public:
            RooRealVar& s1,
            RooRealVar& mean,
            RooRealVar& lambda,
-           RooRealVar& acfrac,
-           RooRealVar& acshift,
-           RooRealVar& acawidth
+           RooRealVar& alpha,
+           RooRealVar& beta
            );
+
+  // Only cross talk
   SiPMPdf( const char*, const char*,
            RooRealVar& x,
            RooRealVar& ped,
@@ -71,11 +78,11 @@ protected:
   RooRealProxy s1;
   RooRealProxy mean;
   RooRealProxy lambda;
-  RooRealProxy acfrac;
-  RooRealProxy acshift;
-  RooRealProxy acwidth;
+  RooRealProxy dcfraction;
   RooRealProxy alpha;
   RooRealProxy beta;
+
+  mutable SiPMDarkFunc _darkfunc;
 
   double evaluate() const;
 

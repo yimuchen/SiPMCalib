@@ -3,10 +3,10 @@
 #include <UserUtils/Common/interface/STLUtils/Filesystem.hpp>
 #include <UserUtils/Common/interface/SystemUtils/Time.hpp>
 
-#include "RooRealVar.h"
 #include "RooDataSet.h"
-#include "RooRandom.h"
 #include "RooFitResult.h"
+#include "RooRandom.h"
+#include "RooRealVar.h"
 
 #include <boost/format.hpp>
 #include <fstream>
@@ -16,104 +16,80 @@
 int
 main( int argc, char** argv )
 {
-  usr::po::options_description desc( "Toy MC options" );
-  desc.add_options()
-    ( "nEvents,n", usr::po::value<int>(), "Number of events in a toy data set" )
-    ( "nToys", usr::po::value<int>(), "Number of toy models to run" )
-    ( "model,m", usr::po::value<std::string>(), "Model to use run the MC studies" )
-  ;
-
+  // Options defined in ToyRunCommon.cc
   usr::ArgumentExtender arg( "data/modelcfg.json" );
-  arg.AddOptions( desc );
+  arg.AddOptions( ToyOptions() );
   arg.ParseOptions( argc, argv );
 
-  RooRealVar x( "x", "Readout (mV#times ns)", 300, 1500 );
-  RooRealVar ped( "ped", "ped", 350, 100, 500 );
-  RooRealVar gain( "gain", "gain", 200, 100, 500 );
-  RooRealVar s0( "s0", "s0", 50, 15, 100 );
-  RooRealVar s1( "s1", "s1", 10, 0.05, 100 );
-  RooRealVar mean( "mean", "mean", 1.5, 0.01, 50 );
-  RooRealVar lambda( "lambda", "lambda", 0.25, 0, 0.2 );
-  RooRealVar acfrac("acfrac", "acfrac", 0 , 0 , 1 );
-  RooRealVar acshift("acshift","acshift",0,0,1);
-  RooRealVar acwidth("acwidth","acwidth",1,0.5,10);
-  RooRealVar alpha( "alpha", "alpha", 0.1, 0, 1 );
-  RooRealVar beta( "beta", "beta", 50, 20, 1000 );
+  // Setting up default value and range for fitting
+  RooRealVar x( "x", "Readout (mV#times ns)", Xmin( arg ), Xmax( arg ) );
 
+  RooRealVar ped(    "ped",    "ped",
+                     Pedestal( arg ),      -Gain( arg ),     Gain( arg ) );
+  RooRealVar gain(   "gain",   "gain",
+                     Gain( arg ),         Gain( arg )/2,     Gain( arg )*2 );
+  RooRealVar s0(     "s0",     "s0",
+                     ComNoise( arg ), ConNoise( arg )/4, ComNoise( arg )*4 );
+  RooRealVar s1(     "s1",     "s1",
+                     PixNoise( arg ), PixNoise( arg )/4, PixNoise( arg )*4 );
+  RooRealVar mean(   "mean",   "mean",
+                     Mean( arg ),         Mean( arg )/8,     Mean( arg )*8 );
+  RooRealVar lambda( "lambda",    "lambda",
+                     Lambda( arg ),       0, std::min( Lambda( arg )*4, 0.5 ) );
+  RooRealVar dcfrac( "dcfrac", "dcfrac",
+                     DCFrac( arg ), 0, std::min( DCFrac( arg )*4, 0.6 ) );
+  RooRealVar alpha(  "alpha",  "alpha",
+                     Alpha( arg ),  0, std::min( Alpha( arg )*4, 0.5 ) );
+  RooRealVar beta(   "beta",   "beta",
+                     Beta( arg ),        Beta( arg )/16,    Beta( arg )*16 );
+
+  x.setBin( 16*( Xmax( arg ) - Xmin( arg ) )/( Gain( arg ) ) );
+
+  // Defining PDF
   SiPMPdf full( "full", "full",
-                x, ped, gain, s0, s1, mean, lambda,
-                acfrac, acshift, acwidth,
-                alpha, beta );
-  SiPMPdf pgaus( "pgaus", "pgaus",
-                 x, ped, gain, s0, s1, mean, lambda,
-                 acfrac, acshift, acwidth );
-  SiPMPdf gpgaus( "gpgaus", "gpgaus",
-                  x, ped, gain, s0, s1, mean, lambda );
+                x, ped, gain, s0, s1, mean, lambda, dcfrac, alpha, beta );
+  SiPMPdf ndc( "ndc", "ndc",
+               x, ped, gain, s0, s1, mean, lambda, alpha, beta );
+  SiPMPdf nap( "nap", "nap",
+               x, ped, gain, s0, s1, mean, lambda, dcfrac );
+  SiPMPdf simp( "simp", "simp",
+                x, ped, gain, s0, s1, mean, lambda  );
+  SiPMDarkPdf dark( "dark", "dark",
+                    x, ped, gain, s0, s1, dcfrac );
 
-  RooAbsPdf& oppdf = arg.Arg<std::string>( "model" ) == "full" ? full :
-                     arg.Arg<std::string>( "model" ) == "gpgaus" ? gpgaus :
-                     arg.Arg<std::string>( "model" ) == "pgaus" ? pgaus :
-                     full;
+  RooAbsPdf& pdf = arg.Arg( "model" ) == "dark" ? dark :
+                   arg.Arg( "model" ) == "simp" ? simp :
+                   arg.Arg( "model" ) == "nap"  ? nap  :
+                   arg.Arg( "model" ) == "ndc"  ? ndc  :
+                   full;
 
-  const std::string filename = ( boost::format( "%s_%d.txt" )
-                                 % arg.Arg<std::string>( "model" )
-                                 % arg.Arg<int>( "nEvents" ) ).str();
-  const usr::fs::path outputpath
-    = usr::resultpath( "SiPMCalib", "SiPMCalc" ) / filename;
+  RooRandom::randomGenerator()->SetSeed( usr::CurrentTimeInNanSec() );
 
-  if( !usr::fs::exists( outputpath ) ){
-    std::cout << "Creating new file!" << std::endl;
-    std::ofstream outst;
-    outst.open( outputpath, std::ios::out );
-    outst << std::setprecision( 6 )
-          << ped.getVal() << " "
-          << gain.getVal() << " "
-          << s0.getVal() << " "
-          << s1.getVal() << " "
-          << mean.getVal() << " ";
-    if( arg.Arg<std::string>( "model" ) == "gpgaus"
-        || arg.Arg<std::string>( "model" ) == "full" ){
-      outst << lambda.getVal() << " ";
-    }
-    if( arg.Arg<std::string>( "model" ) == "full" ){
-      outst << alpha.getVal() << " ";
-      outst << beta.getVal() << " ";
-    }
-    outst << std::endl;
-    outst.close();
-  }
+  std::ofstream fout;
+  fout.open( filename( arg ), std::ios::app );
 
-
-  const double ped_c    = ped.getVal();
-  const double gain_c   = gain.getVal();
-  const double s0_c     = s0.getVal();
-  const double s1_c     = s1.getVal();
-  const double mean_c   = mean.getVal();
-  const double lambda_c = lambda.getVal();
-  const double alpha_c  = alpha.getVal();
-  const double beta_c   = beta.getVal();
-
-  RooRandom::randomGenerator()->SetSeed( usr::CurrentTimeInNanSec());
-
-  std::ofstream outst;
-  outst.open( outputpath, std::ios::app );
-
+  // Begin generation loop
   for( int i = 0; i < arg.Arg<int>( "nToys" ); ++i ){
-    ped    = ped_c;
-    gain   = gain_c;
-    s0     = s0_c;
-    s1     = s1_c;
-    mean   = mean_c;
-    lambda = lambda_c;
-    alpha  = alpha_c;
-    beta   = beta_c;
+    ped    = Pedestal( arg );
+    gain   = Gain( arg );
+    s0     = ComNoise( arg );
+    s1     = PixNoise( arg );
+    mean   = Mean( arg );
+    lambda = Lambda( arg );
+    dcfrac = DCFrac( arg );
+    alpha  = Alpha( arg );
+    beta   = Beta( arg );
 
-    RooDataSet* dat = oppdf.generate(RooArgSet(x), arg.Arg<int>("nEvents") );
+    RooAbsData* dat
+      = arg.Arg( "fit" ) == "binned" ?
+        pdf.generateBinned( RooArgSet( x ), arg.Arg<int>( "nEvents" ) ) :
+        pdf.generate( RooArgSet( x ), arg.Arg<int>( "nEvents" ) );
 
-    RooFitResult* ans = nullptr;
-    unsigned iter = 0;
-    while( !ans && iter < 5 ){
-      ans = oppdf.fitTo( *dat,
+    RooFitResult* fit = nullptr;
+    unsigned iter     = 0;
+
+    while( !fit && iter < 5 ){
+      fit = oppdf.fitTo( *dat,
         RooFit::Verbose( kFALSE ),
         RooFit::PrintLevel( -1 ),
         RooFit::PrintEvalErrors( -1 ),
@@ -121,34 +97,31 @@ main( int argc, char** argv )
         RooFit::Save()
         );
 
-      if( ans->status() ){
-        delete ans;
-        ans = nullptr;
+      if( fit->status() ){
+        delete fit;
+        fit = nullptr;
         ++iter;
       }
     }
+
     delete ans;
-
-    outst << std::setprecision( 6 )
-          << ped.getVal() << " " << ped.getError() << " "
-          << gain.getVal() << " " << gain.getError() << " "
-          << s0.getVal() << " " << s0.getError() << " "
-          << s1.getVal() << " " << s1.getError() << " "
-          << mean.getVal() << " " << mean.getError() << " ";
-    if( arg.Arg<std::string>( "model" ) == "gpgaus"
-        || arg.Arg<std::string>( "model" ) == "full" ){
-      outst << lambda.getVal() << " " << lambda.getError() << " ";
-    }
-    if( arg.Arg<std::string>( "model" ) == "full" ){
-      outst << alpha.getVal() << " " << alpha.getError() << " ";
-      outst << beta.getVal() << " " << beta.getError() << " ";
-    }
-    outst << std::endl;
-
     delete dat;
+
+    boost::format fmt( "%14.8lf  %14.9lf  " );
+
+    fout << fmt % ped.getVal()    % pdf.getError()
+         << fmt % gain.getVal()   % gain.getError()
+         << fmt % s0.getVal()     % s0.getError()
+         << fmt % s1.getVal()     % s1.getError()
+         << fmt % mean.getVal()   % mean.getError()
+         << fmt % lambda.getVal() % lambda.getError()
+         << fmt % dcfrac.getVal() % dcfrac.getError()
+         << fmt % alpha.getVal()  % alpha.getError()
+         << fmt % beta.getVal()   % beta.getError()
+         << std::endl;
   }
 
-  outst.close();
+  fout.close();
 
   return 0;
 }

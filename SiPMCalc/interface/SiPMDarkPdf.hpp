@@ -16,10 +16,8 @@ public:
                RooRealVar& gain,
                RooRealVar& s0,
                RooRealVar& s1,
-               RooRealVar& dcfrac1,
-               RooRealVar& dcfrac2,
-               RooRealVar& acshift
-  );
+               RooRealVar& dcfrac
+               );
 
   ~SiPMDarkPdf();
 
@@ -32,11 +30,9 @@ protected:
   RooRealProxy gain;
   RooRealProxy s0;
   RooRealProxy s1;
-  RooRealProxy dcfrac1;
-  RooRealProxy dcfrac2;
-  RooRealProxy acshift;
+  RooRealProxy dcfrac;
 
-  mutable SiPMDarkFunc func; // Since evaluation is a const function
+  mutable SiPMDarkFunc func;// Since evaluation is a const function
 
   double evaluate() const;
 };
