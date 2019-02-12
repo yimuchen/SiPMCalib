@@ -4,8 +4,7 @@
 #include <boost/format.hpp>
 #include <cmath>
 
-usr::po::options_description
-ToyOptions()
+usr::po::options_description ToyOptions()
 {
   usr::po::options_description desc( "Toy MC options" );
   desc.add_options()
@@ -70,18 +69,24 @@ Xmax( const usr::ArgumentExtender& arg )
          Pedestal( arg ) + Gain( arg ) * std::max( Mean( arg ) + 1.5*sqrt( Mean( arg ) ), 5.0 );
 }
 
-std::fs::path
+usr::fs::path
 filename( const usr::ArgumentExtender& arg )
 {
-  std::string ans = ( boost::format( "%s_nEvt%d_%s_r%lg_x%lg_dc%lg_a%lg" )
-                      % arg.Arg<std::string>( "model" )
+  std::string ans = ( boost::format( "%s_nEvt%d_%s" )
+                      % arg.Arg( "model" )
                       % arg.Arg<int>( "nEvents" )
-                      % arg.Arg<std::string>( "fit" )
-                      % Mean()
-                      % Lambda()
-                      % DCFrac()
-                      % Alpha()
-                      ).str();
+                      % arg.Arg( "fit" ) ).str();
+
+  if( arg.Arg("model") != "dark" ){
+    ans += (boost::format("_r%lg_x%lg") % Mean(arg) % Lambda(arg)).str();
+  }
+  if( arg.Arg("model") != "ndc" && arg.Arg("model") != "simp" ){
+    ans += (boost::format( "_dc%lg") % DCFrac(arg) ).str();
+  }
+  if( arg.Arg("model") != "nap" && arg.Arg("model") != "simp" ){
+    ans += (boost::format("_a%lg") % Alpha(arg) ).str();
+  }
+
   boost::replace_all( ans, ".", "p" );
   return usr::resultpath( "SiPMCalib", "SiPMCalc" ) / ( ans + ".txt" );
 }

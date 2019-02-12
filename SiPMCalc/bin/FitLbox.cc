@@ -63,14 +63,11 @@ main( int argc, char const* argv[] )
   RooRealVar s1( "s1", "s1", 20, 0.001, 100 );
   RooRealVar mean( "mean", "mean", 7.7, 0.0001, 50 );
   RooRealVar lambda( "lambda", "lambda", 0.01, 0, 0.50 );
-  RooRealVar acfrac("acfrac", "acfrac", 0.01,0,0.4);
-  RooRealVar acshift("acshift","acshift",10,5,50);
-  RooRealVar acwidth("acwidth","acwidth",20,0,100);
+  RooRealVar dcfrac("acfrac", "acfrac", 0.01,0,0.4);
   RooRealVar alpha("alpha","alpha",0.01,0,0.5);
   RooRealVar beta("beta","beta",100,1,2000);
   SiPMPdf p0( "p0", "p", x, ped, gain, s0, s1, mean, lambda
-    , acfrac, acshift, acwidth
-    , alpha,beta );
+    , dcfrac, alpha,beta );
   //  );
 
   RooRealVar ped1( "ped1", "ped", 10, -50, 1500 );
@@ -195,9 +192,7 @@ main( int argc, char const* argv[] )
     << "s1 " << s1.getVal() <<  "  " << s1.getError() << std::endl
     << "mean " << mean.getVal() <<  "  " << mean.getError() << std::endl
     << "lambda " << lambda.getVal() <<  "  " << lambda.getError() << std::endl
-    << "acfrac " << acfrac.getVal() <<  "  " << acfrac.getError() << std::endl
-    << "acshift " << acshift.getVal() <<  "  " << acshift.getError() << std::endl
-    << "acwidth " << acwidth.getVal() <<  "  " << acwidth.getError() << std::endl
+    << "dcfrac " << dcfrac.getVal() <<  "  " << dcfrac.getError() << std::endl
     << "alpha " << alpha.getVal() <<  "  " << alpha.getError() << std::endl
     << "beta " << beta.getVal() <<  "  " << beta.getError() << std::endl
     << gof.getVal() << "/" << dof << " = " << gof.getVal() / dof << std::endl

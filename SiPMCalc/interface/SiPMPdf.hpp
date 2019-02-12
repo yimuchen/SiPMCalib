@@ -48,8 +48,7 @@ public:
            RooRealVar& s1,
            RooRealVar& mean,
            RooRealVar& lambda,
-           RooRealVar& alpha,
-           RooRealVar& beta
+           RooRealVar& dcfraction
            );
 
   // Only cross talk

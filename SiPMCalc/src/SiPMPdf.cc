@@ -33,9 +33,10 @@ SiPMPdf::SiPMPdf( const char* name, const char* title,
   s1(     "s1",     "pixnoise",     this, _s1 ),
   mean(   "mean",   "mean",         this, _mean ),
   lambda( "lambda", "crosstalk",    this, _lambda ),
-  dcfrac( "dcfrac", "darkfraction", this, _dcfrac ),
+  dcfraction( "dcfrac", "darkfraction", this, _dcfrac ),
   alpha(  "alpha",  "alpha",        this, _alpha ),
-  beta(   "beta",   "beta",         this, _beta )
+  beta(   "beta",   "beta",         this, _beta ),
+  _darkfunc(ped,gain,s0,s1,dcfraction)
 {
 }
 
@@ -59,9 +60,10 @@ SiPMPdf::SiPMPdf( const char* name, const char* title,
   s1( "s1", "pixnoise", this, _s1 ),
   mean( "mean", "mean", this, _mean ),
   lambda( "lambda", "crosstalk", this, _lambda ),
-  dcfrac( "dcfrac", "darkfraction", this, RooFit::RooConst( 0 ) ),
+  dcfraction( "dcfrac", "darkfraction", this, RooFit::RooConst( 0 ) ),
   alpha( "alpha", "alpha", this, _alpha ),
-  beta( "beta", "beta", this, _beta )
+  beta( "beta", "beta", this, _beta ),
+  _darkfunc(ped,gain,s0,s1,dcfraction)
 {}
 
 // No after pulsing model
@@ -73,7 +75,7 @@ SiPMPdf::SiPMPdf( const char* name, const char* title,
                   RooRealVar& _s1,
                   RooRealVar& _mean,
                   RooRealVar& _lambda,
-                  RooRealVar& _dcfrac,
+                  RooRealVar& _dcfrac
                   ) :
   RooAbsPdf( name, title ),
   x( "x", "obs", this, _x ),
@@ -83,9 +85,10 @@ SiPMPdf::SiPMPdf( const char* name, const char* title,
   s1( "s1", "pixnoise", this, _s1 ),
   mean( "mean", "mean", this, _mean ),
   lambda( "lambda", "crosstalk", this, _lambda ),
-  dcfrac( "dcfrac", "ac_fraction", this, _dcfrac ),
+  dcfraction( "dcfrac", "ac_fraction", this, _dcfrac ),
   alpha( "alpha", "alpha", this, RooFit::RooConst( 0 ) ),
-  beta( "beta", "beta", this, RooFit::RooConst( _x.getMax()*1000 ) )
+  beta( "beta", "beta", this, RooFit::RooConst( _x.getMax()*1000 ) ),
+  _darkfunc(ped,gain,s0,s1,dcfraction)
 {}
 
 // Cross talk only
@@ -106,9 +109,10 @@ SiPMPdf::SiPMPdf( const char* name, const char* title,
   s1( "s1", "pixnoise", this, _s1 ),
   mean( "mean", "mean", this, _mean ),
   lambda( "lambda", "crosstalk", this, _lambda ),
-  dcfrac( "dcfrac", "dcfraction", this, RooFit::RooConst( 0 ) ),
+  dcfraction( "dcfrac", "dcfraction", this, RooFit::RooConst( 0 ) ),
   alpha( "alpha", "alpha", this, RooFit::RooConst( 0 ) ),
-  beta( "beta", "beta", this, RooFit::RooConst( _x.getMax()*1000 ) )
+  beta( "beta", "beta", this, RooFit::RooConst( _x.getMax()*1000 ) ),
+  _darkfunc(ped,gain,s0,s1,dcfraction)
 {}
 
 SiPMPdf::SiPMPdf( const SiPMPdf& other, const char* name ) :
@@ -120,11 +124,10 @@ SiPMPdf::SiPMPdf( const SiPMPdf& other, const char* name ) :
   s1( "s1", this, other.s1 ),
   mean( "mean", this, other.mean ),
   lambda( "lambda", this, other.lambda ),
-  acfrac( "acfrac", this, other.acfrac ),
-  acshift( "acshift", this, other.acshift ),
-  acwidth( "acwith", this, other.acwidth ),
+  dcfraction( "dcfrac", this, other.dcfraction ),
   alpha( "alpha", this, other.alpha ),
-  beta( "beta",  this, other.beta )
+  beta( "beta",  this, other.beta ),
+  _darkfunc(ped,gain,s0,s1,dcfraction)
 {}
 
 SiPMPdf::~SiPMPdf(){}
@@ -138,8 +141,6 @@ SiPMPdf::clone( const char* name ) const
 double
 SiPMPdf::evaluate() const
 {
-  _darkfunc.SetParam(ped,gain,s0,s1,dcfrac);
-
   double prob = gen_poisson( 0 ) * gauss_k( 0 );
 
   for( int k = 1; k < mean + 2*TMath::Sqrt( mean ) + 8; ++k ){
@@ -203,10 +204,11 @@ SiPMPdf::gauss_k( const int k ) const
   const double sk = TMath::Sqrt( s0*s0 + k*s1*s1 );
 
   if( k == 0 ){
-    if( dcfrac == 0 ) {
+    if( dcfraction == 0. ) {
       return TMath::Gaus(x,pk,sk,true);
     } else {
-      return _darkfunc.Eval(x);
+      _darkfunc.SetParam(ped,gain,s0,s1,dcfraction);
+      return _darkfunc.Evaluate(x);
     }
   } else {
     return TMath::Gaus( x, pk, sk, kTRUE );

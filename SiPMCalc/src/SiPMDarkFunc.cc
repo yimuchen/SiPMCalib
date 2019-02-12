@@ -37,7 +37,6 @@ MDistro::~MDistro()
 {
 }
 
-
 void
 MDistro::SetParam(
   const double lo,
@@ -178,20 +177,19 @@ SiPMDarkFunc::SetParam(
   const double _dcfraction
   )
 {
-  s0         = _s0;
   dcfraction = _dcfraction;
   _mdistro.SetParam(
     _ped,
     _ped+_gain,
-    std::max(_gain/(1024*32), 0.01),
-    std::sqrt( _s0*_s0+_s1*_s1 );
+    std::max( _gain/( 1024 ), 0.01 ), std::sqrt( _s0*_s0+_s1*_s1 )
+    );
 }
 
 double
 SiPMDarkFunc::Evaluate( const double x ) const
 {
-    return ( 1-dcfraction ) * TMath::Gaus( x, _mdistro.loEdge, s0, true )
-           + dcfraction * _mdistro.Evaluate( x );
+  return ( 1-dcfraction ) * TMath::Gaus( x, _mdistro.loEdge, s0, true )
+         + dcfraction * _mdistro.Evaluate( x );
 }
 
 double

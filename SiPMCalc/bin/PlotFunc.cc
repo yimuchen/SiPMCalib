@@ -7,16 +7,12 @@
 int
 main( int argc, char const* argv[] )
 {
-  SiPMDarkFunc func(
-    100, 200, 60, 20, 0.01, 0.02, 20
-    );
+  SiPMDarkFunc func( 100, 200, 60, 20, 0.1  );
 
   std::cout << "x  m1 m2 t" << std::endl;
 
   for( double x = -250; x < 450; x += 1 ){
     std::cout << x << " "
-              << func.acfrac1 * func.EvalM1( x )  << " "
-              << func.acfrac1 * func.EvalM1( x ) + func.acfrac2 * func.EvalM2( x )  << " "
               << func.Evaluate( x ) << std::endl;
   }
 

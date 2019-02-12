@@ -8,9 +8,7 @@ SiPMDarkPdf::SiPMDarkPdf( const char* name, const char* title,
                           RooRealVar& _gain,
                           RooRealVar& _s0,
                           RooRealVar& _s1,
-                          RooRealVar& _dcfrac1,
-                          RooRealVar& _dcfrac2,
-                          RooRealVar& _acshift
+                          RooRealVar& _dcfrac
                           ) :
   RooAbsPdf( name, title ),
   x( "x", "obs", this, _x ),
@@ -18,10 +16,8 @@ SiPMDarkPdf::SiPMDarkPdf( const char* name, const char* title,
   gain( "gain", "gain", this, _gain ),
   s0( "s0", "comnoise", this, _s0 ),
   s1( "s1", "pixnoise", this, _s1 ),
-  dcfrac1( "dcfrac1", "dcfrac1", this, _dcfrac1 ),
-  dcfrac2( "dcfrac2", "dcfrac2", this, _dcfrac2 ),
-  acshift( "acshift", "acshift", this, _acshift ),
-  func( ped, gain, s0, s1, dcfrac1, dcfrac2, acshift )
+  dcfrac( "dcfrac1", "dcfrac1", this, _dcfrac ),
+  func( ped, gain, s0, s1, dcfrac )
 {
 }
 
@@ -32,10 +28,8 @@ SiPMDarkPdf::SiPMDarkPdf( const SiPMDarkPdf& other, const char* name ) :
   gain(    "gain",     this, other.gain ),
   s0(      "s0",       this, other.s0   ),
   s1(      "s1",       this, other.s1   ),
-  dcfrac1( "dcfrac1",   this, other.dcfrac1 ),
-  dcfrac2( "dcfrac2",  this, other.dcfrac2 ),
-  acshift( "acshift",  this, other.acshift ),
-  func( ped, gain, s0, s1, dcfrac1, dcfrac2, acshift )
+  dcfrac( "dcfrac1",   this, other.dcfrac ),
+  func( ped, gain, s0, s1, dcfrac )
 {
 }
 
@@ -50,6 +44,6 @@ SiPMDarkPdf::~SiPMDarkPdf(){}
 double
 SiPMDarkPdf::evaluate() const
 {
-  func.SetParam( ped, gain, s0, s1, dcfrac1, dcfrac2, acshift );
+  func.SetParam( ped, gain, s0, s1, dcfrac );
   return func.Evaluate( x );
 }

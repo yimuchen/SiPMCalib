@@ -53,12 +53,9 @@ main( int argc, char const* argv[] )
   RooRealVar gain( "gain", "gain", 150, 1, 500 );
   RooRealVar s0( "s0", "s0", 20, 10, 100 );
   RooRealVar s1( "s1", "s1", 10, 0.001, 50 );
-  RooRealVar dcfrac1( "dcfrac1", "dcfrac1", 0.005, 0, 0.2 );
-  RooRealVar dcfrac2( "dcfrac2", "dcfrac2", 0.005, 0, 0.5 );
-  RooRealVar acshift( "acshift", "acshift", 50, 0, 200 );
+  RooRealVar dcfrac( "dcfrac1", "dcfrac1", 0.005, 0, 0.2 );
 
-  SiPMDarkPdf pdf( "dark", "dark",
-                   x, ped, gain, s0, s1, dcfrac1, dcfrac2, acshift );
+  SiPMDarkPdf pdf( "dark", "dark", x, ped, gain, s0, s1, dcfrac );
 
   auto fit = pdf.fitTo( data, RooFit::Range( -100, 400 ), RooFit::Save() );
 
@@ -98,10 +95,8 @@ main( int argc, char const* argv[] )
     << "gain " << gain.getVal() << "  " << gain.getError() << std::endl
     << "s0 " << s0.getVal() << "  " << s0.getError() << std::endl
     << "s1 " << s1.getVal() << "  " << s1.getError() << std::endl
-    << "dcfrac1 " << dcfrac1.getVal() << "  " << dcfrac1.getError() << std::endl
-    << "dcfrac2 " << dcfrac2.getVal() << "  " << dcfrac2.getError() << std::endl
-    << "acshift " << acshift.getVal() << "  " << acshift.getError() << std::endl;
-  std::cout << std::endl;
+    << "dcfrac " << dcfrac.getVal() << "  " << dcfrac.getError() << std::endl
+    << std::endl;
 
   return 0;
 }

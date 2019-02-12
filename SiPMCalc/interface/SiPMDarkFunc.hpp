@@ -52,7 +52,7 @@ public:
     const double ped,
     const double gain,
     const double s0,
-    const double s1
+    const double s1,
     const double dcfraction
     );
   ~SiPMDarkFunc();
@@ -67,7 +67,8 @@ public:
     const double s1,
     const double dcfraction
     );
-  double ped;
+
+  double s0;
   double dcfraction;
 
 private:
