@@ -1,0 +1,8 @@
+<use name="UserUtils/Common"/>
+<use name="UserUtils/MathUtils"/>
+<use name="UserUtils/PlotUtils"/>
+<use name="root"/>
+
+<flags CXXFLAGS="-g"/>
+
+<bin name="SiPM_InvSqCal" file="InvSqCalc.cc"/>
