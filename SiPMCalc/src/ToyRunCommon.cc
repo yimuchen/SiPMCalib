@@ -30,11 +30,11 @@ Gain( const usr::ArgumentExtender& arg )
 
 double
 ComNoise( const usr::ArgumentExtender& )
-{ return 40; }
+{ return 20; }
 
 double
 PixNoise( const usr::ArgumentExtender& )
-{ return 15; }
+{ return 5; }
 
 double
 Mean( const usr::ArgumentExtender& arg )
@@ -89,4 +89,49 @@ filename( const usr::ArgumentExtender& arg )
 
   boost::replace_all( ans, ".", "p" );
   return usr::resultpath( "SiPMCalib", "SiPMCalc" ) / ( ans + ".txt" );
+}
+
+usr::fs::path
+pullfilename( const usr::ArgumentExtender& arg )
+{
+  std::string ans = ( boost::format( "pullsummary_%s_nEvt%d_%s" )
+                      % arg.Arg( "model" )
+                      % arg.Arg<int>( "nEvents" )
+                      % arg.Arg( "fit" ) ).str();
+
+  if( arg.Arg("model") != "dark" ){
+    ans += (boost::format("_r%lg_x%lg") % Mean(arg) % Lambda(arg)).str();
+  }
+  if( arg.Arg("model") != "ndc" && arg.Arg("model") != "simp" ){
+    ans += (boost::format( "_dc%lg") % DCFrac(arg) ).str();
+  }
+  if( arg.Arg("model") != "nap" && arg.Arg("model") != "simp" ){
+    ans += (boost::format("_a%lg") % Alpha(arg) ).str();
+  }
+
+  boost::replace_all( ans, ".", "p" );
+  return usr::resultpath( "SiPMCalib", "SiPMCalc" ) / ( ans + ".txt" );
+}
+
+usr::fs::path
+pullplotfilename( const usr::ArgumentExtender& arg, const std::string& name )
+{
+  std::string ans = ( boost::format( "%s_%s_nEvt%d_%s" )
+                      % name
+                      % arg.Arg( "model" )
+                      % arg.Arg<int>( "nEvents" )
+                      % arg.Arg( "fit" ) ).str();
+
+  if( arg.Arg("model") != "dark" ){
+    ans += (boost::format("_r%lg_x%lg") % Mean(arg) % Lambda(arg)).str();
+  }
+  if( arg.Arg("model") != "ndc" && arg.Arg("model") != "simp" ){
+    ans += (boost::format( "_dc%lg") % DCFrac(arg) ).str();
+  }
+  if( arg.Arg("model") != "nap" && arg.Arg("model") != "simp" ){
+    ans += (boost::format("_a%lg") % Alpha(arg) ).str();
+  }
+
+  boost::replace_all( ans, ".", "p" );
+  return usr::resultpath( "SiPMCalib", "SiPMCalc" ) / "pullplot" / ( ans + ".pdf" );
 }

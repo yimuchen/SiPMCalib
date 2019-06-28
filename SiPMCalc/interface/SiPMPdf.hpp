@@ -14,52 +14,41 @@ class SiPMPdf : public RooAbsPdf
 public:
   // Full model constructor
   SiPMPdf( const char*, const char*,
-           RooRealVar& x,
-           RooRealVar& ped,
-           RooRealVar& gain,
-           RooRealVar& s0,
-           RooRealVar& s1,
-           RooRealVar& mean,
-           RooRealVar& lambda,
-           RooRealVar& dcfraction,
-           RooRealVar& alpha,
-           RooRealVar& beta
+           RooAbsReal& x,
+           RooAbsReal& ped,
+           RooAbsReal& gain,
+           RooAbsReal& s0,
+           RooAbsReal& s1,
+           RooAbsReal& mean,
+           RooAbsReal& lambda,
+           RooAbsReal& alpha,
+           RooAbsReal& beta,
+           RooAbsReal& dcfraction,
+           RooAbsReal& epsilon
            );
 
   // No dark current
   SiPMPdf( const char*, const char*,
-           RooRealVar& x,
-           RooRealVar& ped,
-           RooRealVar& gain,
-           RooRealVar& s0,
-           RooRealVar& s1,
-           RooRealVar& mean,
-           RooRealVar& lambda,
-           RooRealVar& alpha,
-           RooRealVar& beta
+           RooAbsReal& x,
+           RooAbsReal& ped,
+           RooAbsReal& gain,
+           RooAbsReal& s0,
+           RooAbsReal& s1,
+           RooAbsReal& mean,
+           RooAbsReal& lambda,
+           RooAbsReal& alpha,
+           RooAbsReal& beta
            );
 
   // No after pulsing
   SiPMPdf( const char*, const char*,
-           RooRealVar& x,
-           RooRealVar& ped,
-           RooRealVar& gain,
-           RooRealVar& s0,
-           RooRealVar& s1,
-           RooRealVar& mean,
-           RooRealVar& lambda,
-           RooRealVar& dcfraction
-           );
-
-  // Only cross talk
-  SiPMPdf( const char*, const char*,
-           RooRealVar& x,
-           RooRealVar& ped,
-           RooRealVar& gain,
-           RooRealVar& s0,
-           RooRealVar& s1,
-           RooRealVar& mean,
-           RooRealVar& lambda
+           RooAbsReal& x,
+           RooAbsReal& ped,
+           RooAbsReal& gain,
+           RooAbsReal& s0,
+           RooAbsReal& s1,
+           RooAbsReal& mean,
+           RooAbsReal& lambda
            );
 
   SiPMPdf( const SiPMPdf&, const char* name = 0 );
@@ -69,6 +58,13 @@ public:
 
   virtual TObject* clone( const char* name ) const;
 
+  double gen_poisson( const int k ) const;
+  double ap_eff( const int k, const int i ) const;
+  double gauss_k( const int k  ) const;
+  double binomial_prob( const int k, const int i ) const;
+  inline double
+  Eval() const { return evaluate(); }
+
 protected:
   RooRealProxy x;
   RooRealProxy ped;
@@ -77,18 +73,14 @@ protected:
   RooRealProxy s1;
   RooRealProxy mean;
   RooRealProxy lambda;
-  RooRealProxy dcfraction;
   RooRealProxy alpha;
   RooRealProxy beta;
+  RooRealProxy dcfraction;
+  RooRealProxy epsilon;
 
-  mutable SiPMDarkFunc _darkfunc;
+  mutable MDistro mdistro;
 
   double evaluate() const;
-
-  double gen_poisson( const int k ) const;
-  double ap_eff( const int k, const int i ) const;
-  double gauss_k( const int k  ) const;
-  double binomial_prob( const int k, const int i ) const;
 
 private:
 //  ClassDef(SiPMPdf,1);

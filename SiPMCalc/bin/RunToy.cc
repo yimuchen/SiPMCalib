@@ -5,6 +5,7 @@
 #include <UserUtils/Common/interface/STLUtils/Filesystem.hpp>
 #include <UserUtils/Common/interface/SystemUtils/Time.hpp>
 
+#include "RooConstVar.h"
 #include "RooDataHist.h"
 #include "RooDataSet.h"
 #include "RooFitResult.h"
@@ -39,31 +40,32 @@ main( int argc, char** argv )
                      Mean( arg ),         Mean( arg )/8,     Mean( arg )*8 );
   RooRealVar lambda( "lambda",    "lambda",
                      Lambda( arg ),       0, std::min( Lambda( arg )*4, 0.5 ) );
-  RooRealVar dcfrac( "dcfrac", "dcfrac",
-                     DCFrac( arg ),       0, std::min( DCFrac( arg )*4, 0.6 ) );
   RooRealVar alpha(  "alpha",  "alpha",
                      Alpha( arg ),        0, std::min( Alpha( arg )*4, 0.5 ) );
   RooRealVar beta(   "beta",   "beta",
                      Beta( arg ),        Beta( arg )/16,    Beta( arg )*16 );
+  RooRealVar dcfrac( "dcfrac", "dcfrac",
+                     DCFrac( arg ),       0, std::min( DCFrac( arg )*4, 0.6 ) );
+  RooRealVar epsilon( "epsilon", "epsilon",
+                      0.01, 1e-6, 1e-1 );
 
-  x.setBin( 16*( Xmax( arg ) - Xmin( arg ) )/( Gain( arg ) ) );
+
+  x.setBin( 20*( Xmax( arg ) - Xmin( arg ) )/( Gain( arg ) ) );
 
   // Defining PDF
   SiPMPdf full( "full", "full",
-                x, ped, gain, s0, s1, mean, lambda, dcfrac, alpha, beta );
+                x, ped, gain, s0, s1, mean, lambda,
+                alpha, beta, dcfrac, epsilon );
   SiPMPdf ndc( "ndc", "ndc",
                x, ped, gain, s0, s1, mean, lambda, alpha, beta );
-  SiPMPdf nap( "nap", "nap",
-               x, ped, gain, s0, s1, mean, lambda, dcfrac );
   SiPMPdf simp( "simp", "simp",
                 x, ped, gain, s0, s1, mean, lambda  );
   SiPMDarkPdf dark( "dark", "dark",
-                    x, ped, gain, s0, s1, dcfrac );
+                    x, ped, gain, s0, s1, dcfrac, RooFit::RooConst( 1e-3 ) );
 
   RooAbsPdf* pdf
     = arg.Arg( "model" ) == "dark" ? dynamic_cast<RooAbsPdf*>( &dark ) :
       arg.Arg( "model" ) == "simp" ? dynamic_cast<RooAbsPdf*>( &simp ) :
-      arg.Arg( "model" ) == "nap"  ? dynamic_cast<RooAbsPdf*>( &nap ) :
       arg.Arg( "model" ) == "ndc"  ? dynamic_cast<RooAbsPdf*>( &ndc ) :
       dynamic_cast<RooAbsPdf*>( &full );
 
@@ -122,7 +124,7 @@ main( int argc, char** argv )
 
     boost::format fmt( "%14.8lf  %14.9lf  " );
 
-    fout << fit->status() << "  " ;
+    fout << fit->status() << "  ";
     fout << ( fmt % ped.getVal()    % ped.getError() );
     fout << ( fmt % gain.getVal()   % gain.getError() );
     fout << ( fmt % s0.getVal()     % s0.getError() );
@@ -136,7 +138,7 @@ main( int argc, char** argv )
 
     std::cout << boost::format( "[%s] Done! (%ldsec)" )
       % usr::CurrentTime()
-      % (( tend - tstart ) / 1e6)
+      % ( ( tend - tstart ) / 1e6 )
               << std::endl;
 
     delete fit;

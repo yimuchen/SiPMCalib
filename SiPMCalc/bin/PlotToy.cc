@@ -75,33 +75,43 @@ main( int argc, char** argv )
               << std::flush;
     ++linecount;
 
-    // Skipping if exessively large pull value is obtained.
+    // Skipping if excessively large pull value is obtained.
     pullval = ( ped - Pedestal( arg ) )/ pederr;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( pederr > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    }
 
     pullval = ( gain - Gain( arg ) )/ gainerr;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( gainerr > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}}
 
     pullval = ( s0 - ComNoise( arg ) )/ s0err;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( s0err > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}}
 
     pullval = ( s1 - PixNoise( arg ) )/ s1err;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( s1err > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}}
 
     pullval = ( mean - Mean( arg ) )/ meanerr;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( meanerr > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}}
 
     pullval = ( lambda - Lambda( arg ) )/ lambdaerr;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( lambdaerr > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}}
 
     pullval = ( dcfrac - DCFrac( arg ) )/ dcfracerr;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( dcfracerr > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}}
 
     pullval = ( alpha - Alpha( arg ) )/ alphaerr;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( alphaerr > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}}
 
     pullval = ( beta - Beta( arg ) )/ betaerr;
-    if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}
+    if( betaerr > 1e-6 ){
+      if( pullval < pull.getMin()  || pullval > pull.getMax() ){continue;}}
 
     // Filling in datasets
     pull = ( ped - Pedestal( arg ) )/ pederr;
@@ -130,6 +140,8 @@ main( int argc, char** argv )
 
     pull = ( beta - Beta( arg ) )/ betaerr;
     betapull.add( RooArgSet( pull ) );
+
+    std::cout << " " << pedpull.sumEntries() <<  " ";
   }
 
   std::cout << "...Done!" << std::endl;
@@ -141,6 +153,8 @@ main( int argc, char** argv )
   RooRealVar npullmean( "nmean", "nmean", 0, -2, 2 );
   RooRealVar npullsig( "nsig", "nsig", 1, 0.01, 2 );
   RooGaussian npdf( "npdf", "npdf", pull, npullmean, npullsig );
+
+  std::ofstream pullfile( pullfilename( arg ), std::ofstream::out );
 
   for( RooDataSet* data : { &pedpull,
                             &gainpull,
@@ -183,23 +197,29 @@ main( int argc, char** argv )
       usr::plt::RangeByVar( pull ),
       usr::plt::Ratio1DCanvas::default_height );
 
-    c.PlotData( data,
-      RooFit::Invisible() );
+    // c.PlotData( data,
+    //   RooFit::Invisible() );
 
     auto& gpdf = c.PlotPdf( pdf,
       usr::plt::PlotType( usr::plt::fittedfunc ),
       RooFit::VisualizeError( *fit, 1, false ),
+      RooFit::Normalization( data->sumEntries(), RooAbsReal::NumEvent ),
+      RooFit::Range( "full" ),
+      RooFit::NormRange( "full" ),
       usr::plt::EntryText( ( boost::format(
-        "#mu=%.2lf_{#pm%.3lf} #sigma=%.2lf_{#pm%.3lf} \n(G.o.F=%.3lf)" )
-                             % pullmean.getVal() %pullmean.getError()
+        "#mu=%.2lf_{#pm%.3lf} #sigma=%.2lf_{#pm%.3lf}\n(G.o.F p-val.=%.3lf)" )
+                             % pullmean.getVal() % pullmean.getError()
                              % pullsig.getVal()  % pullsig.getError()
-                             %ksprob ).str() )
+                             % ksprob ).str() )
       );
     auto& gnpdf = c.PlotPdf( npdf,
       usr::plt::PlotType( usr::plt::fittedfunc ),
       RooFit::VisualizeError( *nfit, 1, false ),
+      RooFit::Normalization( ndata->sumEntries(), RooAbsReal::NumEvent ),
+      RooFit::Range( "narrow" ),
+      RooFit::NormRange( "narrow" ),
       usr::plt::EntryText( ( boost::format(
-        "#mu=%.2lf_{#pm%.3lf} #sigma=%.2lf_{#pm%.3lf} \n(G.o.F=%.3lf)" )
+        "#mu=%.2lf_{#pm%.3lf} #sigma=%.2lf_{#pm%.3lf}\n(G.o.F p-val=%.3lf)" )
                              % npullmean.getVal() % npullmean.getError()
                              % npullsig.getVal()  % npullsig.getError()
                              % nksprob ).str() )
@@ -234,32 +254,43 @@ main( int argc, char** argv )
 
     c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
     c.TopPad().DrawCMSLabel( usr::plt::cap::sim, "HGCal" );
-    c.TopPad().WriteLine( (boost::format("Num. Events = %ld")
-                          % arg.Arg<int>("nEvents")).str() );
-    c.BottomPad().Xaxis().SetTitle( (std::string("Pull value (")
-      + data->GetTitle()
-      + std::string(")")).c_str()
-     );
+    c.TopPad().DrawLuminosity( ( boost::format( "Num. Events = %ld" )
+                                 % arg.Arg<int>( "nEvents" ) ).str() );
+    c.BottomPad().Xaxis().SetTitle(
+      ( std::string( "Pull value (" )
+        + data->GetTitle()
+        + std::string( ")" ) ).c_str()
+      );
 
 
     // Saving
-    arg.SetFilePrefix( usr::resultpath( "SiPMCalib", "SiPMCalc" )/"pullgraph" );
-    arg.SetNameScheme( {
-      {"model", ""},
-      {"nEvents", "nEvt"},
-      {"fit", ""},
-      {"rate", "r" },
-      {"xtalkrate", "x"},
-      {"darkrate", "dc"},
-      {"alpha", "a"}
-    } );
+    // arg.SetFilePrefix( usr::resultpath( "SiPMCalib", "SiPMCalc" )/"pullgraph" );
+    // arg.SetNameScheme( {
+    //   {"model", ""},
+    //   {"nEvents", "nEvt"},
+    //   {"fit", ""},
+    //   {"rate", "r" },
+    //   {"xtalkrate", "x"},
+    //   {"darkrate", "dc"},
+    //   {"alpha", "a"}
+    // } );
 
-    c.SaveAsPDF( arg.MakePDFFile(std::string("pull") + data->GetName() ) );
+    c.SaveAsPDF( pullplotfilename( arg,
+      std::string( "pull" ) + data->GetName() ) );
+
+    pullfile << data->GetName() << " "
+             << pullmean.getVal() << " " << pullmean.getError() << " "
+             << pullsig.getVal() << " " << pullsig.getError() << " "
+             << npullmean.getVal() << " " << npullmean.getError() << " "
+             << npullsig.getVal() << " " << npullsig.getError() << " "
+             << std::endl;
 
     delete fit;
     delete nfit;
     delete ndata;
   }
+
+  pullfile.close();
 
   return 0;
 }

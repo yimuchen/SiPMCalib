@@ -1,14 +1,14 @@
 #include "SiPMCalib/SiPMCalc/interface/SiPMDarkPdf.hpp"
-
-#include "RooRealVar.h"
+#include "TMath.h"
 
 SiPMDarkPdf::SiPMDarkPdf( const char* name, const char* title,
-                          RooRealVar& _x,
-                          RooRealVar& _ped,
-                          RooRealVar& _gain,
-                          RooRealVar& _s0,
-                          RooRealVar& _s1,
-                          RooRealVar& _dcfrac
+                          RooAbsReal& _x,
+                          RooAbsReal& _ped,
+                          RooAbsReal& _gain,
+                          RooAbsReal& _s0,
+                          RooAbsReal& _s1,
+                          RooAbsReal& _dcfrac,
+                          RooAbsReal& _epsilon
                           ) :
   RooAbsPdf( name, title ),
   x( "x", "obs", this, _x ),
@@ -17,7 +17,8 @@ SiPMDarkPdf::SiPMDarkPdf( const char* name, const char* title,
   s0( "s0", "comnoise", this, _s0 ),
   s1( "s1", "pixnoise", this, _s1 ),
   dcfrac( "dcfrac1", "dcfrac1", this, _dcfrac ),
-  func( ped, gain, s0, s1, dcfrac )
+  epsilon( "epsilon", "epsilon", this, _epsilon ),
+  mdistro( ped, ped+gain, epsilon, sqrt( s0*s0 + s1*s1 ) )
 {
 }
 
@@ -28,8 +29,9 @@ SiPMDarkPdf::SiPMDarkPdf( const SiPMDarkPdf& other, const char* name ) :
   gain(    "gain",     this, other.gain ),
   s0(      "s0",       this, other.s0   ),
   s1(      "s1",       this, other.s1   ),
-  dcfrac( "dcfrac1",   this, other.dcfrac ),
-  func( ped, gain, s0, s1, dcfrac )
+  dcfrac(  "dcfrac1",  this, other.dcfrac ),
+  epsilon( "epsilon",  this, other.epsilon ),
+  mdistro( ped, gain, epsilon, sqrt( s0*s0 + s1*s1 ) )
 {
 }
 
@@ -44,6 +46,7 @@ SiPMDarkPdf::~SiPMDarkPdf(){}
 double
 SiPMDarkPdf::evaluate() const
 {
-  func.SetParam( ped, gain, s0, s1, dcfrac );
-  return func.Evaluate( x );
+  mdistro.SetParam( ped, ped+gain, epsilon, sqrt( s0*s0+s1*s1 ) );
+  return ( 1-dcfrac ) * TMath::Gaus( x, ped, s0, kTRUE )
+         + dcfrac * mdistro.Evaluate( x );
 }

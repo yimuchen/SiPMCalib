@@ -142,7 +142,7 @@ MCManager::MakeZScanGraph( const double r, const double l, const double o ) cons
   std::vector<double> lumilow;
 
   for( const auto& m : _modellist ){
-    if( m.r == r && m.l == l && m.o == o && m.z >= 20 && m.z <= 450){
+    if( m.r == r && m.l == l && m.o == o ){
       const auto lumiM = m.Lumi();
       z.push_back( m.z );
       zerr.push_back( 0 );

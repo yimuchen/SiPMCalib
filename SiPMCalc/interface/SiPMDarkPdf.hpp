@@ -11,12 +11,13 @@ class SiPMDarkPdf : public RooAbsPdf
 {
 public:
   SiPMDarkPdf( const char*, const char*,
-               RooRealVar& x,
-               RooRealVar& ped,
-               RooRealVar& gain,
-               RooRealVar& s0,
-               RooRealVar& s1,
-               RooRealVar& dcfrac
+               RooAbsReal& x,
+               RooAbsReal& ped,
+               RooAbsReal& gain,
+               RooAbsReal& s0,
+               RooAbsReal& s1,
+               RooAbsReal& dcfrac,
+               RooAbsReal& epsilon
                );
 
   ~SiPMDarkPdf();
@@ -31,8 +32,9 @@ protected:
   RooRealProxy s0;
   RooRealProxy s1;
   RooRealProxy dcfrac;
+  RooRealProxy epsilon;
 
-  mutable SiPMDarkFunc func;// Since evaluation is a const function
+  mutable MDistro mdistro;// Since evaluation is a const function
 
   double evaluate() const;
 };

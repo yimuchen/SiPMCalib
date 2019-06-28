@@ -29,6 +29,11 @@ LEDManager::LEDManager( const usr::fs::path file )
     _pointlist.back().lumi    = lumi;
     _pointlist.back().lumierr = lumierr;
   }
+
+  std::stable_sort( _pointlist.begin(), _pointlist.end(),
+    []( const LEDPoint& x, const LEDPoint& y )->bool{
+    return x.z < y.z;
+  } );
 }
 
 void
@@ -70,18 +75,18 @@ LEDManager::MakeHScanGraph( const double z ) const
   const double ymin  = *std::min_element( ylist.begin(), ylist.end() );
   const double ymax  = *std::max_element( ylist.begin(), ylist.end() );
 
-  TH2D* ans = new TH2D( ("hist"+usr::RandomString(6)).c_str(), "",
-    (xmax-xmin)/xdiff + 1 , xmin-0.5*xdiff, xmax+0.5*xdiff,
-    (ymax-ymin)/xdiff + 1 , ymin-0.5*xdiff, ymax+0.5*xdiff
-    );
+  TH2D* ans = new TH2D( ( "hist"+usr::RandomString( 6 ) ).c_str(), "",
+    ( xmax-xmin )/xdiff + 1, xmin-0.5*xdiff, xmax+0.5*xdiff,
+    ( ymax-ymin )/xdiff + 1, ymin-0.5*xdiff, ymax+0.5*xdiff
+     );
 
-  for( unsigned i = 0 ; i < xlist.size(); ++i ){
-    const int binidx = ans->FindBin( xlist.at(i), ylist.at(i) );
-    ans->SetBinContent( binidx, lumi.at(i) );
-    ans->SetBinError( binidx, lumierr.at(i) );
+  for( unsigned i = 0; i < xlist.size(); ++i ){
+    const int binidx = ans->FindBin( xlist.at( i ), ylist.at( i ) );
+    ans->SetBinContent( binidx, lumi.at( i ) );
+    ans->SetBinError( binidx, lumierr.at( i ) );
   }
 
-  ans->SetStats(0);
+  ans->SetStats( 0 );
 
   return ans;
 }

@@ -1,8 +1,9 @@
 <use name="root"/>
 <use name="roofit"/>
 <use name="UserUtils/Common"/>
+<use name="UserUtils/PlotUtils"/>
 
-<flags CXXFLAGS="-g"/>
+<flags CXXFLAGS="-g -lSpectrum"/>
 <export>
   <lib name="1"/>
 </export>

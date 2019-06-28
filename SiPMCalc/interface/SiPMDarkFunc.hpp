@@ -39,40 +39,14 @@ private:
 
   std::vector<double> xArray;
   std::vector<double> convArray;
+  // Delaring here, as we are going to reserve for faster allocation
+  std::vector<double> convTempArray;
+  std::vector<double> mfuncArray;
+  std::vector<double> gaussArray;
   uint64_t paramHash;
 
   void ParamHash();
   void MakeFFTArray();
-};
-
-class SiPMDarkFunc
-{
-public:
-  SiPMDarkFunc(
-    const double ped,
-    const double gain,
-    const double s0,
-    const double s1,
-    const double dcfraction
-    );
-  ~SiPMDarkFunc();
-
-  double Evaluate( const double x ) const;
-  double EvalM( const double x ) const;
-
-  void SetParam(
-    const double ped,
-    const double gain,
-    const double s0,
-    const double s1,
-    const double dcfraction
-    );
-
-  double s0;
-  double dcfraction;
-
-private:
-  MDistro _mdistro;
 };
 
 #endif

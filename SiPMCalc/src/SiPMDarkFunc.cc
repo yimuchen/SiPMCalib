@@ -4,11 +4,14 @@
 #include <algorithm>
 #include <cmath>
 #include <complex>
+#include <iostream>
 
 #include <gsl/gsl_fft_halfcomplex.h>
 #include <gsl/gsl_fft_real.h>
 
 #include "TMath.h"
+
+static const unsigned reserve_size = 4 * 1024 * 1024;
 
 MDistro::MDistro() :
   loEdge( 0 ),
@@ -17,6 +20,11 @@ MDistro::MDistro() :
   width( 0 ),
   spline( nullptr )
 {
+  xArray.reserve( reserve_size );
+  convArray.reserve( reserve_size );
+  convTempArray.reserve( reserve_size );
+  mfuncArray.reserve( reserve_size );
+  gaussArray.reserve( reserve_size );
 }
 
 MDistro::MDistro(
@@ -30,6 +38,11 @@ MDistro::MDistro(
   width( 0 ),
   spline( nullptr )
 {
+  xArray.reserve( reserve_size );
+  convArray.reserve( reserve_size );
+  convTempArray.reserve( reserve_size );
+  mfuncArray.reserve( reserve_size );
+  gaussArray.reserve( reserve_size );
   SetParam( lo, hi, ep, w );
 }
 
@@ -49,7 +62,6 @@ MDistro::SetParam(
   epsilon = fabs( ep );
   width   = fabs( w );
 
-
   ParamHash();
 }
 
@@ -57,8 +69,10 @@ MDistro::SetParam(
 void
 MDistro::ParamHash()
 {
-  const uint64_t hashval = usr::HashValue( loEdge ) ^ usr::HashValue( hiEdge )
-                           ^ usr::HashValue( epsilon ) ^ usr::HashValue( width );
+  const uint64_t hashval = usr::HashValue( loEdge )
+                           ^ usr::HashValue( hiEdge )
+                           ^ usr::HashValue( epsilon )
+                           ^ usr::HashValue( width );
 
   if( hashval != paramHash ){
     // Saving Hash, recalculating FFT arrays.
@@ -72,35 +86,39 @@ MDistro::MakeFFTArray()
 {
   const unsigned nbins = usr::RoundUpToP2( std::max( {
     std::ceil( ( xMax() - xMin() )/epsilon ) +1,
-    1024.
+    2048.
   } ) );
   const double opepsilon = ( xMax() - xMin() )/( (double)( nbins-1 ) );
   const double xcen      = ( xMax() + xMin() ) / 2;
-  std::vector<double> convtemp( nbins );
-  std::vector<double> mfunc( nbins );
-  std::vector<double> gauss( nbins );
+
+  convTempArray.resize( nbins );
+  mfuncArray.resize( nbins );
+  gaussArray.resize( nbins );
   xArray.resize( nbins );
   convArray.resize( nbins );
 
   for( unsigned i = 0; i < nbins; ++i ){
     const double x = xMin() + i * opepsilon;
     xArray[i] = x;
-    mfunc[i]  = MFuncEval( x );
-    gauss[i]  = TMath::Gaus( x, xcen, width, kTRUE );
+    mfuncArray[i]  = MFuncEval( x );
+    gaussArray[i]  = TMath::Gaus( x, xcen, width, kTRUE );
   }
 
-  gsl_fft_real_radix2_transform( mfunc.data(), 1, nbins );
-  gsl_fft_real_radix2_transform( gauss.data(), 1, nbins );
+
+  gsl_fft_real_radix2_transform( mfuncArray.data(), 1, nbins );
+  gsl_fft_real_radix2_transform( gaussArray.data(), 1, nbins );
 
   for( unsigned i = 0; i < nbins; ++i ){
-    convtemp[i] = mfunc[i] * gauss[i];
+    convTempArray[i] = mfuncArray[i] * gaussArray[i];
   }
 
-  gsl_fft_halfcomplex_radix2_inverse( convtemp.data(), 1, nbins );
+  gsl_fft_halfcomplex_radix2_inverse( convTempArray.data(), 1, nbins );
+
 
   // Shifting by half period (circular convolution theorem)
+  // 2 opepsilon for proper normalization.
   for( unsigned i = 0; i < nbins; ++i ){
-    convArray[i] = convtemp[( i+nbins/2 )%nbins];
+    convArray[i] = convTempArray[( i+nbins/2 )%nbins]  * 2 * opepsilon;
   }
 
   spline = std::make_unique<ROOT::Math::Interpolator>( xArray, convArray );
@@ -112,8 +130,8 @@ MDistro::EdgeDist() const
   return fabs( hiEdge - loEdge );
 }
 
-static const double _edge_mult  = 20;
-static const double _width_mult = 20;
+static const double _edge_mult  = 5;
+static const double _width_mult = 10;
 
 
 double
@@ -125,15 +143,12 @@ MDistro::xMin() const
 double
 MDistro::xMax() const
 {
-  return hiEdge + std::min( _edge_mult*EdgeDist(), _width_mult*width );
+  return hiEdge + std::max( _edge_mult*EdgeDist(), _width_mult*width );
 }
 
-#include <iostream>
 double
 MDistro::Evaluate( const double x ) const
 {
-  // double ans ;
-  // int    spline_err ;
   if( xArray.front() < x && x < xArray.back() ){
     return std::max( spline->Eval( x ), 0. );
   } else {
@@ -150,50 +165,4 @@ MDistro::MFuncEval( const double x ) const
   } else {
     return 0;
   }
-}
-
-
-/******************************************************************************/
-
-SiPMDarkFunc::SiPMDarkFunc(
-  const double _ped,
-  const double _gain,
-  const double _s0,
-  const double _s1,
-  const double _dcfraction
-  )
-{
-  SetParam( _ped, _gain, _s0, _s1, _dcfraction );
-}
-
-SiPMDarkFunc::~SiPMDarkFunc(){}
-
-void
-SiPMDarkFunc::SetParam(
-  const double _ped,
-  const double _gain,
-  const double _s0,
-  const double _s1,
-  const double _dcfraction
-  )
-{
-  dcfraction = _dcfraction;
-  _mdistro.SetParam(
-    _ped,
-    _ped+_gain,
-    std::max( _gain/( 1024 ), 0.01 ), std::sqrt( _s0*_s0+_s1*_s1 )
-    );
-}
-
-double
-SiPMDarkFunc::Evaluate( const double x ) const
-{
-  return ( 1-dcfraction ) * TMath::Gaus( x, _mdistro.loEdge, s0, true )
-         + dcfraction * _mdistro.Evaluate( x );
-}
-
-double
-SiPMDarkFunc::EvalM( const double x ) const
-{
-  return _mdistro.Evaluate( x );
 }

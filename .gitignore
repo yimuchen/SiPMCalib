@@ -1,16 +1,16 @@
-# General C++ exclusion
+a\1\2++ exclusion
 *.o
 *.so
 
-# General Python exclusion
+a\1\2ytho\1\2xclusion
 *.pyc
 
-# Swap files
+files
 *.swp
 
-# General data file exclusions
+a\1\2at\1\2il\1\2xclusions
 *.txt
-*.png 
+*.png
 *.root
 *.log
 lib/*
@@ -23,8 +23,8 @@ CMakeFiles/**
 build/**
 .vscode/**
 
-# inclusive directories
+siv\1\2irectories
 !CMakeLists.txt
 
-# Others 
+s
 SiPMCalc/data/**

@@ -20,11 +20,11 @@ int main( int argc, char** argv )
   usr::ArgumentExtender arg;
   arg.AddOptions( desc );
 
-  arg.ParseOptions( argc, argv ); 
+  arg.ParseOptions( argc, argv );
 
-  MCManager* mgr =  usr::fs::exists(arg.Arg("file")) ? 
+  MCManager* mgr =  usr::fs::exists(arg.Arg("file")) ?
                     new MCManager( arg.Arg("file") ) :
-                    new MCManager() ; 
+                    new MCManager() ;
 
   for( const auto rv : arg.ArgList<double>("r") ){
     for( const auto lv : arg.ArgList<double>("l") ){
@@ -34,12 +34,12 @@ int main( int argc, char** argv )
             % rv % lv %ov %zv  << std::endl;
           mgr->GetModel( rv, lv, ov, zv ).Run( arg.Arg<int>("n") );
         }
+        mgr->SaveToTXT( arg.Arg("file") ) ;
       }
     }
   }
 
-  mgr->SaveToTXT( arg.Arg("file") ) ; 
-  delete mgr ; 
+  delete mgr ;
 
-  return 0 ; 
+  return 0 ;
 }

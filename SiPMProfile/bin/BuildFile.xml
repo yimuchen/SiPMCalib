@@ -1,0 +1,6 @@
+<use name="UserUtils/PlotUtils"/>
+
+<flags CXXFLAGS="-g"/>
+
+<bin name="SiPM_Profile_HeatProfile"    file="PlotHeatProfile.cc"/>
+<bin name="SiPM_Profile_NoiseProfile"   file="NoiseProfile.cc"/>

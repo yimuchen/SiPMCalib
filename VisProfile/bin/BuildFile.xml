@@ -1,0 +1,6 @@
+<use name="UserUtils/PlotUtils"/>
+
+<flags CXXFLAGS="-g"/>
+
+<bin name="SiPM_VisPro_PlotXYProf"    file="PlotXYProf.cc"/>
+<bin name="SiPM_VisPro_PlotVisZProf"  file="PlotVisZProf.cc"/>
