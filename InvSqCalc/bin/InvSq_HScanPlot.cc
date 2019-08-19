@@ -2,17 +2,18 @@
 #include "SiPMCalib/InvSqCalc/interface/MCFormat.hpp"
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Flat2DCanvas.hpp"
 
 
 #include "TCanvas.h"
+#include "TColor.h"
 #include "TF2.h"
 #include "TFitResult.h"
 #include "TGraph.h"
 #include "TGraphErrors.h"
 #include "TLatex.h"
 #include "TLegend.h"
-#include "TColor.h"
 #include "TStyle.h"
 
 #include "boost/format.hpp"
@@ -40,6 +41,7 @@ main( int argc, char** argv )
   desc.add_options()
     ( "data,d", usr::po::value<std::string>(), "Data file" )
     ( "output,o", usr::po::value<std::string>(), "Output file" )
+    ( "type,t", usr::po::value<std::string>()->default_value( "static" ), "Type of LED configuration" )
   ;
 
   usr::ArgumentExtender arg;
@@ -50,15 +52,21 @@ main( int argc, char** argv )
   const double z = data._pointlist.front().z;
 
   TH2D* hist = data.MakeHScanGraph( z );
-  TF2* func1 = new TF2( "func1", ExpFunc, data.Xmin(), data.Xmax(), data.Ymin(), data.Ymax(), 5 );
+  TF2* func1 = new TF2( "func1", ExpFunc,
+    data.Xmin(), data.Xmax(),
+    data.Ymin(), data.Ymax(), 5 );
 
   func1->SetParameters(
-    ( data.Xmin() + data.Xmax() )/2,
-    ( data.Ymin() + data.Ymax() )/2,
+    hist->GetMean( 1 ),
+    hist->GetMean( 2 ),
     z,
     ( data.LumiMax() - data.LumiMin() )* ( z*z ),
     data.LumiMin()
     );
+
+  std::cout << hist->GetMean( 1 ) << std::endl;
+  std::cout << hist->GetMean( 2 ) << std::endl;
+
 
   auto fit = hist->Fit( func1, "EX0 N 0 S" );
 
@@ -71,8 +79,7 @@ main( int argc, char** argv )
 
   TGraphErrors cen;
   cen.SetPoint( 0, xfit, yfit );
-  cen.SetPointError( 0, func1->GetParError(0), func1->GetParError( 1 ) );
-
+  cen.SetPointError( 0, func1->GetParError( 0 ), func1->GetParError( 1 ) );
 
   TGraph sipm( 5 );
   sipm.SetPoint( 0, xfit + sipmlen/2, yfit+sipmlen/2 );
@@ -81,39 +88,44 @@ main( int argc, char** argv )
   sipm.SetPoint( 3, xfit + sipmlen/2, yfit-sipmlen/2 );
   sipm.SetPoint( 4, xfit + sipmlen/2, yfit+sipmlen/2 );
 
-
   // gStyle->SetPalette(kBird);
 
-
   usr::plt::Flat2DCanvas c;
-
 
   c.PlotHist( hist,
     usr::plt::Plot2DF( usr::plt::heat ) );
 
   auto& histc = c.PlotHist( (TH2D*)hist->Clone(),
     usr::plt::Plot2DF( usr::plt::cont ),
-    usr::plt::EntryText( "Data (est. contour)" ) );
+    usr::plt::EntryText( "Data (est. contour)" ),
+    usr::plt::LineColor( usr::plt::col::blue ) );
 
   auto& funcg = c.PlotFunc( func1,
     usr::plt::Plot2DF( usr::plt::cont ),
-    usr::plt::EntryText( "Fitted Contour" ) );
+    usr::plt::EntryText( "Fitted Contour" ),
+    usr::plt::LineColor( usr::plt::col::green ) );
 
   c.Plot1DGraph( sipm,
     usr::plt::PlotType( usr::plt::simplefunc ),
-    usr::plt::EntryText( "SiPM (Expected)" ) );
+    usr::plt::EntryText( "SiPM (Expected)" ),
+    usr::plt::LineColor( usr::plt::col::red ),
+    usr::plt::LineStyle( usr::plt::sty::lindashed ) );
 
   c.Plot1DGraph( cen,
     usr::plt::PlotType( usr::plt::scatter ),
-    usr::plt::EntryText( "Fitted (x_{0},y_{0})" ) );
+    usr::plt::EntryText( "Fitted (x_{0},y_{0})" ),
+    usr::plt::MarkerColor( usr::plt::col::red ),
+    usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+    usr::plt::MarkerSize( 0.5 ),
+    usr::plt::LineColor( usr::plt::col::red ) );
 
   // Styling of contour levels
   std::vector<double> contlevel = {
-    Nfit / (zfit*zfit) + Pfit,
-    Nfit / (zfit*zfit) * 99./100. + Pfit,
-    Nfit / (zfit*zfit) * 90./100. + Pfit,
-    Nfit / (zfit*zfit) * 75./100. + Pfit,
-    Nfit / (zfit*zfit) * 50./100. + Pfit
+    Nfit / ( zfit*zfit ) + Pfit,
+    Nfit / ( zfit*zfit ) * 99./100. + Pfit,
+    Nfit / ( zfit*zfit ) * 90./100. + Pfit,
+    Nfit / ( zfit*zfit ) * 75./100. + Pfit,
+    Nfit / ( zfit*zfit ) * 50./100. + Pfit
   };
   std::sort( contlevel.begin(), contlevel.end() );
 
@@ -123,46 +135,28 @@ main( int argc, char** argv )
 
 
   c.DrawCMSLabel( "Preliminary", "HGCal" );
-  c.DrawLuminosity( "LED setup" );
+  c.DrawLuminosity( usr::fstr("LED (%s)", arg.Arg("type") ) );
   c.Pad().SetTextCursor( 0.015, 0.6, usr::plt::font::top_left )
-  .WriteLine( "Contours: #frac{99}{100}, #frac{9}{10}, #frac{3}{4}, #frac{1}{2}lumi")
+  .WriteLine( "Contours: #frac{99}{100}, #frac{9}{10}, #frac{3}{4}, #frac{1}{2}lumi" )
   .WriteLine( "#frac{N z_{0}}{ #sqrt{(x-x_{0})^{2} + (y-y_{0})^{2} + z_{0}^{2} }^{3}} + P" )
-  .WriteLine(
-    ( boost::format( "x_{0} = %.1lf_{#pm%.2lf} [mm]" )
-      % func1->GetParameter( 0 )
-      % func1->GetParError( 0 ) ).str() )
-  .WriteLine(
-    ( boost::format( "y_{0} = %.1lf_{#pm%.2lf} [mm]" )
-      % func1->GetParameter( 1 )
-      % func1->GetParError( 1 ) ).str() )
-  .WriteLine(
-    ( boost::format( "z_{0} = %.1lf_{#pm%.2lf} [mm]" )
-      % func1->GetParameter( 2 )
-      % func1->GetParError( 2 )
-    ).str() )
-  .WriteLine( ( boost::format( "Gantry Z = %.1lf [mm]" ) % z ).str() )
-  .WriteLine( ( boost::format( "#chi^{2}/DoF = %.3lf" )% ( fit->Chi2()/fit->Ndf() ) ).str() )
-  ;
-
-  hist->SetLineColorAlpha( kBlue, 1 );
-  funcg.SetLineColorAlpha( kGreen, 1 );
-  funcg.SetLineWidth( 1 );
-
-  cen.SetLineColor( kRed );
-  cen.SetMarkerColor( kRed );
-  cen.SetMarkerStyle( 20 );
-  cen.SetMarkerSize( 0.5 );
-
-  sipm.SetLineColor( kRed );
-  sipm.SetLineStyle( 2 );
-
+  .WriteLine( usr::fstr( "x_{0} = %.1lf_{#pm%.2lf} [mm]",
+    func1->GetParameter( 0 ),
+    func1->GetParError( 0 ) ) )
+  .WriteLine( usr::fstr( "y_{0} = %.1lf_{#pm%.2lf} [mm]",
+    func1->GetParameter( 1 ),
+    func1->GetParError( 1 ) ) )
+  .WriteLine( usr::fstr( "z_{0} = %.1lf_{#pm%.2lf} [mm]",
+    func1->GetParameter( 2 ),
+    func1->GetParError( 2 ) ) )
+  .WriteLine( usr::fstr( "Gantry Z = %.1lf [mm]", z ) )
+  .WriteLine( usr::fstr( "#chi^{2}/DoF = %.3lf", fit->Chi2()/fit->Ndf() ) );
 
   c.Xaxis().SetTitle( "Gantry x [mm]" );
   c.Yaxis().SetTitle( "Gantry y [mm]" );
   c.Zaxis().SetTitle( "Luminosity [pA]" );
 
-  cen.GetHistogram()->SetMaximum(1000);
-  cen.GetHistogram()->SetMinimum(1000);
+  cen.GetHistogram()->SetMaximum( 1000 );
+  cen.GetHistogram()->SetMinimum( 1000 );
 
   c.SaveAsPDF( arg.Arg( "output" ) );
   c.SaveToROOT( "test.root", "c" );

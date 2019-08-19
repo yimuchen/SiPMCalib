@@ -1,7 +1,14 @@
 #include "SiPMCalib/SiPMCalc/interface/SiPMFormat.hpp"
+
+#ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
+#else
+#include "UserUtils/Common/Maths.hpp"
+#include "UserUtils/Common/STLUtils/StringUtils.hpp"
+#include "UserUtils/PlotUtils/Simple1DCanvas.hpp"
+#endif
 
 #include <algorithm>
 #include <boost/format.hpp>
@@ -370,8 +377,10 @@ SiPMFormat::RunLumiEstimate( const std::string& plotfit )
     }
 
     for( int i = 0; i < spec.GetNPeaks(); ++i ){
-      auto& line = c.Pad().DrawVLine( spec.GetPositionX()[i],
-        kGray, usr::plt::sty::lindotted );
+      auto& line = c.Pad().DrawVLine(
+          spec.GetPositionX()[i],
+          usr::plt::LineColor( usr::plt::col::darkgray ),
+          usr::plt::LineStyle( usr::plt::sty::lindotted ) ) ;
       if( i == 0 ){
         c.Pad().AddLegendEntry( line, "Peak search results", "L" );
       }

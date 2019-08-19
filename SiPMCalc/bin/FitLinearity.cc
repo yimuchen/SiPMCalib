@@ -1,9 +1,14 @@
+#include "SiPMCalib/SiPMCalc/interface/NonLinearModel.hpp"
+
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
+#include "UserUtils/PlotUtils/interface/Flat2DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
 
 #include "TF1.h"
 #include "TFitResult.h"
 #include "TGraphErrors.h"
+#include "TH2D.h"
+#include "TStyle.h"
 
 #include <boost/format.hpp>
 #include <cmath>
@@ -23,7 +28,21 @@ double NLOModel( const double*, const double* );
 int
 main( int argc, char* argv[] )
 {
-  const double en0 = 5 / ( A( 1 )*B( 6 ) ).CentralValue();
+  const double en0 = 5.5 / ( A( 1 )*B( 6 ) ).CentralValue();
+
+  for( int i = 1; i <= 6; ++i ){
+    std::cout << i << " | "
+              << ( boost::format( "%.5lf %.6lf %.3lf" )
+         % A( i ).CentralValue()
+         % A( i ).AbsAvgError()
+         % fabs( std::log10( A( i ).CentralValue() ) ) )
+              << " | "
+              << ( boost::format( "%.5lf %.6lf %.3lf" )
+         % B( i ).CentralValue()
+         % B( i ).AbsAvgError()
+         % fabs( std::log10( B( i ).CentralValue() ) ) )
+              << std::endl;
+  }
 
   struct LumiPoint
   {
@@ -129,7 +148,7 @@ main( int argc, char* argv[] )
             << f.GetParError( 0 )  << std::endl;
 
   // Fitting leading order model
-  TF1 expf( "ExpF", LOModel,  xmin, 1.2, 3 );
+  TF1 expf( "ExpF", LOModel,  xmin, 1.3, 3 );
   expf.SetParameter( 0, 1 );
   expf.SetParameter( 1, 1 );
   expf.SetParameter( 2, 0 );
@@ -227,23 +246,22 @@ main( int argc, char* argv[] )
   fnlog.SetLineColor( usr::plt::col::green );
   fnlog.SetFillColorAlpha( usr::plt::col::green, 0.3 );
 
+  c.PlotScale( fnlog, fnlog, usr::plt::PlotType( usr::plt::fittedfunc ) );
+  c.PlotScale( fg,    fnlog, usr::plt::PlotType( usr::plt::simplefunc ) );
+  c.PlotScale( fexpg, fnlog, usr::plt::PlotType( usr::plt::simplefunc ) );
 
-  auto& line1 = c.BottomPad().DrawVLine(
-      f.GetXmax(),
-      usr::plt::col::darkgray,
-      usr::plt::sty::linshortdash );
-  auto& line2 = c.BottomPad().DrawVLine(
-      expf.GetXmax(),
-      usr::plt::col::darkgray,
-      usr::plt::sty::lindensedot );
+  c.BottomPad().DrawVLine(
+    f.GetXmax(),
+    usr::plt::LineColor( usr::plt::col::darkgray ),
+    usr::plt::LineStyle( usr::plt::sty::linshortdash ) );
+  c.BottomPad().DrawVLine(
+    expf.GetXmax(),
+    usr::plt::LineColor( usr::plt::col::darkgray ),
+    usr::plt::LineStyle( usr::plt::sty::lindensedot ) );
   c.BottomPad().DrawVLine( 1,
-      usr::plt::col::darkgray,
-      usr::plt::sty::linsolid );
+    usr::plt::LineColor( usr::plt::col::darkgray ),
+    usr::plt::LineStyle( usr::plt::sty::linsolid ) );
 
-
-  c.PlotScale( fnlog,    fnlog, usr::plt::PlotType( usr::plt::fittedfunc ) );
-  c.PlotScale( fg,       fnlog, usr::plt::PlotType( usr::plt::simplefunc ) );
-  c.PlotScale( fexpg,    fnlog, usr::plt::PlotType( usr::plt::simplefunc ) );
 
   for( int i = 1; i < 7; ++i ){
     c.PlotScale( glist[i], fnlog,
@@ -258,9 +276,11 @@ main( int argc, char* argv[] )
   .WriteLine( "N_{pixel} = 1584" )
   .WriteLine( "V_{bias} = 51.5 V" )
   .WriteLine( ( boost::format( "P_{sec} = %.1lf#pm%.1lf%%" )
-                % ( nlof.GetParameter( 2 )*100 ) % ( nlof.GetParError( 2 )*100 ) ).str() )
+                % ( nlof.GetParameter( 2 )*100 ) % ( nlof.GetParError( 2 )*100 )
+                ).str() )
   .WriteLine( ( boost::format( "#tau_{SiPM}/#tau_{pulse} = %.1lf#pm%.1lf" )
-                % ( nlof.GetParameter( 3 ) ) % ( nlof.GetParError( 3 ) ) ).str() )
+                % ( nlof.GetParameter( 3 ) ) % ( nlof.GetParError( 3 ) )
+                ).str() )
   ;
 
 
@@ -273,11 +293,9 @@ main( int argc, char* argv[] )
     c.BottomPad().WriteAtData(
       xcen, 1.5,
       ( boost::format( "ND = %.2lf" )% fabs( nd ) ).str(),
-      colorlist[i],
-      c.Font().tiny() );
+      usr::plt::TextColor( colorlist[i] ),
+      usr::plt::TextSize( c.Font().tiny() ) );
   }
-
-
 
   c.TopPad().SetDataMin( glist[0].GetY()[0] * 0.3 );
   c.TopPad().SetLogx( 1 );
@@ -286,26 +304,43 @@ main( int argc, char* argv[] )
   c.BottomPad().Xaxis().SetTitle( "#bar{N}_{photon} / N_{pix}" );
   c.TopPad().Yaxis().SetTitle( "Readout [V-#mu s]" );
   c.BottomPad().Yaxis().SetTitle( "Data/NLO Fit" );
-
   c.TopPad().FinalizeLegend( usr::plt::align::bottom_right );
-
   c.SaveAsPDF( "Lineartest.pdf" );
 
 
-  for( int i = 1; i <= 6; ++i ){
-    std::cout << i << " | "
-              << ( boost::format( "%.5lf %.6lf %.3lf" )
-         % A( i ).CentralValue()
-         % A( i ).AbsAvgError()
-         % fabs( std::log10( A( i ).CentralValue() ) ) )
-              << " | "
-              << ( boost::format( "%.5lf %.6lf %.3lf" )
-         % B( i ).CentralValue()
-         % B( i ).AbsAvgError()
-         % fabs( std::log10( B( i ).CentralValue() ) ) )
-              << std::endl;
-  }
+  {
+    const auto corrmatrix = fitnlo->GetCorrelationMatrix();
+    const unsigned size   = corrmatrix.GetNrows();
 
+    TH2D corrhist( "corrhist", "", size, 0, size,
+                   size, 0, size  );
+
+    for( unsigned i = 0; i < size; ++i ){
+      for( unsigned j = 0; j < size; ++j ){
+        corrhist.Fill( i, j, corrmatrix( i, j ) );
+      }
+    }
+
+    usr::plt::Flat2DCanvas c;
+    c.PlotHist( corrhist, usr::plt::Plot2DF( usr::plt::heattext ) );
+    corrhist.SetMaximum( 1 );
+    corrhist.SetMinimum( -1 );
+
+    gStyle->SetPalette( kBlackBody );
+    const char binlabel[5][10] = {
+      "Gain", "PDE", "P_{sec}", "#beta", "Ped"
+    };
+
+    for( unsigned i = 0; i < size; ++i ){
+      c.Xaxis().SetBinLabel( i+1, binlabel[i] );
+      c.Yaxis().SetBinLabel( i+1, binlabel[i] );
+    }
+
+    c.Zaxis().SetTitle( "Correlation" );
+    gStyle->SetPaintTextFormat( ".2lf" );
+
+    c.SaveAsPDF( "LinearFit_Correlation.pdf" );
+  }
   return 0;
 }
 
@@ -372,48 +407,3 @@ B( const unsigned idx )
   return usr::Measurement( ( lo+hi )/2, diff, diff );
 }
 
-
-double
-LinearModel( const double* xx, const double* par )
-{
-  const double x      = xx[0];
-  const double gain   = par[0];
-  const double offset = par[1];
-  return gain*x*N + offset;
-}
-
-double
-LOModel( const double* xx, const double* par )
-{
-  const double x      = xx[0];
-  const double gain   = par[0];
-  const double pde    = par[1];
-  const double offset = par[2];
-  return gain * N * ( 1 - TMath::Exp( -pde * x ) ) + offset;
-}
-
-double
-NLOModel( const double* xx, const double* par )
-{
-  const double x      = xx[0];
-  const double gain   = par[0];
-  const double pde    = par[1];
-  const double alpha  = par[2];
-  const double beta   = par[3];
-  const double offset = par[4];
-
-  // Calculating number of fired pixel by LO approximation
-  const double LOpar[3]  = {1, pde, 0};
-  const double Nfired_LO = LOModel( xx, LOpar );
-
-  // Simple linear correction
-  const double NLOLinear = ( 1-alpha ) * Nfired_LO
-                           + alpha * pde * x * N;
-
-  const double nlo_frac   = pde * x * N / Nfired_LO;
-  const double NonLinCorr = ( beta + 1 ) / ( beta + nlo_frac );
-
-  // std::cout << x << " " << nlo_frac << " " << beta << " "<< NonLinCorr << std::endl;
-
-  return gain * NLOLinear * NonLinCorr + offset;
-}

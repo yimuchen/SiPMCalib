@@ -438,7 +438,10 @@ CalcCrossTalk(
 
   for( unsigned i = 0; i < derivmin.size(); ++i ){
     const double x = derivmin.at( i );
-    c.Pad().DrawHLine( threshold.Eval( x ), kRed, usr::plt::sty::lindotted );
+    c.Pad().DrawHLine(
+      threshold.Eval( x ),
+      usr::plt::LineColor( usr::plt::col::red ),
+      usr::plt::LineStyle( usr::plt::sty::lindotted ) );
     if( i < 3 ){
       c.Pad().WriteAtData( fmt.AreaList().back(), threshold.Eval( x ) * 1.1,
         ( boost::format( "%.1f Threshold   " )% ( i + 0.5 ) ).str() );

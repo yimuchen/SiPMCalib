@@ -1,6 +1,7 @@
 #include "SiPMCalib/SiPMCalc/interface/SiPMDarkFunc.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMPdf.hpp"
 #include "UserUtils/Common/interface/Maths.hpp"
+#include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 
 #include <boost/format.hpp>
@@ -28,33 +29,9 @@ main( int argc, char const* argv[] )
               x, ped, gain, s0, s1, mean, lambda,
               alpha, beta,
               dcfrac, epsilon );
-
   x.setBin( nbins );
 
-  {
-    usr::plt::Simple1DCanvas c( x );
-
-    std::vector<int> color    = {kBlue, kGreen, kRed };
-    std::vector<double> blist = {30, 50, 100 };
-
-    for( unsigned i = 0; i < blist.size(); ++i ){
-      beta = blist.at( i );
-
-      auto& g = c.PlotPdf( p0,
-        usr::plt::PlotType( usr::plt::simplefunc ),
-        usr::plt::TrackY( usr::plt::TrackY::both ),
-        usr::plt::EntryText( ( boost::format( "#alpha = %.3lf, #beta = %.1lf" )
-                               %alpha.getVal() %beta.getVal() ).str() )
-        );
-
-      g.SetLineColor( color.at( i%color.size() ) );
-    }
-
-    c.SetLogy( true );
-    c.Pad().SetYaxisMin( 1e-12 );
-
-    c.SaveAsPDF( "CompBeta.pdf" );
-  }
+  const usr::fs::path output_dir( "results/pdf_debug/" );
 
   {
     usr::plt::Simple1DCanvas c( x );
@@ -70,18 +47,42 @@ main( int argc, char const* argv[] )
         usr::plt::PlotType( usr::plt::simplefunc ),
         usr::plt::TrackY( usr::plt::TrackY::both ),
         RooFit::Precision( 1e-5 ),
-        usr::plt::EntryText( ( boost::format( "#alpha = %.3lf, #beta = %.1lf" )
-                               %alpha.getVal() %beta.getVal() ).str() )
+        usr::plt::LineColor( color.at( i % color.size() ) ),
+        usr::plt::EntryText( usr::fstr( "#alpha = %.3lf, #beta = %.1lf",
+          alpha.getVal(), beta.getVal() ) )
         );
-
-      g.SetLineColor( color.at( i%color.size() ) );
     }
 
-    c.SetLogy( true );
+    c.SetLogy( 1 );
     c.Pad().SetYaxisMin( 1e-12 );
 
-    c.SaveAsPDF( "CompAlpha.pdf" );
+    c.SaveAsPDF( output_dir/"compare_alpha.pdf" );
   }
+
+  {
+    usr::plt::Simple1DCanvas c( x );
+
+    std::vector<int> color    = {kBlue, kGreen, kRed };
+    std::vector<double> blist = {30, 50, 100 };
+
+    for( unsigned i = 0; i < blist.size(); ++i ){
+      beta = blist.at( i );
+
+      c.PlotPdf( p0,
+        usr::plt::PlotType( usr::plt::simplefunc ),
+        usr::plt::TrackY( usr::plt::TrackY::both ),
+        usr::plt::LineColor( color.at( i % color.size() ) ),
+        usr::plt::EntryText( usr::fstr( "#alpha = %.3lf, #beta = %.1lf",
+          alpha.getVal(), beta.getVal() ) )
+        );
+    }
+
+    c.Pad().SetDataMin( 1e-12 );
+    c.SetLogy( 1 );
+
+    c.SaveAsPDF( output_dir/"compare_beta.pdf" );
+  }
+
 
   {
     ped    = 25;
@@ -131,7 +132,7 @@ main( int argc, char const* argv[] )
     c.SetLogy( true );
     c.Pad().SetYaxisMin( 1e-8 );
 
-    c.SaveAsPDF( "CompAPEffect.pdf" );
+    c.SaveAsPDF( output_dir/"compare_afterpulse.pdf" );
   }
 
   {
@@ -166,7 +167,6 @@ main( int argc, char const* argv[] )
       p1m.SetPoint( i, x.getVal(), p1y );
       p2m.SetPoint( i, x.getVal(), p2y );
       tot.SetPoint( i, x.getVal(), ty );
-
     }
 
     std::cout << p1m.Integral() << " " << p2m.Integral() << std::endl;
@@ -184,7 +184,7 @@ main( int argc, char const* argv[] )
     c.SetLogy( true );
     c.Pad().SetYaxisMin( 1e-8 );
 
-    c.SaveAsPDF( "CompGeiger.pdf" );
+    c.SaveAsPDF( output_dir/"compare_geiger.pdf" );
   }
 
   {
@@ -193,7 +193,6 @@ main( int argc, char const* argv[] )
     const double width     = 0.1;
     const unsigned nsample = 300;
     MDistro md( loedge, hiedge, 1e-3, width );
-
 
     std::vector<TGraph> unsmeared;
     std::vector<TGraph> smeared;
@@ -247,8 +246,8 @@ main( int argc, char const* argv[] )
     uc.Yaxis().SetTitle( "Prob." );
 
 
-    c.SaveAsPDF( "CompEpsilon.pdf" );
-    uc.SaveAsPDF( "CompEpsilon_unsmeared.pdf" );
+    c.SaveAsPDF( output_dir/"compare_epsilon.pdf" );
+    uc.SaveAsPDF( output_dir/"compare_epsilon_unsmeared.pdf" );
   }
 
   return 0;

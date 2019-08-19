@@ -2,6 +2,7 @@
 <use name="boost_program_options"/>
 
 <use name="SiPMCalib/SiPMCalc"/>
+<use name="SiPMCalib/InvSqCalc"/>
 <use name="UserUtils/PlotUtils"/>
 <use name="UserUtils/Common"/>
 <use name="UserUtils/MathUtils"/>
@@ -15,4 +16,5 @@
 <bin file="DarkTrigger.cc"      name="SiPM_DarkTrigger"/>
 <bin file="CalcMean.cc"         name="SiPM_CalcMean"/>
 <bin file="FitLinearity.cc"     name="SiPM_FitLinearity"/>
+<bin file="GantryLinearity.cc"  name="SiPM_GantryLinearity"/>
 <flags CXXFLAGS="-g"/>

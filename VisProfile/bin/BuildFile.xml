@@ -4,3 +4,4 @@
 
 <bin name="SiPM_VisPro_PlotXYProf"    file="PlotXYProf.cc"/>
 <bin name="SiPM_VisPro_PlotVisZProf"  file="PlotVisZProf.cc"/>
+<bin name="SiPM_VisPro_PlotConsistency"  file="PlotConsistency.cc"/>

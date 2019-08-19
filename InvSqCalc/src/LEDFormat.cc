@@ -26,12 +26,12 @@ LEDManager::LEDManager( const usr::fs::path file )
     _pointlist.back().x       = x;
     _pointlist.back().y       = y;
     _pointlist.back().z       = z;
-    _pointlist.back().lumi    = lumi;
-    _pointlist.back().lumierr = lumierr;
+    _pointlist.back().lumi    = fabs( lumi );
+    _pointlist.back().lumierr = fabs( lumierr );
   }
 
   std::stable_sort( _pointlist.begin(), _pointlist.end(),
-    []( const LEDPoint& x, const LEDPoint& y )->bool{
+    []( const LEDPoint& x, const LEDPoint& y ) -> bool {
     return x.z < y.z;
   } );
 }
@@ -69,15 +69,16 @@ LEDManager::MakeHScanGraph( const double z ) const
     }
   }
 
-  const double xdiff = fabs( xlist.at( 0 ) - xlist.at( 1 ) );
-  const double xmax  = *std::max_element( xlist.begin(), xlist.end() );
-  const double xmin  = *std::min_element( xlist.begin(), xlist.end() );
-  const double ymin  = *std::min_element( ylist.begin(), ylist.end() );
-  const double ymax  = *std::max_element( ylist.begin(), ylist.end() );
+  const double xdiff   = fabs( xlist.at( 0 ) - xlist.at( 1 ) );
+  const double xmax    = *std::max_element( xlist.begin(), xlist.end() );
+  const double xmin    = *std::min_element( xlist.begin(), xlist.end() );
+  const double ymin    = *std::min_element( ylist.begin(), ylist.end() );
+  const double ymax    = *std::max_element( ylist.begin(), ylist.end() );
+  const unsigned nbins = ( xmax - xmin )/xdiff + 1;
 
   TH2D* ans = new TH2D( ( "hist"+usr::RandomString( 6 ) ).c_str(), "",
-    ( xmax-xmin )/xdiff + 1, xmin-0.5*xdiff, xmax+0.5*xdiff,
-    ( ymax-ymin )/xdiff + 1, ymin-0.5*xdiff, ymax+0.5*xdiff
+    nbins, xmin-0.5*xdiff, xmax+0.5*xdiff,
+    nbins, ymin-0.5*xdiff, ymax+0.5*xdiff
      );
 
   for( unsigned i = 0; i < xlist.size(); ++i ){

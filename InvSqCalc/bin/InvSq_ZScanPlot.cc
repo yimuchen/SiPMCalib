@@ -6,7 +6,6 @@
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 
 #include "TFitResult.h"
-#include <boost/format.hpp>
 
 double
 ZProf( const double* vz, const double* param )
@@ -32,7 +31,7 @@ main( int argc, char** argv )
   usr::po::options_description desc( "Options for plot making" );
   desc.add_options()
     ( "data,d", usr::po::value<std::string>(), "Data file" )
-    ( "mc,m", usr::po::value<std::string>(), "MC file" )
+  //  ( "mc,m", usr::po::value<std::string>(), "MC file" )
     ( "output,o", usr::po::value<std::string>(), "Output file" )
   ;
 
@@ -41,14 +40,14 @@ main( int argc, char** argv )
   arg.ParseOptions( argc, argv );
 
   LEDManager data( arg.Arg( "data" ) );
-  MCManager mc( arg.Arg( "mc" ) );
+  // MCManager mc( arg.Arg( "mc" ) );
 
   TGraph* dataz = data.MakeZScanGraph(
     data._pointlist.front().x,
     data._pointlist.front().y );
 
-  TGraphAsymmErrors mc0 = mc.MakeZScanGraph( 1, 1.5, 0 );
-  TGraphAsymmErrors mc5 = mc.MakeZScanGraph( 1, 1.5, 0.5 );
+  // TGraphAsymmErrors mc0 = mc.MakeZScanGraph( 1, 1.5, 0 );
+  // TGraphAsymmErrors mc5 = mc.MakeZScanGraph( 1, 1.5, 0.5 );
 
   double pedestal = 0;
   double zoffset  = 0;
@@ -64,39 +63,36 @@ main( int argc, char** argv )
   auto fit = dataz->Fit( &func, "EX0 M E N 0 S" );
 
   // Scaling MC to data
-  ScaleMC( mc0, dataz, func );
-  ScaleMC( mc5, dataz, func );
+  // ScaleMC( mc0, dataz, func );
+  // ScaleMC( mc5, dataz, func );
 
   // Begin plotting
   usr::plt::Ratio1DCanvas c;
 
+  // auto& mcg = c.PlotGraph( mc0,
+  //   usr::plt::PlotType( usr::plt::simplefunc ),
+  //   usr::plt::EntryText( "Simulation" ),
+  //   usr::plt::TrackY( usr::plt::TrackY::max ),
+  //    );
   auto& fitg = c.PlotFunc( func,
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::VisualizeError( fit ),
-    usr::plt::EntryText( "Fitted Data" ) );
-  auto& mcg = c.PlotGraph( mc0,
-    usr::plt::PlotType( usr::plt::simplefunc ),
-    usr::plt::EntryText( "Simulation" ) );
+    usr::plt::EntryText( "Fitted Data" ),
+    usr::plt::TrackY( usr::plt::TrackY::max ),
+    usr::plt::LineColor( usr::plt::col::blue ),
+    usr::plt::FillColor( usr::plt::col::cyan ) );
   auto& datag = c.PlotGraph( dataz,
     usr::plt::PlotType( usr::plt::scatter ),
-    usr::plt::EntryText( "LED Readout" ) );
+    usr::plt::EntryText( "Readout" ),
+    usr::plt::MarkerColor( usr::plt::col::black ),
+    usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+    usr::plt::MarkerSize( 0.1 ),
+    usr::plt::LineColor( usr::plt::col::gray, 0.5 ) );
 
-  datag.SetLineColorAlpha( kGray + 2 , 0.5 );
-  datag.SetMarkerColor( kBlack );
-  datag.SetMarkerStyle( 20 );
-  datag.SetMarkerSize( 0.1 );
-  fitg.SetLineColor( kBlue );
-  fitg.SetFillColorAlpha( kCyan, 0.3 );
-  fitg.SetFillStyle( usr::plt::sty::fillsolid );
-  mcg.SetLineColor( kRed );
-
-  auto& rfit = c.PlotScale( fitg, fitg,
+  c.PlotScale( fitg, fitg,
     usr::plt::PlotType( usr::plt::fittedfunc ) );
 
-  auto& rfit0 = c.PlotScale( mcg, fitg,
-    usr::plt::PlotType( usr::plt::simplefunc ) );
-
-  auto& rdata = c.PlotScale( datag, fitg,
+  c.PlotScale( datag, fitg,
     usr::plt::PlotType( usr::plt::scatter ) );
 
   c.TopPad().Yaxis().SetTitle( "Luminosity - Ped. [pA]" );
@@ -111,9 +107,9 @@ main( int argc, char** argv )
   c.DrawLuminosity( "LED setup" );
   c.DrawCMSLabel( "Preliminary", "HGCal" );
   c.TopPad()
-  .SetTextCursor( c.TopPad().InnerTextLeft() , 0.45 )
+  .SetTextCursor( c.TopPad().InnerTextLeft(), 0.45 )
   .WriteLine( "#frac{L_{0}(z+z_{0})}{(x_{0}^{2} + (z+z_{0})^{2})^{3/2}} + Ped" )
-  //.WriteLine( "" )
+  // .WriteLine( "" )
   .WriteLine( ( boost::format( "Fit Ped = %.2lf_{#pm%.3lf}" )
                 % pedestal % func.GetParError( 3 ) ).str() )
   .WriteLine( ( boost::format( "Fit z_{0} = %.2lf_{#pm%.3lf}" )
@@ -121,7 +117,7 @@ main( int argc, char** argv )
   .WriteLine( ( boost::format( "Fit x_{0} = %.2lf_{#pm%.3lf}" )
                 % func.GetParameter( 1 ) % func.GetParError( 0 ) ).str() )
   .WriteLine( ( boost::format( "#chi^{2}/D.o.F = %.2lf" )
-                % (fit->Chi2()/fit->Ndf())  ).str() );
+                % ( fit->Chi2()/fit->Ndf() ) ).str() );
 
   c.SaveAsPDF( arg.MakePDFFile( arg.Arg( "output" ) ) );
 
@@ -147,9 +143,6 @@ ShiftData( TGraph* data, double& ped, double& zoffset )
       );
 
     datacopy.Fit( &func, "Q EX0 N 0" );
-    std::cout << func.GetParameter( 0 ) << " " << func.GetParError( 0 ) << " "
-              << func.GetParameter( 3 ) << " " << func.GetParError( 3 )<< " "
-              << std::endl;
 
     if( fabs( func.GetParameter( 0 ) ) < fabs( func.GetParError( 0 ) ) &&
         fabs( func.GetParameter( 3 ) ) < fabs( func.GetParError( 3 ) ) ){
@@ -177,8 +170,8 @@ void
 ScaleMC( TGraphAsymmErrors& mc, const TGraph* data,  const TF1& func )
 {
   // MC scaling
-  const double r = (data->Eval( 100 + func.GetParameter(0) )
-                    - func.GetParameter(3)) / mc.Eval( 100 );
+  const double r = ( data->Eval( 100 + func.GetParameter( 0 ) )
+                     - func.GetParameter( 3 ) ) / mc.Eval( 100 );
 
   std::vector<double> z;
   std::vector<double> lumi;
@@ -191,8 +184,8 @@ ScaleMC( TGraphAsymmErrors& mc, const TGraph* data,  const TF1& func )
       continue;
     }
 
-    z.push_back( mc.GetX()[i] + func.GetParameter(0) );
-    lumi.push_back( mc.GetY()[i] * r + func.GetParameter(3) );
+    z.push_back( mc.GetX()[i] + func.GetParameter( 0 ) );
+    lumi.push_back( mc.GetY()[i] * r + func.GetParameter( 3 ) );
     lumiup.push_back( mc.GetErrorYhigh( i ) * r  );
     lumidown.push_back( mc.GetErrorYlow( i ) * r  );
   }
