@@ -3,6 +3,8 @@
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/Maths.hpp"
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
 
@@ -13,9 +15,7 @@
 #include "RooRealVar.h"
 
 #include <algorithm>
-#include <boost/format.hpp>
 #include <fstream>
-#include <iostream>
 
 int
 main( int argc, char* argv[] )
@@ -117,10 +117,9 @@ main( int argc, char* argv[] )
   c.DrawLuminosity( "Random trigger" );
   c.DrawCMSLabel( "", "Spectral Fit" );
   c.TopPad()
-  .WriteLine( ( boost::format( "Int. window = %d[ns]" )
-                % window ).str() )
-  .WriteLine( ( boost::format( "#tau_{DC} = %.2lf_{%.2lf}[us]" )
-                % tdc.CentralValue() % tdc.AbsAvgError() ).str() );
+  .WriteLine( usr::fstr( "Int. window = %d[ns]", window ) )
+  .WriteLine( usr::fstr( "#tau_{DC} = %.2lf_{%.2lf}[us]",
+    tdc.CentralValue(), tdc.AbsAvgError() ) );
 
 
   c.BottomPad().Yaxis().SetTitle( "Data/fit" );
@@ -128,14 +127,13 @@ main( int argc, char* argv[] )
   c.TopPad().SetYaxisMax( c.TopPad().GetYaxisMax() * 300 );
   c.SaveAsPDF( arg.MakePDFFile( "DarkSpectralFit" ) );
 
-  std::cout
-    << "ped "    << fmt.estped << " "  << ped.getVal() << "  " << ped.getError() << std::endl
-    << "gain "   << fmt.estgain << " "  << gain.getVal() << "  " << gain.getError() << std::endl
-    << "s0 "     << fmt.ests0 << " "  << s0.getVal() << "  " << s0.getError() << std::endl
-    << "s1 "     << fmt.ests1 << " "  << s1.getVal() << "  " << s1.getError() << std::endl
-    << "dcfrac " << fmt.estdcfrac << " "  << dcfrac.getVal() << "  " << dcfrac.getError() << std::endl
-    << "epslion " << 0  << " "  << epsilon.getVal() << "  " << epsilon.getError() << std::endl
-    << std::endl;
+  const std::string sf = "%10s  %10.2lf %10.2lf %10.2lf\n";
+  usr::fout( sf, "ped",     fmt.estped,    ped.getVal(),     ped.getError() );
+  usr::fout( sf, "gain",    fmt.estgain,   gain.getVal(),    gain.getError() );
+  usr::fout( sf, "s0 ",     fmt.ests0,     s0.getVal(),      s0.getError() );
+  usr::fout( sf, "s1 ",     fmt.ests1,     s1.getVal(),      s1.getError() );
+  usr::fout( sf, "dcfrac",  fmt.estdcfrac, dcfrac.getVal(),  dcfrac.getError() );
+  usr::fout( sf, "epslion", 0,             epsilon.getVal(), epsilon.getError() );
 
   return 0;
 }

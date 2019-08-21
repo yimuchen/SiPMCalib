@@ -1,6 +1,8 @@
 #include "SiPMCalib/SiPMCalc/interface/SiPMFormat.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMPdf.hpp"
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement.hpp"
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
 
@@ -181,8 +183,8 @@ main( int argc, char* argv[] )
   c.TopPad().DrawCMSLabel( "", "Spectral fit" );
   if( arg.CheckArg( "biasvoltage" ) ){
     c.TopPad()
-    .WriteLine( ( boost::format( "SiPM Bias: %.2lf V" )
-                  % arg.Arg<double>( "biasvoltage" ) ).str() );
+    .WriteLine( usr::fstr( "SiPM Bias: %.2lf V"
+                         , arg.Arg<double>( "biasvoltage" ) ) );
   }
 
   c.BottomPad().Yaxis().SetTitle( "Data/Global fit" );
@@ -192,63 +194,55 @@ main( int argc, char* argv[] )
 
   c.SaveAsPDF( arg.MakePDFFile( "Spectralfit" ) );
 
-  boost::format linefmt( "%s & = & %s & [\\text{%s}] \\\\" );
-  boost::format p1fmt( "%.1lf & \\pm%.2lf" );
-  boost::format p2fmt( "%.2lf & \\pm%.3lf" );
+  const std::string rawfmt( "%10s %10.5lf %10.5lf\n" )
+  usr::fout( "Raw Fit parameter results" );
+  usr::fout( rawfmt, "ped",     ped.getVal(),    ped.getError() );
+  usr::fout( rawfmt, "gain",    gain.getVal(),   gain.getError() );
+  usr::fout( rawfmt, "s0",      s0.getVal(),     s0.getError() );
+  usr::fout( rawfmt, "s1",      s1.getVal(),     s1.getError() );
+  usr::fout( rawfmt, "mean",    mean.getVal(),   mean.getError() );
+  usr::fout( rawfmt, "lambda",  lambda.getVal(), lambda.getError() );
+  usr::fout( rawfmt, "alpha",   alpha.getVal(),  alpha.getError() );
+  usr::fout( rawfmt, "beta",    beta.getVal(),   eta.getError() );
+  usr::fout( rawfmt, "dcfrac",  dcfrac.getVal(), dcfrac.getError() );
+  usr::fout( rawfmt, "epsilon", eps.getVal(),    eps.getError() );
 
-  std::cout
-    << ( linefmt
-         % "\\left\\langle N_{\\gamma}\\right\\rangle"
-         % ( p2fmt % mean.getVal() % mean.getError() ).str()
-         % "Photons"  )<< std::endl
-    << ( linefmt
-       % "\\text{Gain}"
-       % ( p2fmt
-           % ( gain.getVal()  * fmt.ADCConversion() )
-           % ( gain.getError() * fmt.ADCConversion() ) ).str()
-       % "mV-ns" )  << std::endl
-    << ( linefmt
-       % "\\sigma_\\text{com}"
-       % ( p2fmt
-           % ( s0.getVal()  * fmt.ADCConversion() )
-           % ( s0.getError() * fmt.ADCConversion() ) ).str()
-       % "mV-ns" )  << std::endl
-    << ( linefmt
-       % "\\sigma_\\text{pix}"
-       % ( p2fmt
-           % ( s1.getVal()  * fmt.ADCConversion() )
-           % ( s1.getError() * fmt.ADCConversion() ) ).str()
-       % "mV-ns" ) << std::endl
-    << ( linefmt
-       % "P_\\text{ct}"
-       % ( p2fmt % ( xtalk_cen*100 ) % ( xtalk_err*100 ) ).str()
-       % "\\%" )  << std::endl
-    << ( linefmt
-       % "P_\\text{ap}"
-       % ( p2fmt % ( alpha.getVal()*100 ) % ( alpha.getError()*100 ) ).str()
-       % "\\%" )  << std::endl
-    << ( linefmt
-       % "\\tau_\\text{ap}"
-       % ( p2fmt % ( tap.CentralValue() ) % tap.AbsAvgError() ).str()
-       % "ns" )  << std::endl
-    << ( linefmt
-       % "\\tau_\\text{dc}"
-       % ( p2fmt % ( tdc.CentralValue() ) % tdc.AbsAvgError() ).str()
-       % "ns" )  << std::endl
-  ;
 
-  std::cout
-    << "ped " << ped.getVal() <<  "  " << ped.getError() << std::endl
-    << "gain " << gain.getVal() <<  "  " << gain.getError() << std::endl
-    << "s0 " << s0.getVal() <<  "  " << s0.getError() << std::endl
-    << "s1 " << s1.getVal() <<  "  " << s1.getError() << std::endl
-    << "mean " << mean.getVal() <<  "  " << mean.getError() << std::endl
-    << "lambda " << lambda.getVal() <<  "  " << lambda.getError() << std::endl
-    << "alpha " << alpha.getVal() <<  "  " << alpha.getError() << std::endl
-    << "beta " << beta.getVal() << "  " << beta.getError() << std::endl
-    << "dcfrac " << dcfrac.getVal() <<  "  " << dcfrac.getError() << std::endl
-    << "epsilon " << eps.getVal() <<  "  " << eps.getError() << std::endl
-  ;
+  std::cout << "\n\n\n" << usr::separator( '-' ) << "\n\n\n" << std::endl;
+  const std::string linefmt = "%s & = & %s & [\\text{%s}] \\\\\n";
+  const std::string p1fmt   = "%.1lf & \\pm%.2lf";
+  const std::String p2fmt   = "%.2lf & \\pm%.3lf";
+
+  // Generating strings.
+  const std::string mean_s = usr::fstr( p2fmt, mean.getVal(), mean.getError() );
+  const std::string gain_s = usr::fstr( p2fmt
+                                      , gain.getVal()  * fmt.ADCConversion()
+                                      , gain.getError() * fmt.ADCConversion() );
+  const std::string s0_s = usr::fstr( p2fmt
+                                    , s0.getVal()  * fmt.ADCConversion()
+                                    , s0.getError() * fmt.ADCConversion() );
+  const std::string s1_s = usr::fstr( p2fmt
+                                    , s1.getVal()  * fmt.ADCConversion()
+                                    , s1.getError() * fmt.ADCConversion() );
+  const std::string ct_s = usr::fstr( p2fmt,  xtalk_cen*100,  xtalk_err*100 );
+  const std::string ap_s = usr::fstr( p2fmt
+                                    , alpha.getVal()*100, alpha.getError()*100 );
+  const std::string tap_s = usr::fstr( p2fmt
+                                     , tap.CentralValue(), tap.AbsAvgError() );
+  const std::string tdc_s = usr::fstr( p2fmt
+                                     , tdc.CentralValue(), tdc.AbsAvgError() );
+  const std::string mean_tile = "\\left\\langle N_{\\gamma}\\right\\rangle";
+
+  usr::fout( "Human readable fit results" )
+  usr::fout( linefmt, mean_title,            mean_s, "Photons" );
+  usr::fout( linefmt, "\\text{Gain}",        gain_s, "mV-ns" );
+  usr::fout( linefmt, "\\sigma_\\text{com}", s0_s,   "mV-ns" );
+  usr::fout( linefmt, "\\sigma_\\text{pix}", s1_s,   "mV-ns" );
+  usr::fout( linefmt, "P_\\text{ct}",        ct_s,   "\\%" );
+  usr::fout( linefmt, "P_\\text{ap}",        ap_s,   "\\%" );
+  usr::fout( linefmt, "\\tau_\\text{ap}",    tap_s,  "ns" );
+  usr::fout( linefmt, "\\tau_\\text{dc}",    tdc_s,  "ns" );
+
 
   return 0;
 }

@@ -206,22 +206,18 @@ CalcAP(
   c.DrawLuminosity( "Dark current trigger" );
   c.DrawCMSLabel( "", "Noise Parameters" );
   c.TopPad()
-  .WriteLine( ( boost::format( "#tau_{AP} = %.1lf_{#pm%.2lf} [ns]" )
-                % tap.CentralValue() % tap.AbsAvgError() ).str() )
-  .WriteLine( ( boost::format( "#tau_{DC} = %.1lf_{#pm%.2lf} [#mu s]" )
-                % ( tdc.CentralValue()/1000. ) % ( tdc.AbsAvgError()/1000. ) )
-    .str() )
-  .WriteLine( ( boost::format( "P_{AP} = %.1lf_{#pm%.2lf}[%%]" )
-                % ( 100. * prob.CentralValue() ) % ( 100.*prob.AbsAvgError() ) )
-    .str() );
+  .WriteLine( usr::fstr( "#tau_{AP} = %.1lf_{#pm%.2lf} [ns]"
+                       , tap.CentralValue(), tap.AbsAvgError() ) )
+  .WriteLine( usr::fstr( "#tau_{DC} = %.1lf_{#pm%.2lf} [#mu s]"
+                       , tdc.CentralValue()/1000., tdc.AbsAvgError()/1000. ) )
+  .WriteLine( usr::fstr( "P_{AP} = %.1lf_{#pm%.2lf}[%%]"
+                       , 100.*prob.CentralValue(),  100.*prob.AbsAvgError() ) );
 
   c.TopPad().SetLogy( 1 );
   c.TopPad().SetLogx( 1 );
   c.TopPad().SetYaxisMax( c.TopPad().GetYaxisMax() * 300 );
   c.BottomPad().SetLogx( 1 );
   c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
-
-
 
   c.SaveAsPDF( output + "_ap_timeplot.pdf" );
 
@@ -323,13 +319,12 @@ CalcDecayTime(
 
   c.TopPad().DrawLuminosity( "Dark current trigger" );
   c.TopPad().DrawCMSLabel( "", "Noise Parameter" );
-  c.TopPad().WriteLine( ( boost::format( "#tau = %.1lf_{#pm%.2lf}" )
-                          % f.GetParameter( 1 )
-                          % f.GetParError( 1 ) ).str() )
-  .WriteLine( ( boost::format( "#chi^{2}/%d = %.2lf" )
-                % ( nbins -3 )
-                % ( f.GetChisquare()/( nbins-3 ) )
-                ).str() );
+  c.TopPad().WriteLine( usr::fstr( "#tau = %.1lf_{#pm%.2lf}"
+                                 , f.GetParameter( 1 )
+                                 , f.GetParError( 1 ) ) )
+  .WriteLine( usr::fstr( "#chi^{2}/%d = %.2lf"
+                       , nbins -3
+                       , f.GetChisquare()/( nbins-3 ) ) );
   c.TopPad().Yaxis().SetTitle( "ADC value" );
   c.BottomPad().Xaxis().SetTitle( "Time [ns]" );
   c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
@@ -443,8 +438,10 @@ CalcCrossTalk(
       usr::plt::LineColor( usr::plt::col::red ),
       usr::plt::LineStyle( usr::plt::sty::lindotted ) );
     if( i < 3 ){
-      c.Pad().WriteAtData( fmt.AreaList().back(), threshold.Eval( x ) * 1.1,
-        ( boost::format( "%.1f Threshold   " )% ( i + 0.5 ) ).str() );
+      c.Pad().WriteAtData(
+        fmt.AreaList().back(),
+        threshold.Eval( x ) * 1.1,
+        usr::fstr( "%.1f Threshold", i + 0.5 ) );
     }
   }
 
@@ -454,13 +451,11 @@ CalcCrossTalk(
   c.DrawLuminosity( "Dark current trigger" );
   c.DrawCMSLabel( "", "Noise Parameter" );
   c.Pad()
-  .WriteLine( ( boost::format( "Int. Window: %d[ns]" )
-                % ( ( end-start )*fmt.TimeInterval() ) ).str() )
-  .WriteLine( ( boost::format( "Cross-talk_{1.5/0.5} = %.2lf_{#pm%.3lf}%%" )
-                % ( 100 * p0515.CentralValue() )
-                % ( 100 * p0515.AbsAvgError() )
-                ).str() );
-
+  .WriteLine( usr::fstr( "Int. Window: %d[ns]"
+                       , ( end-start )*fmt.TimeInterval() ) )
+  .WriteLine( usr::fstr( "Cross-talk_{1.5/0.5} = %.2lf_{#pm%.3lf}%%"
+                       ,  100 * p0515.CentralValue()
+                       ,  100 * p0515.AbsAvgError() ) );
 
   c.Xaxis().SetTitle( "Area threshold [ADC #times ns]" );
   c.Yaxis().SetTitle( "Remaining events" );
@@ -507,11 +502,11 @@ CalcCrossTalk(
   cr.BottomPad().Yaxis().SetTitle( "Data/Fit" );
 
   cr.TopPad()
-  .WriteLine( ( boost::format( "Int. Window: %d[ns]" )
-                % ( ( end-start )* fmt.TimeInterval() ) ).str() )
-  .WriteLine( ( boost::format( "Cross talk: %.2lf_{#pm%.3lf}%%" )
-                % ( 100* prob.getVal() )
-                % ( 100*prob.getError() ) ).str() );
+  .WriteLine( usr::fstr( "Int. Window: %d[ns]"
+                       ,  ( end-start )* fmt.TimeInterval() ) )
+  .WriteLine( usr::fstr( "Cross talk: %.2lf_{#pm%.3lf}%%"
+                       , 100* prob.getVal()
+                       , 100*prob.getError() ) );
 
   cr.TopPad().SetLogy( 1 );
   cr.TopPad().SetYaxisMax( cr.TopPad().GetYaxisMax() * 300 );
