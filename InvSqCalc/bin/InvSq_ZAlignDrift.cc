@@ -6,7 +6,6 @@
 
 #include "TF2.h"
 #include "TGraphErrors.h"
-#include <boost/format.hpp>
 
 double
 ExpFunc( const double* xy, const double* param )
@@ -73,13 +72,12 @@ main( int argc, char* argv[] )
     ydrift.push_back( func.GetParameter( 1 ) );
     ydrifterr.push_back( func.GetParError( 1 ) );
 
-    std::cout << boost::format( "%lf %lf %lf %lf %lf" )
-      % zlist.back()
-      % xdrift.back()
-      % xdrifterr.back()
-      % ydrift.back()
-      % ydrifterr.back()
-              << std::endl;
+    usr::fout( "%lf %lf %lf %lf %lf\n"
+      , zlist.back()
+      , xdrift.back()
+      , xdrifterr.back()
+      , ydrift.back()
+      , ydrifterr.back() );
 
     delete lumiscan;
   }

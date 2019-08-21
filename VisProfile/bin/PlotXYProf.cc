@@ -52,20 +52,16 @@ main( int argc, char const* argv[] )
     c.DrawLuminosity( "Open light" );
     c.Pad().SetTextCursor( 0.015, 0.6, usr::plt::font::top_left )
     .WriteLine( "Cam X = a x + b y + C" )
-    .WriteLine(
-      ( boost::format( "a = %.1lf_{#pm%.2lf} [pix/mm]" )
-        % func.GetParameter( 0 )
-        % func.GetParError( 0 ) ).str() )
-    .WriteLine(
-      ( boost::format( "b = %.1lf_{#pm%.2lf} [pix/mm]" )
-        % func.GetParameter( 1 )
-        % func.GetParError( 1 ) ).str() )
-    .WriteLine(
-      ( boost::format( "C = %.1lf_{#pm%.2lf} [pix]" )
-        % func.GetParameter( 2 )
-        % func.GetParError( 2 )
-      ).str() )
-    .WriteLine( ( boost::format( "#chi^{2}/DoF = %.3lf" )% ( fit->Chi2()/fit->Ndf() ) ).str() );
+    .WriteLine( usr::fstr( "a = %.1lf_{#pm%.2lf} [pix/mm]"
+        , func.GetParameter( 0 )
+        , func.GetParError( 0 ) ) )
+    .WriteLine( usr::fstr( "b = %.1lf_{#pm%.2lf} [pix/mm]"
+        , func.GetParameter( 1 )
+        , func.GetParError( 1 ) ) )
+    .WriteLine( usr::fstr( "C = %.1lf_{#pm%.2lf} [pix]"
+        , func.GetParameter( 2 )
+        , func.GetParError( 2 ) ) )
+    .WriteLine( usr::fstr( "#chi^{2}/DoF = %.3lf", fit->Chi2()/fit->Ndf() ) );
 
 
     c.Xaxis().SetTitle( "Gantry X [mm]" );
@@ -99,21 +95,16 @@ main( int argc, char const* argv[] )
     c.DrawLuminosity( "Open light" );
     c.Pad().SetTextCursor( 0.015, 0.6, usr::plt::font::top_left )
     .WriteLine( "Cam Y = a x + b y + C" )
-    .WriteLine(
-      ( boost::format( "a = %.1lf_{#pm%.2lf} [pix/mm]" )
-        % func.GetParameter( 0 )
-        % func.GetParError( 0 ) ).str() )
-    .WriteLine(
-      ( boost::format( "b = %.1lf_{#pm%.2lf} [pix/mm]" )
-        % func.GetParameter( 1 )
-        % func.GetParError( 1 ) ).str() )
-    .WriteLine(
-      ( boost::format( "C = %.1lf_{#pm%.2lf} [pix]" )
-        % func.GetParameter( 2 )
-        % func.GetParError( 2 )
-      ).str() )
-    .WriteLine( ( boost::format( "#chi^{2}/DoF = %.3lf" )% ( fit->Chi2()/fit->Ndf() ) ).str() );
-
+    .WriteLine( usr::fstr( "a = %.1lf_{#pm%.2lf} [pix/mm]"
+        , func.GetParameter( 0 )
+        , func.GetParError( 0 ) ) )
+    .WriteLine( usr::fstr( "b = %.1lf_{#pm%.2lf} [pix/mm]"
+        , func.GetParameter( 1 )
+        , func.GetParError( 1 ) ) )
+    .WriteLine( usr::fstr( "C = %.1lf_{#pm%.2lf} [pix]"
+        , func.GetParameter( 2 )
+        , func.GetParError( 2 )  ) )
+    .WriteLine( usr::fstr( "#chi^{2}/DoF = %.3lf", fit->Chi2()/fit->Ndf() ) );
 
     c.Xaxis().SetTitle( "Gantry X [mm]" );
     c.Yaxis().SetTitle( "Gantry Y [mm]" );

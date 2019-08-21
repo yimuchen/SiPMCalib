@@ -4,7 +4,6 @@
 #include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 
-#include <boost/format.hpp>
 #include <iostream>
 
 int
@@ -217,15 +216,13 @@ main( int argc, char const* argv[] )
 
     for( unsigned i = 0; i < eplist.size(); ++i ){
       c.PlotGraph( smeared.at( i ),
-        usr::plt::EntryText( (
-            boost::format( "#epsilon=10^{%d}" )
-            % usr::GetExponent( eplist.at( i ) ) ).str() ),
+        usr::plt::EntryText( usr::fstr("#epsilon=10^{%d}"
+                           , usr::GetExponent( eplist.at( i ) ) ) ),
         usr::plt::TrackY( usr::plt::TrackY::both )
         );
       uc.PlotGraph( unsmeared.at( i ),
-        usr::plt::EntryText( (
-            boost::format( "#epsilon=10^{%d}" )
-            % usr::GetExponent( eplist.at( i ) ) ).str() ),
+        usr::plt::EntryText( usr::fstr( "#epsilon=10^{%d}"
+                           , usr::GetExponent( eplist.at( i ) ) ) ),
         usr::plt::TrackY( usr::plt::TrackY::both )
         );
 
