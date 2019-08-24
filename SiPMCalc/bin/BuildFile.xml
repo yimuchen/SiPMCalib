@@ -9,7 +9,6 @@
 
 <bin file="RunToy.cc"           name="SiPM_RunToy"/>
 <bin file="FitLbox.cc"          name="SiPM_FitLbox"/>
-<bin file="PlotFunc.cc"         name="SiPM_PlotFunc"/>
 <bin file="FitDark.cc"          name="SiPM_FitDark"/>
 <bin file="PlotToy.cc"          name="SiPM_PlotToy"/>
 <bin file="PlotPullSummary.cc"  name="SiPM_PlotPullSummary"/>

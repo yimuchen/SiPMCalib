@@ -1,6 +1,7 @@
 #include "SiPMCalib/InvSqCalc/interface/LEDFormat.hpp"
 #include "SiPMCalib/InvSqCalc/interface/MCFormat.hpp"
 
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 

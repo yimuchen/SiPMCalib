@@ -1,5 +1,7 @@
 #include "SiPMCalib/SiPMCalc/interface/NonLinearModel.hpp"
 
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 #include "UserUtils/PlotUtils/interface/Flat2DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
@@ -31,17 +33,15 @@ main( int argc, char* argv[] )
   const double en0 = 5.5 / ( A( 1 )*B( 6 ) ).CentralValue();
 
   for( int i = 1; i <= 6; ++i ){
-    std::cout << i << " | " <<
-              << fstr( "%.5lf %.6lf %.3lf"
-         ,   A( i ).CentralValue()
-         ,   A( i ).AbsAvgError()
-         ,   fabs( std::log10( A( i ).CentralValue() ) ) )
-              << " | "
-              << usr::fstr( "%.5lf %.6lf %.3lf"
-         , B( i ).CentralValue()
-         , B( i ).AbsAvgError()
-         , fabs( std::log10( B( i ).CentralValue() ) ) )
-              << std::endl;
+    usr::fout( "%d | %.5lf %.6lf %.3lf | %.5lf %.6lf %.3lf\n"
+             , i
+             ,   A( i ).CentralValue()
+             ,   A( i ).AbsAvgError()
+             ,   fabs( std::log10( A( i ).CentralValue() ) )
+             , B( i ).CentralValue()
+             , B( i ).AbsAvgError()
+             , fabs( std::log10( B( i ).CentralValue() ) )
+      );
   }
 
   struct LumiPoint
@@ -224,7 +224,7 @@ main( int argc, char* argv[] )
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::VisualizeError( fitexp ),
     usr::plt::EntryText( usr::fstr( "LO_{GOF=%.1lf/%d}"
-    , fitexp->Chi2(), fitexp->Ndf()  ) ),
+                                  , fitexp->Chi2(), fitexp->Ndf() ) ),
     RooFit::Precision( 1e-4 )
     );
   fexpg.SetLineColor( usr::plt::col::red );
@@ -234,8 +234,8 @@ main( int argc, char* argv[] )
   auto& fnlog = c.PlotFunc( nlof,
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::VisualizeError( fitnlo ),
-    usr::plt::EntryText( usr::fstr( "NLO_{GOF=%.1lf/%d}",
-                         fitnlo->Chi2(),fitnlo->Ndf() ),
+    usr::plt::EntryText( usr::fstr( "NLO_{GOF=%.1lf/%d}"
+                                  , fitnlo->Chi2(), fitnlo->Ndf() ) ),
     RooFit::Precision( 1e-4 )
     );
   fnlog.SetLineColor( usr::plt::col::green );
@@ -271,11 +271,11 @@ main( int argc, char* argv[] )
   .WriteLine( "N_{pixel} = 1584" )
   .WriteLine( "V_{bias} = 51.5 V" )
   .WriteLine( usr::fstr( "P_{sec} = %.1lf#pm%.1lf%%"
-                          ,nlof.GetParameter( 2 )*100,
-                          nlof.GetParError( 2 )*100 ) )
+                       , nlof.GetParameter( 2 )*100,
+    nlof.GetParError( 2 )*100 ) )
   .WriteLine( usr::fstr( "#tau_{SiPM}/#tau_{pulse} = %.1lf#pm%.1lf"
-                        ,  nlof.GetParameter( 3 )
-                        , nlof.GetParError( 3 ) )  )
+                       ,  nlof.GetParameter( 3 )
+                       , nlof.GetParError( 3 ) ) )
   ;
 
 
@@ -401,4 +401,3 @@ B( const unsigned idx )
 
   return usr::Measurement( ( lo+hi )/2, diff, diff );
 }
-

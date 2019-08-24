@@ -1,5 +1,7 @@
 #include "SiPMCalib/SiPMCalc/interface/SiPMDarkFunc.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMPdf.hpp"
+
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/Format.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"

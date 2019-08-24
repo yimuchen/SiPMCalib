@@ -194,7 +194,7 @@ main( int argc, char* argv[] )
 
   c.SaveAsPDF( arg.MakePDFFile( "Spectralfit" ) );
 
-  const std::string rawfmt( "%10s %10.5lf %10.5lf\n" )
+  const std::string rawfmt( "%10s %10.5lf %10.5lf\n" );
   usr::fout( "Raw Fit parameter results" );
   usr::fout( rawfmt, "ped",     ped.getVal(),    ped.getError() );
   usr::fout( rawfmt, "gain",    gain.getVal(),   gain.getError() );
@@ -203,7 +203,7 @@ main( int argc, char* argv[] )
   usr::fout( rawfmt, "mean",    mean.getVal(),   mean.getError() );
   usr::fout( rawfmt, "lambda",  lambda.getVal(), lambda.getError() );
   usr::fout( rawfmt, "alpha",   alpha.getVal(),  alpha.getError() );
-  usr::fout( rawfmt, "beta",    beta.getVal(),   eta.getError() );
+  usr::fout( rawfmt, "beta",    beta.getVal(),   beta.getError() );
   usr::fout( rawfmt, "dcfrac",  dcfrac.getVal(), dcfrac.getError() );
   usr::fout( rawfmt, "epsilon", eps.getVal(),    eps.getError() );
 
@@ -211,7 +211,7 @@ main( int argc, char* argv[] )
   std::cout << "\n\n\n" << usr::separator( '-' ) << "\n\n\n" << std::endl;
   const std::string linefmt = "%s & = & %s & [\\text{%s}] \\\\\n";
   const std::string p1fmt   = "%.1lf & \\pm%.2lf";
-  const std::String p2fmt   = "%.2lf & \\pm%.3lf";
+  const std::string p2fmt   = "%.2lf & \\pm%.3lf";
 
   // Generating strings.
   const std::string mean_s = usr::fstr( p2fmt, mean.getVal(), mean.getError() );
@@ -231,9 +231,9 @@ main( int argc, char* argv[] )
                                      , tap.CentralValue(), tap.AbsAvgError() );
   const std::string tdc_s = usr::fstr( p2fmt
                                      , tdc.CentralValue(), tdc.AbsAvgError() );
-  const std::string mean_tile = "\\left\\langle N_{\\gamma}\\right\\rangle";
+  const std::string mean_title = "\\left\\langle N_{\\gamma}\\right\\rangle";
 
-  usr::fout( "Human readable fit results" )
+  usr::fout( "Human readable fit results" );
   usr::fout( linefmt, mean_title,            mean_s, "Photons" );
   usr::fout( linefmt, "\\text{Gain}",        gain_s, "mV-ns" );
   usr::fout( linefmt, "\\sigma_\\text{com}", s0_s,   "mV-ns" );

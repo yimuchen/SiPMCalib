@@ -1,0 +1,11 @@
+<use name="boost"/>
+<use name="boost_program_options"/>
+
+<use name="SiPMCalib/SiPMCalc"/>
+<use name="SiPMCalib/InvSqCalc"/>
+<use name="UserUtils/PlotUtils"/>
+<use name="UserUtils/Common"/>
+<use name="UserUtils/MathUtils"/>
+
+<bin file="PlotFunc.cc"         name="SiPM_PlotFunc"/>
+<flags CXXFLAGS="-g"/>
