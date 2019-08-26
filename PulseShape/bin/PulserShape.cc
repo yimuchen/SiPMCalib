@@ -59,7 +59,7 @@ main( int argc, char* argv[] )
   }
 
   TSpectrum spec(5); // 5 Peaks is enough.
-  spec.Search( &hist, 1, "nobackground" );
+  spec.Search( &hist, 1, "nobackground nodraw goff" );
   // spec.SetMarkerColorAlpha( usr::plt::col::white, 0 );
 
   const double x0  = spec.GetPositionX()[0];

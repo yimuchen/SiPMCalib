@@ -209,7 +209,7 @@ main( int argc, char* argv[] )
 
 
   std::cout << "\n\n\n" << usr::separator( '-' ) << "\n\n\n" << std::endl;
-  const std::string linefmt = "%s & = & %s & [\\text{%s}] \\\\\n";
+  const std::string linefmt = "%.30s & = & %.20s & [\\text{%s}] \\\\\n";
   const std::string p1fmt   = "%.1lf & \\pm%.2lf";
   const std::string p2fmt   = "%.2lf & \\pm%.3lf";
 

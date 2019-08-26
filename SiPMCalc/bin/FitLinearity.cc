@@ -271,10 +271,10 @@ main( int argc, char* argv[] )
   .WriteLine( "N_{pixel} = 1584" )
   .WriteLine( "V_{bias} = 51.5 V" )
   .WriteLine( usr::fstr( "P_{sec} = %.1lf#pm%.1lf%%"
-                       , nlof.GetParameter( 2 )*100,
-    nlof.GetParError( 2 )*100 ) )
+                       , nlof.GetParameter( 2 )*100
+                       , nlof.GetParError( 2 )*100 ) )
   .WriteLine( usr::fstr( "#tau_{SiPM}/#tau_{pulse} = %.1lf#pm%.1lf"
-                       ,  nlof.GetParameter( 3 )
+                       , nlof.GetParameter( 3 )
                        , nlof.GetParError( 3 ) ) )
   ;
 
