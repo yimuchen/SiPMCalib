@@ -287,7 +287,7 @@ main( int argc, char* argv[] )
     c.BottomPad().SetTextAlign( usr::plt::font::bottom_center );
     c.BottomPad().WriteAtData(
       xcen, 1.5,
-      ( boost::format( "ND = %.2lf" )% fabs( nd ) ).str(),
+      usr::fstr( "ND = %.2lf", fabs( nd ) ),
       usr::plt::TextColor( colorlist[i] ),
       usr::plt::TextSize( c.Font().tiny() ) );
   }
