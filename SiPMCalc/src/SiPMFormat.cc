@@ -27,7 +27,7 @@ SiPMFormat::SiPMFormat( const std::string& file,
                         const double       binwidth,
                         const unsigned     start,
                         const unsigned     end,
-                        const std::string& baseline)
+                        const std::string& baseline )
 {
   std::string line;
   std::ifstream fin( file, std::ios::in );
@@ -39,8 +39,8 @@ SiPMFormat::SiPMFormat( const std::string& file,
   std::getline( fin, line );
   std::istringstream linestream( line );
   linestream >> _timeint >> _ncapture
-             >> _presample >> _postsample
-             >> _convfactor;
+  >> _presample >> _postsample
+  >> _convfactor;
 
   MakeBaseLine( baseline );
 
@@ -60,7 +60,7 @@ SiPMFormat::SiPMFormat( const std::string& file,
                         line[2*i+1] >= 'A' ? 10 + line[2*i+1] - 'A' :
                         line[2*i+1] - '0';
       const int8_t v = v1 << 4 | v2;
-      area += ((double)v - _baseline[i]) * _timeint * ( -1 );
+      area += ( (double)v - _baseline[i] ) * _timeint * ( -1 );
     }
 
     _arealist.push_back( area );
@@ -95,7 +95,8 @@ SiPMFormat::MakeDataSet( const double maxarea )
   }
 }
 
-void SiPMFormat::MakeBaseLine( const std::string& file )
+void
+SiPMFormat::MakeBaseLine( const std::string& file )
 {
   _baseline.clear();
   _baseline_err.clear();
@@ -113,15 +114,15 @@ void SiPMFormat::MakeBaseLine( const std::string& file )
   // Getting first line
   std::getline( fin, line );
   std::istringstream linestream( line );
-  linestream >> t >> n >>  pre >> post >> conv ;
+  linestream >> t >> n >>  pre >> post >> conv;
   if( t    != TimeInterval() ||
       pre  != PreSamples()   ||
       post != PostSamples()  ||
-      256 * conv != ADCConversion()  ){
-        std::cout << "Bad format!" << std::endl;
-        std::cout << t << " " << pre << " " << post << " " << conv << std::endl;
-        std::cout << TimeInterval() << " " << PreSamples() << " " << PostSamples() << " " << ADCConversion() <<  std::endl;
-        return ;
+      256 * conv != ADCConversion() ){
+    std::cout << "Bad format!" << std::endl;
+    std::cout << t << " " << pre << " " << post << " " << conv << std::endl;
+    std::cout << TimeInterval() << " " << PreSamples() << " " << PostSamples() << " " << ADCConversion() <<  std::endl;
+    return;
   }
 
   unsigned linecount = 0;
@@ -138,15 +139,15 @@ void SiPMFormat::MakeBaseLine( const std::string& file )
                         line[2*i+1] >= 'A' ? 10 + line[2*i+1] - 'A' :
                         line[2*i+1] - '0';
       const int8_t v = v1 << 4 | v2;
-      _baseline[i] += (double)v;
-      _baseline_err[i] += (double)v * (double) v;
+      _baseline[i]     += (double)v;
+      _baseline_err[i] += (double)v * (double)v;
     }
   }
 
-  for( unsigned i = 0 ; i < _baseline.size() ; ++i ){
-    _baseline[i]/= linecount;
-    _baseline_err[i] = TMath::Sqrt(_baseline_err[i]/linecount
-                                  - _baseline[i]*_baseline[i]);
+  for( unsigned i = 0; i < _baseline.size(); ++i ){
+    _baseline[i]    /= linecount;
+    _baseline_err[i] = TMath::Sqrt( _baseline_err[i]/linecount
+      - _baseline[i]*_baseline[i] );
     std::cout << i << " "
               << _baseline[i] << " "
               << _baseline_err[i] << std::endl;
@@ -217,10 +218,10 @@ SiPMFormat::RunDarkEstimate( const std::string& savefit )
 
   {
     usr::plt::Simple1DCanvas c;
-    c.PlotHist( hist, usr::plt::EntryText( "All data") );
-    c.PlotHist( hist2, usr::plt::EntryText("Truncated data") );
-    auto& graph0 = c.PlotFunc( g0, usr::plt::EntryText("Pedestal peak fit") );
-    auto& graph1 = c.PlotFunc( g1, usr::plt::EntryText("1Geiger peak fit") );
+    c.PlotHist( hist,  usr::plt::EntryText( "All data" ) );
+    c.PlotHist( hist2, usr::plt::EntryText( "Truncated data" ) );
+    auto& graph0 = c.PlotFunc( g0, usr::plt::EntryText( "Pedestal peak fit" ) );
+    auto& graph1 = c.PlotFunc( g1, usr::plt::EntryText( "1Geiger peak fit" ) );
 
     hist.SetLineColor( kBlack );
     hist2.SetLineColor( kBlue );
@@ -259,7 +260,7 @@ SiPMFormat::RunLumiEstimate( const std::string& plotfit )
   std::map<double, double> widthunc;
   std::map<double, double> heightmap;
 
-  const int    maxbin  = hist.FindBin( spec.GetPositionX()[0] );
+  const int maxbin     = hist.FindBin( spec.GetPositionX()[0] );
   const double histmax = hist.GetBinContent( maxbin );
 
   for( int i = 0; i < spec.GetNPeaks(); ++i ){
@@ -274,7 +275,7 @@ SiPMFormat::RunLumiEstimate( const std::string& plotfit )
     f.SetParameter( 2, 2*_binwidth );
     hist.Fit( &f, "QN0LR" );
 
-    if( std::fabs(x-f.GetParameter(1)) > 3*_binwidth ){ continue; }
+    if( std::fabs( x-f.GetParameter( 1 ) ) > 3*_binwidth ){ continue; }
 
     peaklist.push_back( f.GetParameter( 1 ) );
     peakunc[   f.GetParameter( 1 ) ] = f.GetParError( 1 );
@@ -286,7 +287,7 @@ SiPMFormat::RunLumiEstimate( const std::string& plotfit )
   const double primpeak = peaklist.front();
   std::sort( peaklist.begin(), peaklist.end() );
   const int primm = std::find( peaklist.begin(), peaklist.end(), primpeak )
-                         - peaklist.begin();
+                    - peaklist.begin();
 
   TGraphErrors gaingraph( peaklist.size() );
   TGraphErrors s1graph( peaklist.size() );
@@ -344,7 +345,7 @@ SiPMFormat::RunLumiEstimate( const std::string& plotfit )
   fs.SetParameter( 0, s1graph.GetY()[0] );
   fs.SetParameter( 1, 0 );
   fp.SetParameter( 0, hist.Integral() );
-  fp.SetParameter( 1, std::max(0.99*primm,0.5) ); // Cannot be zero... breaks fit
+  fp.SetParameter( 1, std::max( 0.99*primm, 0.5 ) );// Cannot be zero... breaks fit
   fp.SetParameter( 2, 0.1 );
 
   // Fitting graphs
@@ -365,7 +366,10 @@ SiPMFormat::RunLumiEstimate( const std::string& plotfit )
   {
     usr::plt::Simple1DCanvas c;
 
-    c.PlotHist( hist, usr::plt::EntryText( "SiPM readout" ) );
+    c.PlotHist( hist,
+      usr::plt::PlotType( usr::plt::hist ),
+      usr::plt::EntryText( "SiPM readout" ),
+      usr::plt::LineColor( usr::plt::col::black ) );
 
     for( auto& f : fitlist ){
       auto& g = &f == &( fitlist.front() ) ?
@@ -378,9 +382,9 @@ SiPMFormat::RunLumiEstimate( const std::string& plotfit )
 
     for( int i = 0; i < spec.GetNPeaks(); ++i ){
       auto& line = c.Pad().DrawVLine(
-          spec.GetPositionX()[i],
-          usr::plt::LineColor( usr::plt::col::darkgray ),
-          usr::plt::LineStyle( usr::plt::sty::lindotted ) ) ;
+        spec.GetPositionX()[i],
+        usr::plt::LineColor( usr::plt::col::darkgray ),
+        usr::plt::LineStyle( usr::plt::sty::lindotted ) );
       if( i == 0 ){
         c.Pad().AddLegendEntry( line, "Peak search results", "L" );
       }
