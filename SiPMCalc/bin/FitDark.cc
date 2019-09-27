@@ -59,13 +59,6 @@ main( int argc, char* argv[] )
   const unsigned end      = arg.ArgOpt<int>( "end", 60 );
 
   SiPMFormat fmt( input, adcbin, start, end );
-  fmt.RunDarkEstimate( est );
-
-  const unsigned opend = std::min( end, fmt.PreSamples() + fmt.PostSamples() );
-
-  const double max = arg.ArgOpt<double>( "maxarea",
-    fmt.estped + 1.5* fmt.estgain );
-  fmt.MakeDataSet( max );
 
   RooRealVar ped( "ped", "ped", -200, 200 );
   RooRealVar gain( "gain", "gain", 1, 500 );
@@ -76,31 +69,31 @@ main( int argc, char* argv[] )
 
   SiPMDarkPdf pdf( "dark", "dark",
                    fmt.x(), ped, gain, s0, s1, dcfrac, epsilon );
+  pdf.RunEstimate( fmt.data() );
 
-  // Running inital estimation
-  ped    = fmt.estped;
-  gain   = fmt.estgain;
-  s0     = fmt.ests0;
-  s1     = 5;
-  dcfrac = fmt.estdcfrac;
+  const double max = arg.ArgOpt<double>( "maxarea",
+    ped.getVal() + 1.5*gain.getVal() );
+  fmt.TruncateDataSet( max );
 
   pdf.fitTo( fmt.data(),
-    RooFit::Range( fmt.estped - 3*fmt.ests0, fmt.estped +  1.2*fmt.estgain ) );
+    RooFit::Range( ped.getVal() - 3*s0.getVal()
+                 , ped.getVal() + 1.2*gain.getVal() ) );
   pdf.fitTo( fmt.data(),
-    RooFit::Range( fmt.estped - 3*fmt.ests0, fmt.estped +  1.2*fmt.estgain ) );
+    RooFit::Range( ped.getVal() - 3*s0.getVal()
+                 , ped.getVal() + 1.2*gain.getVal() ) );
   pdf.fitTo( fmt.data(),
-    RooFit::Range( fmt.estped - 3*fmt.ests0, fmt.estped +  1.2*fmt.estgain ) );
+    RooFit::Range( ped.getVal() - 3*s0.getVal()
+                 , ped.getVal() + 1.2*gain.getVal() ) );
 
   usr::plt::Ratio1DCanvas c( fmt.x() );
   auto& fitgraph = c.PlotPdf( pdf,
     RooFit::Normalization( fmt.data().sumEntries() ),
+    usr::plt::LineColor( usr::plt::col::blue ),
+    usr::plt::FillColor( usr::plt::col::cyan ),
     usr::plt::EntryText( "Model Fit" ) );
   auto& datgraph = c.PlotData( fmt.data(),
-    usr::plt::EntryText( "SiPM readout" ) );
-
-  fitgraph.SetLineColor( kBlue );
-  fitgraph.SetFillColor( kCyan );
-  datgraph.SetMarkerSize( 0.2 );
+    usr::plt::EntryText( "SiPM readout" ),
+    usr::plt::MarkerSize( 0.2 ) );
 
   c.PlotScale( fitgraph, fitgraph,
     usr::plt::PlotType( usr::plt::scatter ) );
@@ -108,7 +101,8 @@ main( int argc, char* argv[] )
     usr::plt::PlotType( usr::plt::scatter ) );
 
   // More information from fit parameters values
-  const double window = ( opend-start ) * fmt.TimeInterval();
+  const unsigned opend = std::min( end, fmt.PreSamples() + fmt.PostSamples() );
+  const double window  = ( opend-start ) * fmt.TimeInterval();
   const usr::Measurement pdc( dcfrac.getVal(),
                               dcfrac.getError(), dcfrac.getError() );
   const usr::Measurement tdc = window / 1000. / pdc;
@@ -127,13 +121,13 @@ main( int argc, char* argv[] )
   c.TopPad().SetYaxisMax( c.TopPad().GetYaxisMax() * 300 );
   c.SaveAsPDF( arg.MakePDFFile( "DarkSpectralFit" ) );
 
-  const std::string sf = "%10s  %10.2lf %10.2lf %10.2lf\n";
-  usr::fout( sf, "ped",     fmt.estped,    ped.getVal(),     ped.getError() );
-  usr::fout( sf, "gain",    fmt.estgain,   gain.getVal(),    gain.getError() );
-  usr::fout( sf, "s0 ",     fmt.ests0,     s0.getVal(),      s0.getError() );
-  usr::fout( sf, "s1 ",     fmt.ests1,     s1.getVal(),      s1.getError() );
-  usr::fout( sf, "dcfrac",  fmt.estdcfrac, dcfrac.getVal(),  dcfrac.getError() );
-  usr::fout( sf, "epslion", 0,             epsilon.getVal(), epsilon.getError() );
+  const std::string sf = "%10s %10.2lf %10.2lf\n";
+  usr::fout( sf, "ped",     ped.getVal(),     ped.getError() );
+  usr::fout( sf, "gain",    gain.getVal(),    gain.getError() );
+  usr::fout( sf, "s0 ",     s0.getVal(),      s0.getError() );
+  usr::fout( sf, "s1 ",     s1.getVal(),      s1.getError() );
+  usr::fout( sf, "dcfrac",  dcfrac.getVal(),  dcfrac.getError() );
+  usr::fout( sf, "epslion", epsilon.getVal(), epsilon.getError() );
 
   return 0;
 }

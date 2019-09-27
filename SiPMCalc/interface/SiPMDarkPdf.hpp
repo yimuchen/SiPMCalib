@@ -25,6 +25,8 @@ public:
   SiPMDarkPdf( const SiPMDarkPdf&, const char* name = 0 );
   virtual TObject* clone( const char* name ) const;
 
+  void RunEstimate( const RooAbsData&, const std::string& plot="" );
+
 protected:
   RooRealProxy x;
   RooRealProxy ped;

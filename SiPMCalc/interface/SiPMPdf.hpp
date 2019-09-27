@@ -65,6 +65,8 @@ public:
   inline double
   Eval() const { return evaluate(); }
 
+  void RunEstimate( const RooAbsData&, const std::string& plot="" );
+
 protected:
   RooRealProxy x;
   RooRealProxy ped;

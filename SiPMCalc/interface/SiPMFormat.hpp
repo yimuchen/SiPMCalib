@@ -21,7 +21,7 @@ public:
 
   inline RooRealVar&
   x(){ return *_x; }
-  inline RooDataHist&
+  inline RooAbsData&
   data(){ return *_data; }
 
   // Parameter Return
@@ -36,20 +36,8 @@ public:
   inline double
   ADCConversion() const { return _convfactor * 256; }
 
-  // Estimation of parameters
-  void RunDarkEstimate( const std::string& plotfit = "" );
-  void RunLumiEstimate( const std::string& plotfit = "" );
-
   // Making the data set
-  void MakeDataSet( const double maxarea = 0 );
-
-  double estped;
-  double ests0;
-  double ests1;
-  double estgain;
-  double estmean;
-  double estlambda;
-  double estdcfrac;
+  void TruncateDataSet( const double maxarea = 0 );
 
   inline unsigned
   NArea() const { return _arealist.size(); }
@@ -62,7 +50,7 @@ private:
   std::vector<double> _arealist;
   std::vector<double> _baseline;
   std::vector<double> _baseline_err;
-  std::unique_ptr<RooDataHist> _data;
+  std::unique_ptr<RooAbsData> _data;
   std::unique_ptr<RooRealVar> _x;
 
   double _binwidth;

@@ -76,22 +76,8 @@ main( int argc, char* argv[] )
   const unsigned start    = arg.ArgOpt<int>( "start", 0 );
   const unsigned end      = arg.ArgOpt<int>( "end", -1 );
 
-  // Making objects
+  // Declaring fit variables
   SiPMFormat fmt( input, adcbin, start, end, base  );
-  std::cout << base << std::endl;
-  fmt.RunLumiEstimate( est );
-
-  const unsigned opend = std::min( end, fmt.PreSamples() + fmt.PostSamples() );
-  const unsigned npeak = std::min( 10.0,
-    std::max( 5.0, fmt.estmean + 2*sqrt( fmt.estmean ) ) );
-
-  const double areamax =
-    arg.ArgOpt<double>( "maxarea",
-      fmt.estped + npeak*fmt.estgain - 2* fmt.ests0 );
-
-  fmt.MakeDataSet( areamax );
-
-
   const double min = std::numeric_limits<double>::min();
 
   RooRealVar ped( "ped", "ped", -300, 300 );
@@ -105,37 +91,26 @@ main( int argc, char* argv[] )
   RooRealVar dcfrac( "dcfrac", "dcfrac", 0, 0.4 );
   RooRealVar eps( "eps", "eps", 1e-5, 1e-1 );
 
-  // First pass, setting secondary effects to be constant.
   SiPMPdf p( "p", "p", fmt.x(), ped, gain, s0, s1,
              mean, lambda,
              alpha, beta,
-             dcfrac, eps        );
+             dcfrac, eps  );
 
-  ped    = fmt.estped;
-  gain   = fmt.estgain;
-  s0     = fmt.ests0;
-  s1     = fmt.ests1;
-  mean   = fmt.estmean;
-  lambda = fmt.estlambda;
-  alpha  = 0;
+  p.RunEstimate( fmt.data(), est );// Running initial estimation.
+
+  const unsigned npeak = std::min( 10.0,
+    std::max( 5.0, mean.getVal() + 2*sqrt( mean.getVal() ) ) );
+
+  const double areamax =
+    arg.ArgOpt<double>( "maxarea",
+      ped.getVal() + npeak*gain.getVal() + 2* s0.getVal() );
+
+  // Not running over all fit results.
+  fmt.TruncateDataSet( areamax );
+  alpha  = 0.05;
   beta   = 1000;
   dcfrac = arg.ArgOpt<double>( "dcfrac", 0 );
   eps    = arg.ArgOpt<double>( "epsilon", 1e-2 );
-
-  ped.setConstant( true );
-  gain.setConstant( true );
-  s0.setConstant( true );
-  mean.setConstant( true );
-  dcfrac.setConstant( true );
-  eps.setConstant( true );
-  alpha = 0.05;
-
-  p.fitTo( fmt.data() );
-
-  ped.setConstant( false );
-  gain.setConstant( false );
-  s0.setConstant( false );
-  mean.setConstant( false );
   dcfrac.setConstant( arg.CheckArg( "dcfrac" ) );
   eps.setConstant( arg.CheckArg( "epsilon" ) );
 
@@ -146,16 +121,13 @@ main( int argc, char* argv[] )
   usr::plt::Ratio1DCanvas c( fmt.x() );
 
   auto& fitgraph = c.PlotPdf( p,
-    RooFit::Normalization( fmt.data().sumEntries() ),
-    usr::plt::EntryText( "Fit" ) );
+    RooFit::Normalization( fmt.data().sumEntries(), RooAbsReal::NumEvent ),
+    usr::plt::EntryText( "Fit" ),
+    usr::plt::LineColor( usr::plt::col::blue ) );
 
   auto& datgraph = c.PlotData( fmt.data(),
-    usr::plt::EntryText( "Data" ) );
-
-  fitgraph.SetLineColor( kBlue );
-  fitgraph.SetFillColor( kCyan );
-  datgraph.SetMarkerSize( 0.2 );
-
+    usr::plt::EntryText( "Data" ),
+    usr::plt::MarkerSize( 0.2 ) );
 
   c.PlotScale( fitgraph, fitgraph,
     usr::plt::PlotType( usr::plt::simplefunc ) );
@@ -164,6 +136,7 @@ main( int argc, char* argv[] )
     usr::plt::PlotType( usr::plt::scatter ) );
 
   // Constant calculations
+  const unsigned opend   = std::min( end, fmt.PreSamples() + fmt.PostSamples() );
   const double window    = ( opend-start ) * fmt.TimeInterval();
   const double lval      = lambda.getVal();
   const double lerr      = lambda.getError();

@@ -23,10 +23,6 @@ const unsigned N = 1584;
 usr::Measurement A( const unsigned idx );
 usr::Measurement B( const unsigned idx );
 
-double LinearModel( const double*, const double* );
-double LOModel( const double*, const double* );
-double NLOModel( const double*, const double* );
-
 int
 main( int argc, char* argv[] )
 {
@@ -138,20 +134,34 @@ main( int argc, char* argv[] )
   const double xmax = glist[0].GetX()[ raw.size() -1 ];
 
   // Running the fit for a linear model
-  TF1 f( "f", LinearModel, xmin, xmax, 2 );
+  TF1 f( "f", LinearModel, xmin, xmax, 3 );
   f.SetRange( xmin, 0.3  );
+  f.SetParameter( 0, 1 );
+  f.SetParameter( 1, 0 );
+  f.SetParameter( 2, (double)N );
+  std::cout << f.GetParameter(2) << std::endl;
+  f.FixParameter( 2, (double)N );
+  glist[0].Fit( &f, "QN0 EX0 R" );
+  glist[0].Fit( &f, "QN0 EX0 R" );
   auto fit = glist[0].Fit( &f, "QN0 EX0 R S" );
 
   std::cout << "==== LINEAR FIT ====================" << std::endl;
   std::cout << "PDE x Gain: "
             << f.GetParameter( 0 ) << "+-"
             << f.GetParError( 0 )  << std::endl;
+  std::cout << "Offset: "
+            << f.GetParameter( 1 ) << "+-"
+            << f.GetParError( 1 )  << std::endl;
+  std::cout << "N: "
+            << f.GetParameter( 2 ) << "+-"
+            << f.GetParError( 2 )  << std::endl;
 
   // Fitting leading order model
-  TF1 expf( "ExpF", LOModel,  xmin, 1.3, 3 );
+  TF1 expf( "ExpF", LOModel,  xmin, 1.3, 4 );
   expf.SetParameter( 0, 1 );
   expf.SetParameter( 1, 1 );
   expf.SetParameter( 2, 0 );
+  expf.FixParameter( 3, N );
   glist[0].Fit( &expf, "QN0 EX0 R" );
   glist[0].Fit( &expf, "QN0 EX0 R" );
   glist[0].Fit( &expf, "QN0 EX0 R" );
@@ -165,12 +175,13 @@ main( int argc, char* argv[] )
             << expf.GetParameter( 0 ) << " +- " << expf.GetParError( 0 )
             << std::endl;
 
-  TF1 nlof( "NLOF", NLOModel, xmin, xmax, 5 );
+  TF1 nlof( "NLOF", NLOModel, xmin, xmax, 6 );
   nlof.SetParameter( 0, expf.GetParameter( 0 ) );
   nlof.SetParameter( 1, expf.GetParameter( 1 ) );
   nlof.SetParameter( 2, 0 );
   nlof.SetParameter( 3, 17 );
   nlof.SetParameter( 4, expf.GetParameter( 2 ) );
+  nlof.FixParameter( 5, N );
   glist[0].Fit( &nlof, "QN0 EX0 R" );
   glist[0].Fit( &nlof, "QN0 EX0 R" );
   glist[0].Fit( &nlof, "QN0 EX0 R" );
@@ -268,14 +279,14 @@ main( int argc, char* argv[] )
   c.DrawCMSLabel( "", "Linearity Test" );
   c.TopPad()
   .WriteLine( "Hamamatsu S13360-2050VE" )
-  .WriteLine( "N_{pixel} = 1584" )
+  .WriteLine( usr::fstr("N_{pixel} = %d", N ) )
   .WriteLine( "V_{bias} = 51.5 V" )
-  .WriteLine( usr::fstr( "P_{sec} = %.1lf#pm%.1lf%%"
-                       , nlof.GetParameter( 2 )*100
-                       , nlof.GetParError( 2 )*100 ) )
   .WriteLine( usr::fstr( "#tau_{SiPM}/#tau_{pulse} = %.1lf#pm%.1lf"
                        , nlof.GetParameter( 3 )
                        , nlof.GetParError( 3 ) ) )
+  .WriteLine( usr::fstr( "P_{sec} = %.1lf#pm%.1lf%%"
+                       , nlof.GetParameter( 2 )*100
+                       , nlof.GetParError( 2 )*100 ) )
   ;
 
 
@@ -296,7 +307,7 @@ main( int argc, char* argv[] )
   c.TopPad().SetLogx( 1 );
   c.BottomPad().SetLogx( 1 );
   c.SetLogy( 1 );
-  c.BottomPad().Xaxis().SetTitle( "#bar{N}_{photon} / N_{pix}" );
+  c.BottomPad().Xaxis().SetTitle( "#bar{N}(#gamma) / N_{pix}" );
   c.TopPad().Yaxis().SetTitle( "Readout [V-#mu s]" );
   c.BottomPad().Yaxis().SetTitle( "Data/NLO Fit" );
   c.TopPad().FinalizeLegend( usr::plt::align::bottom_right );

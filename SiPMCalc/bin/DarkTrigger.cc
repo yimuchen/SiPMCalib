@@ -1,5 +1,7 @@
 #include "SiPMCalib/SiPMCalc/interface/CrossTalkPdf.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMFormat.hpp"
+#include "SiPMCalib/SiPMCalc/interface/SiPMDarkPdf.hpp"
+
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement.hpp"
@@ -41,29 +43,21 @@ main( int argc, char* argv[] )
             << usr::separator( '-', 80 )
             << std::endl;
   boost::format printfmt( "%30s | %20s" );
-  std::cout
-    << printfmt
-    % "Cross talk prob. [%]"
-    % usr::fmt::decimal( 100.0*crosstalk, 3 ).str()
-    << std::endl
-    << printfmt
-    % "Discharge time [ns]"
-    % usr::fmt::decimal( decaytime, 3 ).str()
-    << std::endl
-    << printfmt
-    % "Dark discharge rate [Hz]"
-    % usr::fmt::decimal( 1./( tdc * 1e-9 ), 3 ).str()
-    << std::endl
-    << printfmt
-    % "After pulsing time [ns]"
-    % usr::fmt::decimal( tap, 3 ).str()
-    << std::endl
-    << printfmt
-    % "After pulsing prob. [%]"
-    % usr::fmt::decimal( 100.0 * approb, 3 ).str()
-    << std::endl
+  usr::fout( "%30s | %20s\n", "Cross talk prob. [%]"
+           , usr::fmt::decimal( 100.0*crosstalk, 3 ) );
+  usr::fout( "%30s | %20s\n"
+           , "Discharge time [ns]"
+           , usr::fmt::decimal( decaytime, 3 ) );
+  usr::fout( "%30s | %20s\n"
+           , "Dark discharge rate [Hz]"
+           , usr::fmt::decimal( 1./( tdc * 1e-9 ), 3 ) );
+  usr::fout( "%30s | %20s\n"
+           , "After pulsing time [ns]"
+           , usr::fmt::decimal( tap, 3 ) );
+  usr::fout( "%30s | %20s\n"
+           , "After pulsing prob. [%]"
+           , usr::fmt::decimal( 100.0 * approb, 3 ) );
   ;
-
 
   return 0;
 }
@@ -232,7 +226,17 @@ CalcDecayTime(
   const unsigned start = 0;
   const unsigned end   = 100;
   SiPMFormat fmt( input, 8, start, end );
-  fmt.RunDarkEstimate();
+
+  RooRealVar ped( "ped", "ped", -200, 200 );
+  RooRealVar gain( "gain", "gain", 1, 500 );
+  RooRealVar s0( "s0", "s0", 0.01, 100 );
+  RooRealVar s1( "s1", "s1", 0.01, 50 );
+  RooRealVar dcfrac( "dcfrac", "dcfrac", 0, 0.2 );
+  RooRealVar epsilon( "epslion", "epsilon", 1e-5, 1e-1 );
+
+  SiPMDarkPdf pdf( "dark", "dark",
+                   fmt.x(), ped, gain, s0, s1, dcfrac, epsilon );
+  pdf.RunEstimate( fmt.data() );
 
   const unsigned nbins = start + end;
   const double xmin    = 0;
@@ -276,8 +280,8 @@ CalcDecayTime(
     }
 
 
-    if( fmt.estped - 0.2*fmt.estgain  < area
-        && area < fmt.estped + 0.2*fmt.estgain ){
+    if( ped.getVal() - 0.2*gain.getVal()  < area
+        && area < ped.getVal() + 0.2*gain.getVal() ){
       for( unsigned i = localpeak; i < nbins; ++i ){
         const int8_t v1 = line[2*i] >= 'a' ? 10 + line[2*i] - 'a' :
                           line[2*i] >= 'A' ? 10 + line[2*i] - 'A' :
@@ -304,15 +308,14 @@ CalcDecayTime(
 
   auto& g = c.PlotFunc( f,
     usr::plt::TrackY( usr::plt::TrackY::both ),
-    usr::plt::EntryText( "Fit exp." ) );
+    usr::plt::EntryText( "Fit exp." ),
+    usr::plt::LineColor( usr::plt::col::red ) );
   auto& gp = c.PlotHist( p,
     usr::plt::PlotType( usr::plt::scatter ),
-    usr::plt::EntryText( "1 Geiger Readout" ) );
-
-  g.SetLineColor( kRed );
-  gp.SetMarkerStyle( usr::plt::sty::mkrcircle );
-  gp.SetMarkerSize( 0.2 );
-  gp.SetLineColor( kGray );
+    usr::plt::EntryText( "1 Geiger Readout" ),
+    usr::plt::MarkerStyle( usr::plt::sty::mkrcircle),
+    usr::plt::MarkerSize( 0.2 ),
+    usr::plt::LineColor( usr::plt::col::darkgray ) );
 
   c.PlotScale( gp, g,
     usr::plt::PlotType( usr::plt::scatter ) );
@@ -348,11 +351,19 @@ CalcCrossTalk(
   const std::string& output )
 {
   const unsigned start = 3;
-  const unsigned end   = 7;
+  const unsigned end   = 8;
   SiPMFormat fmt( input, 4, start, end );// 10ns  is enough??
 
-  fmt.RunDarkEstimate();
-  fmt.MakeDataSet();
+  RooRealVar ped( "ped", "ped", -200, 200 );
+  RooRealVar gain( "gain", "gain", 1, 500 );
+  RooRealVar s0( "s0", "s0", 0.01, 100 );
+  RooRealVar s1( "s1", "s1", 0.01, 50 );
+  RooRealVar dcfrac( "dcfrac", "dcfrac", 0, 0.2 );
+  RooRealVar epsilon( "epslion", "epsilon", 1e-5, 1e-1 );
+
+  SiPMDarkPdf pdf( "dark", "dark",
+                   fmt.x(), ped, gain, s0, s1, dcfrac, epsilon );
+  pdf.RunEstimate( fmt.data() );
 
   std::vector<double> uniquearea( fmt.AreaList() );
   uniquearea.erase( std::unique( uniquearea.begin(), uniquearea.end() ),
@@ -408,7 +419,7 @@ CalcCrossTalk(
     group.push_back( derivminraw.at( i ) );
 
     for( unsigned j = i+1; j < derivminraw.size(); ++j ){
-      if( derivminraw.at( j ) - group.front() < fmt.estgain / 2 ){
+      if( derivminraw.at( j ) - group.front() < gain.getVal() / 2 ){
         group.push_back( derivminraw.at( j ) );
         if( j == derivminraw.size() - 1 ){
           i = j;
@@ -420,7 +431,17 @@ CalcCrossTalk(
       }
     }
 
-    derivmin.push_back( usr::Mean( group ) );
+    double mindiv  = 100000000000;
+    double mindivx = 0;
+
+    for( const double x : group ){
+      if( derivmap[x] < mindiv ){
+        mindiv  = derivmap[x];
+        mindivx = x;
+      }
+    }
+
+    derivmin.push_back( mindivx );
     if( i == derivminraw.size() -1 ){break;}
   }
 
@@ -431,21 +452,18 @@ CalcCrossTalk(
 
   c.Pad().SetTextAlign( usr::plt::font::bottom_right );
 
-  for( unsigned i = 0; i < derivmin.size(); ++i ){
+  for( unsigned i = 0; i < derivmin.size() && i < 3; ++i ){
     const double x = derivmin.at( i );
     c.Pad().DrawHLine(
       threshold.Eval( x ),
       usr::plt::LineColor( usr::plt::col::red ),
       usr::plt::LineStyle( usr::plt::sty::lindotted ) );
-    if( i < 3 ){
-      c.Pad().WriteAtData(
-        fmt.AreaList().back(),
-        threshold.Eval( x ) * 1.1,
-        usr::fstr( "%.1f Threshold", i + 0.5 ) );
-    }
+    c.Pad().WriteAtData(
+      fmt.AreaList().back(),
+      threshold.Eval( x ) * 1.1,
+      usr::fstr( "%.1f Threshold", i + 0.5 ) );
   }
-
-  const auto p0515 = usr::Efficiency::Minos(
+  const usr::Measurement p0515 =  usr::Efficiency::Minos(
     threshold.Eval( derivmin.at( 1 ) ),  threshold.Eval( derivmin.at( 0 ) ) );
 
   c.DrawLuminosity( "Dark current trigger" );
@@ -464,57 +482,5 @@ CalcCrossTalk(
 
   c.SaveAsPDF( output + "_xtalk_threshold.pdf" );
 
-
-  /// Using direct function fit
-  RooRealVar x0( "x0", "x0", 0, 500 );
-  RooRealVar s0( "s0", "s0", 0.000001, 50 );
-  RooRealVar s1( "s1", "s1", 0.000001, 50 );
-  RooRealVar gain( "gain", "gain", 0.000001, 10000 );
-  RooRealVar prob( "prob", "prob", 0, 1 );
-
-  CrossTalkPdf p( "p", "p", fmt.x(), x0, gain, s0, s1, prob );
-
-  x0   = fmt.estped;
-  gain = fmt.estgain;
-  s0   = fmt.ests0;
-  s1   = fmt.ests1;
-  prob = fmt.estdcfrac;
-
-  p.fitTo( fmt.data() );
-
-  usr::plt::Ratio1DCanvas cr( fmt.x() );
-
-  auto& fgraph = cr.PlotPdf( p,
-    RooFit::Normalization( fmt.data().sumEntries() ),
-    usr::plt::EntryText( "Fit" ) );
-  auto& dgraph = cr.PlotData( fmt.data(),
-    usr::plt::EntryText( "Readout" ) );
-
-  dgraph.SetMarkerStyle( usr::plt::sty::mkrcircle );
-  dgraph.SetMarkerSize( 0.2 );
-  fgraph.SetLineColor( kBlue );
-
-  cr.PlotScale( dgraph, fgraph,
-    usr::plt::PlotType( usr::plt::scatter ) );
-
-  cr.DrawLuminosity( "Dark current trigger" );
-  cr.DrawCMSLabel( "", "Noise Parameter" );
-  cr.BottomPad().Yaxis().SetTitle( "Data/Fit" );
-
-  cr.TopPad()
-  .WriteLine( usr::fstr( "Int. Window: %d[ns]"
-                       ,  ( end-start )* fmt.TimeInterval() ) )
-  .WriteLine( usr::fstr( "Cross talk: %.2lf_{#pm%.3lf}%%"
-                       , 100* prob.getVal()
-                       , 100*prob.getError() ) );
-
-  cr.TopPad().SetLogy( 1 );
-  cr.TopPad().SetYaxisMax( cr.TopPad().GetYaxisMax() * 300 );
-  cr.SaveAsPDF( output + "_xtalk_gfit.pdf" );
-
-
-  const double centralv = ( prob.getVal() + p0515.CentralValue() ) / 2;
-  const double uncv     = fabs( prob.getVal() - p0515.CentralValue() );
-
-  return usr::Measurement( centralv, uncv, uncv );
+  return p0515;
 }
