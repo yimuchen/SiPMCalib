@@ -39,7 +39,7 @@ main( int argc, char const* argv[] )
     graph.SetMarkerSize( 0.2 );
     graph.SetMarkerColor( kRed );
 
-    c.Xaxis().SetTitle( "Grantry z [mm]" );
+    c.Xaxis().SetTitle( "Gantry z [mm]" );
     c.Yaxis().SetTitle( "Sharpness measure [A.U.]" );
 
     c.DrawCMSLabel( "Preliminary", "HGCal" );
@@ -175,6 +175,8 @@ MakeProfileGraph( const std::string& file )
   while( std::getline( fin, line ) ){
     std::istringstream linestream( line );
     linestream >> x >> y >> z >> sharp >> recox >> recoy >> recoa >> recod;
+
+    if( z > 50 ){ break; }
 
     zlist.push_back( z );
     slist.push_back( sharp );

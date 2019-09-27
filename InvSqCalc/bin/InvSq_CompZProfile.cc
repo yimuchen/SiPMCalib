@@ -6,6 +6,7 @@
 // #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 
 #include <boost/format.hpp>
+#include "TGraphErrors.h"
 
 double
 ZProf( const double* vz, const double* param )
@@ -43,7 +44,6 @@ main( int argc, char* argv[] )
     datalist.push_back( LEDManager( datafile ) );
   }
 
-  usr::plt::Ratio1DCanvas c;
 
   std::vector<TGraph*> graphlist;
   const double xcentral = datalist.front()._pointlist.front().x;
@@ -51,13 +51,10 @@ main( int argc, char* argv[] )
   double ped;
   double off;
 
-
   for( unsigned i = 0; i < datalist.size(); ++i ){
     const auto& data   = datalist.at( i );
     const double xscan = data._pointlist.front().x;
     const double yscan = data._pointlist.front().y;
-    const double dist  = sqrt( ( xscan-xcentral ) * ( xscan-xcentral )
-      + ( yscan-ycentral ) * ( yscan-ycentral ) );
 
     graphlist.push_back( data.MakeZScanGraph( xscan, yscan ) );
 
@@ -66,44 +63,55 @@ main( int argc, char* argv[] )
     } else {
       for( int j = 0; j < graphlist.back()->GetN(); ++j ){
         graphlist.back()->GetY()[j] -= ped;
-        graphlist.back()->GetX()[j] -= off - 0.05 * i;
+        //graphlist.back()->GetY()[j] *= std::pow(0.96,i);
+        ((TGraphErrors*)(graphlist.back()))->SetPointError(j,0,0);
+        graphlist.back()->GetX()[j] -= off;
+        // graphlist.back()->GetX()[j] *= std::pow(0.96,i);
       }
     }
 
-    c.PlotGraph( graphlist.back(),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::TrackY( usr::plt::TrackY( usr::plt::TrackY::both ) ),
-      usr::plt::EntryText( ( boost::format( "xy offset=%.1lf [mm]" ) % dist
-                             ).str() )
-      );
   }
-
   // Getting fit for plotting
   TF1 func = TF1( "func", ZProf,
     usr::plt::GetXmin( graphlist.front() ),
     usr::plt::GetXmax( graphlist.front() ),  4 );
   auto fit   = graphlist.front()->Fit( &func, "EX0 M E N 0 S" );
-  auto& fitg = c.PlotFunc( func,
-    usr::plt::PlotType( usr::plt::fittedfunc ),
-    usr::plt::VisualizeError( fit ),
-    usr::plt::EntryText( "Fit (Offset=0)" ) );
 
-  // Styling
-  fitg.SetFillColorAlpha( kGray, 0.5 );
-  fitg.SetFillStyle( usr::plt::sty::fillsolid );
-  fitg.SetLineColor( kBlack );
-  std::vector<int> colorlist  = {kBlue, kRed, kGreen };
-  std::vector<int> markerlist = {
+  usr::plt::Ratio1DCanvas c;
+
+  const std::vector<int> colorlist  = {
+     usr::plt::col::blue,
+     usr::plt::col::red,
+     usr::plt::col::green };
+  const std::vector<int> markerlist = {
     usr::plt::sty::mkrcircle,
     usr::plt::sty::mkrdiamond,
     usr::plt::sty::mkrsquare
   };
 
-  for( unsigned i = 0; i < graphlist.size(); ++i ){
-    graphlist.at( i )->SetLineColorAlpha( colorlist.at( i%colorlist.size() ), 0.3  );
-    graphlist.at( i )->SetMarkerColor( colorlist.at( i%colorlist.size() ) );
-    graphlist.at( i )->SetMarkerSize( 0.1 );
-    graphlist.at( i )->SetMarkerStyle( markerlist.at( i%markerlist.size() ) );
+  auto& fitg = c.PlotFunc( func,
+    usr::plt::PlotType( usr::plt::fittedfunc ),
+    usr::plt::VisualizeError( fit ),
+    usr::plt::EntryText( "Fit (offset=0mm)" ),
+    usr::plt::FillColor( kGray, 0.5 ),
+    usr::plt::LineColor( kBlack )
+     );
+
+  for( int i = graphlist.size() -1; i >= 0; --i ){
+    const auto& data   = datalist.at( i );
+    const double xscan = data._pointlist.front().x;
+    const double yscan = data._pointlist.front().y;
+    const double dist = sqrt( ( xscan-xcentral ) * ( xscan-xcentral )
+      + ( yscan-ycentral ) * ( yscan-ycentral ) );
+    c.PlotGraph( graphlist.at(i),
+      usr::plt::PlotType( usr::plt::scatter ),
+      usr::plt::TrackY( usr::plt::TrackY( usr::plt::TrackY::both ) ),
+      usr::plt::EntryText( usr::fstr( "offset=%.1lf [mm]", dist ) ),
+      usr::plt::MarkerColor( colorlist.at(i) ),
+      usr::plt::MarkerStyle( markerlist.at(i) ),
+      usr::plt::MarkerSize( 0.15 ),
+      usr::plt::LineColor( colorlist.at(i), 0.3 )
+      );
   }
 
   // Drawing bottom pad
