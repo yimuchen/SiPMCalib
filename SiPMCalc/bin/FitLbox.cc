@@ -85,7 +85,7 @@ main( int argc, char* argv[] )
   RooRealVar s0( "s0", "s0", min, 1000 );
   RooRealVar s1( "s1", "s1", 0, 100 );
   RooRealVar mean( "mean", "mean", min, 50 );
-  RooRealVar lambda( "lambda", "lambda", 0, 0.50 );
+  RooRealVar lambda( "lambda", "lambda", 0.01, 0.50 );
   RooRealVar alpha( "alpha", "alpha", 0, 0.5 );
   RooRealVar beta( "beta", "beta", 10, 20000 );
   RooRealVar dcfrac( "dcfrac", "dcfrac", 0, 0.4 );

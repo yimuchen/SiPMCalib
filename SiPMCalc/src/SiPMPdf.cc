@@ -242,7 +242,7 @@ static void PlotPoissonFit( const std::string& plot, TGraphErrors&, TF1& );
 void
 SiPMPdf::RunEstimate( const RooAbsData& data, const std::string& plot )
 {
-  TH1* hist = data.createHistogram( usr::RandomString(6).c_str(),
+  TH1* hist = data.createHistogram( usr::RandomString( 6 ).c_str(),
     dynamic_cast<const RooAbsRealLValue&>( x.arg() ) );
   TSpectrum spec( 20 );// 20 peaks should be plenty
 
@@ -275,7 +275,19 @@ SiPMPdf::RunEstimate( const RooAbsData& data, const std::string& plot )
     hist->Fit( &f, "QN0LR" );
 
     // Skipping over peaks that are very non-Gaussian
-    if( std::fabs( x-f.GetParameter( 1 ) ) > 3* binwidth ){ continue; }
+    if( std::fabs( x-f.GetParameter( 1 ) ) > 2*binwidth ){
+      fitlist.pop_back();
+      continue;
+    }
+    if( std::fabs( f.GetParameter( 2 ) ) > 4*binwidth ){
+      fitlist.pop_back();
+      continue;
+    }
+
+    std::cout << i << " "
+              << x << " "
+              << f.GetParameter( 1 ) << " "
+              << f.GetParameter( 2 ) << std::endl;
 
     peaklist.push_back( f.GetParameter( 1 ) );
     peakunc.push_back( f.GetParError( 1 ) );
