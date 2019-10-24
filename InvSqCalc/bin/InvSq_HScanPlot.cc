@@ -68,7 +68,10 @@ main( int argc, char** argv )
   std::cout << hist->GetMean( 2 ) << std::endl;
 
 
-  auto fit = hist->Fit( func1, "EX0 N 0 S" );
+  // Ignoring uncertainties for first fit. Ensures faster convergence.
+  hist->Fit( func1, "W E M N" );
+  // Refitting with proper uncertainties. Saving results for plotting.
+  auto fit = hist->Fit( func1, "E M N 0 S" );
 
   const double xfit    = func1->GetParameter( 0 );
   const double yfit    = func1->GetParameter( 1 );
@@ -87,8 +90,6 @@ main( int argc, char** argv )
   sipm.SetPoint( 2, xfit - sipmlen/2, yfit-sipmlen/2 );
   sipm.SetPoint( 3, xfit + sipmlen/2, yfit-sipmlen/2 );
   sipm.SetPoint( 4, xfit + sipmlen/2, yfit+sipmlen/2 );
-
-  // gStyle->SetPalette(kBird);
 
   usr::plt::Flat2DCanvas c;
 
@@ -132,12 +133,11 @@ main( int argc, char** argv )
   funcg.GetHistogram()->SetContour( contlevel.size(), contlevel.data() );
   histc.SetContour( contlevel.size(), contlevel.data() );
 
-
-
   c.DrawCMSLabel( "Preliminary", "HGCal" );
-  c.DrawLuminosity( usr::fstr("LED (%s)", arg.Arg("type") ) );
+  c.DrawLuminosity( usr::fstr( "LED (%s)", arg.Arg( "type" ) ) );
   c.Pad().SetTextCursor( 0.015, 0.6, usr::plt::font::top_left )
-  .WriteLine( "Contours: #frac{99}{100}, #frac{9}{10}, #frac{3}{4}, #frac{1}{2}lumi" )
+  .WriteLine( "Contours: #frac{99}{100}, #frac{9}{10},"
+    " #frac{3}{4}, #frac{1}{2}lumi" )
   .WriteLine( "#frac{N z_{0}}{ #sqrt{(x-x_{0})^{2} + (y-y_{0})^{2} + z_{0}^{2} }^{3}} + P" )
   .WriteLine( usr::fstr( "x_{0} = %.1lf_{#pm%.2lf} [mm]",
     func1->GetParameter( 0 ),
@@ -159,7 +159,6 @@ main( int argc, char** argv )
   cen.GetHistogram()->SetMinimum( 1000 );
 
   c.SaveAsPDF( arg.Arg( "output" ) );
-  c.SaveToROOT( "test.root", "c" );
 
   return 0;
 }
