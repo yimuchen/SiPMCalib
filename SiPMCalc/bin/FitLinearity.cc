@@ -1,5 +1,6 @@
 #include "SiPMCalib/SiPMCalc/interface/NonLinearModel.hpp"
 
+#include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
@@ -14,19 +15,79 @@
 
 #include <boost/format.hpp>
 #include <cmath>
+#include <fstream>
 #include <iostream>
-
-// Global parameters
-const unsigned N = 1584;
-// const double gain = 156;
+#include <sstream>
 
 usr::Measurement A( const unsigned idx );
 usr::Measurement B( const unsigned idx );
 
+struct LumiPoint
+{
+  unsigned Aidx;
+  unsigned Bidx;
+  double   lumival;
+  double   lumiunc;
+};
+
+
 int
 main( int argc, char* argv[] )
 {
-  const double en0 = 5.5 / ( A( 1 )*B( 6 ) ).CentralValue();
+  usr::po::options_description desc(
+    "Options for fitting nonlinear readout from Filter wheel data" );
+  desc.add_options()
+    ( "data", usr::po::value<std::string>(),
+    "Input data .txt file" )
+    ( "output", usr::po::value<std::string>(),
+    "Primary output file name" )
+  ;
+
+  usr::ArgumentExtender arg;
+  arg.AddOptions( desc );
+  arg.ParseOptions( argc, argv );
+
+  std::ifstream inputfile( arg.Arg<std::string>( "data" ) );
+  const std::string outputfile = arg.Arg<std::string>( "output" );
+
+  std::string line;
+  std::stringstream ss;
+  std::vector<LumiPoint> raw;
+  std::string model = "";
+  unsigned N        = 0;
+  double BV         = 0;
+  unsigned centralA = 0;
+  unsigned centralB = 0;
+  double en0        = 0;
+
+  std::getline( inputfile, line );
+  std::getline( inputfile, line );
+  ss.str( line );
+  ss >> model >> N >> BV;
+  std::getline( inputfile, line );
+  ss.clear();
+  ss.str( line );
+  ss >> centralA >> centralB >> en0;
+  en0 /= A( centralA ).CentralValue() * B( centralB ).CentralValue();
+
+
+  while( std::getline( inputfile, line ) ){
+    unsigned a, b;
+    double lumi, lumiunc;
+    std::stringstream ss( line );
+    ss >> a >> b >> lumi >> lumiunc;
+    raw.push_back( {a, b, lumi, lumiunc} );
+  }
+
+  std::sort( raw.begin(), raw.end(),
+    []( const LumiPoint& l, const LumiPoint& r ) -> bool {
+    return ( A( l.Aidx ).CentralValue()*B( l.Bidx ).CentralValue() )
+    < ( A( r.Aidx ).CentralValue()*B( r.Bidx ).CentralValue() );
+  } );
+
+  std::cout << model << " " << N << " " << BV <<  std::endl;
+  std::cout << centralA << " "<< centralB << " " << en0 << std::endl;
+
 
   for( int i = 1; i <= 6; ++i ){
     usr::fout( "%d | %.5lf %.6lf %.3lf | %.5lf %.6lf %.3lf\n"
@@ -39,64 +100,6 @@ main( int argc, char* argv[] )
              , fabs( std::log10( B( i ).CentralValue() ) )
       );
   }
-
-  struct LumiPoint
-  {
-    unsigned Aidx;
-    unsigned Bidx;
-    double   lumival;
-    double   lumiunc;
-  };
-
-  std::vector<LumiPoint> raw;
-
-  raw.push_back( {1, 1,  21176.583, 404.0374} );
-  raw.push_back( {1, 2,  12220.202, 494.3889} );
-  raw.push_back( {1, 3,  5899.950, 362.7447} );
-  raw.push_back( {1, 4,  2022.905, 250.4348} );
-  raw.push_back( {1, 5,  352.929, 106.1599} );
-  raw.push_back( {1, 6,  99.291, 50.8222} );
-
-  raw.push_back( {2, 1,  23572.173, 439.5601} );
-  raw.push_back( {2, 2,  14964.365, 412.0734} );
-  raw.push_back( {2, 3,  7681.354, 409.9390} );
-  raw.push_back( {2, 4,  2918.226, 290.4511} );
-  raw.push_back( {2, 5,  504.682, 127.1172} );
-  raw.push_back( {2, 6,  114.440, 57.0368} );
-
-  raw.push_back( {3, 1,  24788.129, 481.3429} );
-  raw.push_back( {3, 2,  16191.926, 516.0712} );
-  raw.push_back( {3, 3,  8618.587, 405.7989} );
-  raw.push_back( {3, 4,  3416.504, 310.4952} );
-  raw.push_back( {3, 5,  595.080, 139.5651} );
-  raw.push_back( {3, 6,  135.586, 63.1189} );
-
-  raw.push_back( {4, 1,  27282.977, 397.2383} );
-  raw.push_back( {4, 2,  18394.781, 489.2027} );
-  raw.push_back( {4, 3,  10467.488, 409.0632} );
-  raw.push_back( {4, 4,  4553.770, 341.6897} );
-  raw.push_back( {4, 5,  818.038, 163.5040} );
-  raw.push_back( {4, 6,  173.014, 72.2192} );
-
-  raw.push_back( {5, 1,  28511.370, 551.3734} );
-  raw.push_back( {5, 2,  20079.564, 440.2232} );
-  raw.push_back( {5, 3,  12081.811, 418.8330} );
-  raw.push_back( {5, 4,  5423.645, 365.2495} );
-  raw.push_back( {5, 5,  1011.776, 183.0310} );
-  raw.push_back( {5, 6,  191.629, 73.1937} );
-
-  raw.push_back( {6, 1,  30130.076, 465.7346} );
-  raw.push_back( {6, 2,  22153.314, 418.2185} );
-  raw.push_back( {6, 3,  13517.337, 453.9808} );
-  raw.push_back( {6, 4,  6564.868, 383.1526} );
-  raw.push_back( {6, 5,  1205.762, 197.0262} );
-  raw.push_back( {6, 6,  236.283, 85.3561} );
-
-  std::sort( raw.begin(), raw.end(),
-    []( const LumiPoint& l, const LumiPoint& r ) -> bool {
-    return ( A( l.Aidx ).CentralValue()*B( l.Bidx ).CentralValue() )
-    < ( A( r.Aidx ).CentralValue()*B( r.Bidx ).CentralValue() );
-  } );
 
   std::vector<TGraphErrors> glist;
   glist.push_back( TGraphErrors( raw.size() ) );
@@ -139,7 +142,7 @@ main( int argc, char* argv[] )
   f.SetParameter( 0, 1 );
   f.SetParameter( 1, 0 );
   f.SetParameter( 2, (double)N );
-  std::cout << f.GetParameter(2) << std::endl;
+  std::cout << f.GetParameter( 2 ) << std::endl;
   f.FixParameter( 2, (double)N );
   glist[0].Fit( &f, "QN0 EX0 R" );
   glist[0].Fit( &f, "QN0 EX0 R" );
@@ -212,17 +215,17 @@ main( int argc, char* argv[] )
   glist[0].SetMarkerSize( 0.2 );
 
   for( int i = 1; i < 7; ++i ){
-    auto& g = c.PlotGraph( glist[i],
+    c.PlotGraph( glist[i],
       usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::TrackY( usr::plt::TrackY::both ) );
-    g.SetMarkerStyle( usr::plt::sty::mkrcircle );
-    g.SetMarkerSize( 0.2 );
-    g.SetMarkerColor( colorlist[i] );
-    g.SetLineColor( colorlist[i] );
+      usr::plt::TrackY( usr::plt::TrackY::both ),
+      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+      usr::plt::MarkerSize( 0.2 ),
+      usr::plt::MarkerColor( colorlist[i] ),
+      usr::plt::LineColor( colorlist[i] ) );
   }
 
   auto& fg = c.PlotFunc( f,
-    usr::plt::PlotType( usr::plt::fittedfunc ),
+    usr::plt::PlotType( usr::plt::simplefunc ),
     usr::plt::VisualizeError( fit ),
     usr::plt::EntryText( usr::fstr( "Linear_{GOF=%.1lf/%d}"
                                   , fit->Chi2(), fit->Ndf() ) ),
@@ -232,7 +235,7 @@ main( int argc, char* argv[] )
   fg.SetFillColorAlpha( kCyan, 0.3 );
 
   auto& fexpg = c.PlotFunc( expf,
-    usr::plt::PlotType( usr::plt::fittedfunc ),
+    usr::plt::PlotType( usr::plt::simplefunc ),
     usr::plt::VisualizeError( fitexp ),
     usr::plt::EntryText( usr::fstr( "LO_{GOF=%.1lf/%d}"
                                   , fitexp->Chi2(), fitexp->Ndf() ) ),
@@ -243,7 +246,7 @@ main( int argc, char* argv[] )
 
 
   auto& fnlog = c.PlotFunc( nlof,
-    usr::plt::PlotType( usr::plt::fittedfunc ),
+    usr::plt::PlotType( usr::plt::simplefunc ),
     usr::plt::VisualizeError( fitnlo ),
     usr::plt::EntryText( usr::fstr( "NLO_{GOF=%.1lf/%d}"
                                   , fitnlo->Chi2(), fitnlo->Ndf() ) ),
@@ -252,7 +255,7 @@ main( int argc, char* argv[] )
   fnlog.SetLineColor( usr::plt::col::green );
   fnlog.SetFillColorAlpha( usr::plt::col::green, 0.3 );
 
-  c.PlotScale( fnlog, fnlog, usr::plt::PlotType( usr::plt::fittedfunc ) );
+  c.PlotScale( fnlog, fnlog, usr::plt::PlotType( usr::plt::simplefunc ) );
   c.PlotScale( fg,    fnlog, usr::plt::PlotType( usr::plt::simplefunc ) );
   c.PlotScale( fexpg, fnlog, usr::plt::PlotType( usr::plt::simplefunc ) );
 
@@ -275,13 +278,13 @@ main( int argc, char* argv[] )
   }
 
 
-  c.DrawLuminosity( "Laser Setup" );
+  c.DrawLuminosity( "Filter Wheel" );
   c.DrawCMSLabel( "", "Linearity Test" );
   c.TopPad()
-  .WriteLine( "Hamamatsu S13360-2050VE" )
-  .WriteLine( usr::fstr("N_{pixel} = %d", N ) )
-  .WriteLine( "V_{bias} = 51.5 V" )
-  .WriteLine( usr::fstr( "#tau_{SiPM}/#tau_{pulse} = %.1lf#pm%.1lf"
+  .WriteLine( model )
+  .WriteLine( usr::fstr( "N_{pixel} = %d", N ) )
+  .WriteLine( usr::fstr( "V_{bias} = %.1lfV", BV ) )
+  .WriteLine( usr::fstr( "#beta = %.1lf#pm%.1lf"
                        , nlof.GetParameter( 3 )
                        , nlof.GetParError( 3 ) ) )
   .WriteLine( usr::fstr( "P_{sec} = %.1lf#pm%.1lf%%"
@@ -307,11 +310,11 @@ main( int argc, char* argv[] )
   c.TopPad().SetLogx( 1 );
   c.BottomPad().SetLogx( 1 );
   c.SetLogy( 1 );
-  c.BottomPad().Xaxis().SetTitle( "#bar{N}(#gamma) / N_{pix}" );
+  c.BottomPad().Xaxis().SetTitle( "#bar{N}(p.e.) / N_{pix}" );
   c.TopPad().Yaxis().SetTitle( "Readout [V-#mu s]" );
   c.BottomPad().Yaxis().SetTitle( "Data/NLO Fit" );
   c.TopPad().FinalizeLegend( usr::plt::align::bottom_right );
-  c.SaveAsPDF( "Lineartest.pdf" );
+  c.SaveAsPDF( outputfile );
 
 
   {
@@ -345,7 +348,7 @@ main( int argc, char* argv[] )
     c.Zaxis().SetTitle( "Correlation" );
     gStyle->SetPaintTextFormat( ".2lf" );
 
-    c.SaveAsPDF( "LinearFit_Correlation.pdf" );
+    c.SaveAsPDF( "Correlation_" + outputfile );
   }
   return 0;
 }

@@ -118,6 +118,7 @@ CalcAP(
       if( firstpeak != nopeak
           && firstpeak < i
           && cv1 < cv0-2 && cv1 < cv2
+          && cv1 < -3 // Adding a minimal threshold
           ){
         x = ( i-firstpeak ) * timeinterval;
         data.add( RooArgSet( x ) );

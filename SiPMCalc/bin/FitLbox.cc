@@ -214,7 +214,7 @@ main( int argc, char* argv[] )
   usr::fout( linefmt, "P_\\text{ct}",        ct_s,   "\\%" );
   usr::fout( linefmt, "P_\\text{ap}",        ap_s,   "\\%" );
   usr::fout( linefmt, "\\tau_\\text{ap}",    tap_s,  "ns" );
-  usr::fout( linefmt, "\\tau_\\text{dc}",    tdc_s,  "ns" );
+  usr::fout( linefmt, "\\tau_\\text{dc}",    tdc_s,  "\\mus" );
 
 
   return 0;

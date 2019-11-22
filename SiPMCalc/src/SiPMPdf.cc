@@ -365,13 +365,13 @@ FitWidth( TGraphErrors& graph )
               const double x  = xx[0];
               const double s0 = par[0];
               const double s1 = par[1];
-              return sqrt( s0*s0 + x * s1 *s1 );
+              return sqrt( s0*s0 + x * s1*s1 );
             };
   TF1 f( usr::RandomString( 6 ).c_str(), lf, 0, graph.GetN(), 2 );
   f.SetParameter( 0, graph.GetY()[0] );
   f.SetParameter( 1, 0 );
 
-  graph.Fit( &f, "QRN0 EX0" );
+  graph.Fit( &f, "QRN0 W EX0" );
 
   return f;
 }

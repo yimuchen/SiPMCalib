@@ -15,5 +15,6 @@
 <bin file="DarkTrigger.cc"      name="SiPM_DarkTrigger"/>
 <bin file="CalcMean.cc"         name="SiPM_CalcMean"/>
 <bin file="FitLinearity.cc"     name="SiPM_FitLinearity"/>
+<bin file="CompareLinearity.cc" name="SiPM_CompareLinearity"/>
 <bin file="GantryLinearity.cc"  name="SiPM_GantryLinearity"/>
 <flags CXXFLAGS="-g"/>

@@ -6,11 +6,13 @@
 
 <flags CXXFLAGS="-g"/>
 
-<bin name="SiPM_ADC_NoiseSpec"      file="ADC_NoiseSpec.cc"    />
+<bin name="SiPM_ScaleLumiData"      file="Scale_Lumidata.cc"     />
+<bin name="SiPM_ADC_NoiseSpec"      file="ADC_NoiseSpec.cc"      />
 <bin name="SiPM_InvSq_HScanPlot"    file="InvSq_HScanPlot.cc"    />
 <bin name="SiPM_InvSq_ZScanPlot"    file="InvSq_ZScanPlot.cc"    />
 <bin name="SiPM_InvSq_ZAlignDrift"  file="InvSq_ZAlignDrift.cc"  />
 <bin name="SiPM_InvSq_CompZProfile" file="InvSq_CompZProfile.cc" />
 <bin name="SiPM_InvSq_PlotMC"       file="InvSq_PlotMC.cc"       />
+<bin name="SiPM_InvSq_WideZProfile" file="InvSq_WideZProfile.cc" />
 <bin name="SiPM_UpdateMCFile"       file="UpdateMCFile.cc"       />
 <bin name="SiPM_CalcMCFile"         file="CalcMCFile.cc"         />
