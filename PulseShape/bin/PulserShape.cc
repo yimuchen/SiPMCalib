@@ -20,29 +20,35 @@ main( int argc, char* argv[] )
     ( "min", usr::po::value<double>(), "X axis minimum" )
     ( "max", usr::po::value<double>(), "X axis maximum" )
     ( "nbins", usr::po::value<unsigned>(), "number of bins" )
+    ( "fittype", usr::po::value<std::string>(), "Type of function for fitting" )
+    ( "fitmin", usr::po::defvalue<double>( -1 ), "Fit range minimum" )
+    ( "fitmax", usr::po::defvalue<double>( -1 ), "Fit range maximum" )
   ;
   usr::ArgumentExtender arg;
   arg.AddOptions( desc );
   arg.ParseOptions( argc, argv );
 
-  if( !arg.CheckArg( "data" ) ){ return 0; }
-  if( !arg.CheckArg( "output" ) ){ return 0; }
-  if( !arg.CheckArg( "min" ) ){ return 0; }
-  if( !arg.CheckArg( "max" ) ){ return 0; }
-  if( !arg.CheckArg( "nbins" ) ){ return 0; }
+  const std::string data   = arg.Arg( "data" );
+  const std::string output = arg.Arg( "output" );
+  const double xmin        = arg.Arg<double>( "min" );
+  const double xmax        = arg.Arg<double>( "max" );
+  const unsigned nbins     = arg.Arg<unsigned>( "nbins" );
+  const double binwidth    = ( xmax - xmin )/nbins;
+
+  const std::string fittype
+    = arg.CheckArg( "fittype" ) && arg.Arg( "fittype" ) == "expo" ? "expo" :
+      "gaus";
+  const std::string fitentry = fittype == "expo" ? "Exponential Fit" :
+                               "Gaussian Fit";
 
   std::cout << "Starting" << std::endl;
 
-  std::fstream infile( arg.Arg<std::string>( "data" ), std::ios::in );
+  std::fstream infile( data, std::ios::in );
   std::string line;
 
-  const double xmin    = arg.Arg<double>( "min" );
-  const double xmax    = arg.Arg<double>( "max" );
-  const unsigned nbins = arg.Arg<unsigned>( "nbins" );
-  const double binwidth = (xmax - xmin )/nbins;
 
   TH1D hist( "data", "", nbins, xmin, xmax );
-  TF1 f( "f", "gaus", xmin, xmax );
+  TF1 f( "f", fittype.c_str(), xmin, xmax );
 
   // Getting ride of the first four line;
   std::getline( infile, line );
@@ -58,13 +64,20 @@ main( int argc, char* argv[] )
     hist.Fill( input );
   }
 
-  TSpectrum spec(5); // 5 Peaks is enough.
+  TSpectrum spec( 5 );// 5 Peaks is enough.
   spec.Search( &hist, 1, "nobackground nodraw goff" );
   // spec.SetMarkerColorAlpha( usr::plt::col::white, 0 );
 
-  const double x0  = spec.GetPositionX()[0];
-  const double sig = 3*binwidth ;
-  f.SetRange( x0 - 1.5*sig, x0 + 1.5*sig );
+  const double x0 = spec.GetPositionX()[0];
+  const double fitmin
+    = arg.Arg<double>( "fitmin" ) > 0 ? arg.Arg<double>( "fitmin" ) :
+      fittype == "expo"               ? x0 + 3*binwidth :
+      x0 - 6*binwidth;
+  const double fitmax
+    = arg.Arg<double>( "fitmax" ) > 0 ? arg.Arg<double>( "fitmax" ) :
+      fittype == "expo"               ? x0 + ( nbins/2 )*binwidth :
+      x0 + 6*binwidth;
+  f.SetRange( fitmin, fitmax );
   auto fit = hist.Fit( &f, "QN0 L S R" );
 
   usr::plt::Simple1DCanvas c;
@@ -73,7 +86,7 @@ main( int argc, char* argv[] )
     usr::plt::PlotType( usr::plt::scatter ) );
 
   c.PlotFunc( f,
-    usr::plt::EntryText( "Gaussian Fit" ),
+    usr::plt::EntryText( fitentry ),
     usr::plt::VisualizeError( fit ),
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::LineColor( usr::plt::col::blue ),
@@ -93,15 +106,36 @@ main( int argc, char* argv[] )
   c.Xaxis().SetNdivisions( 505 );
 
   const std::string toplabel =
-    arg.Arg( "data" ).find( "jitter" ) != std::string::npos ? "Jitter test" :
-    arg.Arg( "data" ).find( "Laser" ) != std::string::npos ? "Laser setup" :
-    arg.Arg( "data" ).find( "Pulse" ) != std::string::npos ? "LED Pulser" :
+    data.find( "jitter" ) != std::string::npos ? "Jitter test" :
+    data.find( "Laser"  ) != std::string::npos ? "Laser setup" :
+    data.find( "LED"    ) != std::string::npos ? "Driven LED" :
+    data.find( "Pulse"  ) != std::string::npos ? "LED Pulser" :
     "";
 
   c.DrawLuminosity( toplabel );
   c.DrawCMSLabel( "", "Delay width" );
-  c.Pad().WriteLine( usr::fstr( "Gauss width=%.0lf#pm%.0lf [ps]",
-    f.GetParameter( 2 ) * 1000, f.GetParError( 2 ) * 1000 ) );
+  if( fittype == "expo" ){
+    const double tau = -1/f.GetParameter( 1 );
+    const double err = fabs( tau * f.GetParError( 1 ) / f.GetParameter( 1 ) );
+    std::cout << tau << " " << err << std::endl;
+    if( tau < 1 ){
+      c.Pad().WriteLine( usr::fstr( "Pulse Tail=%.0lf#pm%.0lf [ps]",
+        tau * 1000, err * 1000 ) );
+    } else {
+      c.Pad().WriteLine( usr::fstr( "Pulse Tail=%.2lf#pm%.2lf [ns]",
+        tau, err ) );
+    }
+  } else {
+    const double t = f.GetParameter( 2 );
+    const double e = f.GetParError( 2 );
+    if( t < 2 ){
+      c.Pad().WriteLine( usr::fstr( "Pulse Width=%.0lf#pm%.0lf [ps]",
+        t * 1000, e * 1000 ) );
+    } else {
+      c.Pad().WriteLine( usr::fstr( "Pulse Width=%.2lf#pm%.2lf [ns]",
+        t, e ) );
+    }
+  }
   std::cout << f.GetParameter( 0 ) << " "
             << f.GetParameter( 1 ) << " "
             << f.GetParameter( 2 ) << std::endl;

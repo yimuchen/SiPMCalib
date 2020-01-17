@@ -4,7 +4,7 @@
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
-#include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
+#include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
 
 #include "TF1.h"
 #include "TFitResult.h"
@@ -29,6 +29,7 @@ struct LumiPoint
 
 TGraph* MakeLinearityGraph( const std::string&,
                             std::string&,
+                            std::string&,
                             std::string& );
 
 int
@@ -47,50 +48,101 @@ main( int argc, char* argv[] )
   arg.AddOptions( desc );
   arg.ParseOptions( argc, argv );
 
-  const std::vector<std::string> infile_list = arg.ArgList<std::string>("data");
-  const std::string outputfile = arg.Arg<std::string>("output");
+  const std::vector<std::string> infile_list = arg.ArgList<std::string>( "data" );
+  const std::string outputfile               = arg.Arg<std::string>( "output" );
 
-  std::map<std::string, TGraph*> graphlist;
+  std::vector<TGraph*> graphlist;
+  std::vector<std::string> entrylist;
   std::string model = "";
+  std::string bias  = "";
+  double xmin       = 100;
+  double xmax       = 0;
 
   for( const auto infile : infile_list ){
     std::string entry;
-    TGraph* graph = MakeLinearityGraph( infile, model, entry );
-    graphlist[entry] = graph ;
+    TGraph* graph = MakeLinearityGraph( infile, model, bias, entry );
+    graphlist.push_back( graph );
+    entrylist.push_back( entry );
+    xmin = std::min( usr::plt::GetXmin( graph ), xmin );
+    xmax = std::max( usr::plt::GetXmax( graph ), xmax );
   }
 
+  TGraph dummy( 2 );
+  dummy.SetPoint( 0, xmin, 1 );
+  dummy.SetPoint( 1, xmax, 1 );
+
+
   const std::vector<int> colorlist = {
+    usr::plt::col::black,
     usr::plt::col::darkblue,
-    usr::plt::col::darkred
+    usr::plt::col::darkred,
+    usr::plt::col::darkgreen
   };
 
 
-  usr::plt::Simple1DCanvas c;
-  unsigned i = 0 ;
-  for( const auto p : graphlist ){
-    c.PlotGraph( p.second,
-      usr::plt::EntryText(p.first) ,
+  usr::plt::Ratio1DCanvas c;
+  unsigned i = 0;
+
+  c.PlotGraph( dummy,
+    usr::plt::PlotType( usr::plt::simplefunc ),
+    usr::plt::LineColor( usr::plt::col::white, 0 ) );
+
+  for( const auto g : graphlist ){
+    c.PlotGraph( g,
+      usr::plt::EntryText( entrylist.at( i ) ),
       usr::plt::PlotType( usr::plt::scatter ),
+      usr::plt::TrackY( usr::plt::TrackY::both ),
       usr::plt::LineColor( colorlist[i] ),
-      usr::plt::MarkerColor( colorlist[i]),
-      usr::plt::MarkerSize(0.4),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle )
+      usr::plt::MarkerColor( colorlist[i] ),
+      usr::plt::MarkerSize( 0.2 ),
+      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+      usr::plt::FillStyle( usr::plt::col::lightgray )
       );
     ++i;
   }
 
-  c.Pad().SetLogx( 1 );
-  c.Pad().SetLogy( 1 );
-  c.Pad().Xaxis().SetTitle( "#bar{N}(p.e.) / N_{pix}" );
-  c.Pad().Yaxis().SetTitle( "Readout [V-#mu s]" );
-  c.Pad().FinalizeLegend( usr::plt::align::bottom_right );
+  c.BottomPad().PlotGraph( dummy );
+  c.PlotScale( graphlist[0], graphlist[0],
+    usr::plt::PlotType( usr::plt::fittedfunc ),
+    usr::plt::FillStyle( usr::plt::sty::fillsolid ),
+    usr::plt::FillColor( usr::plt::col::lightgray )
+    );
+
+  for( unsigned i = 1; i < graphlist.size(); ++i  ){
+    c.PlotScale( graphlist[i], graphlist[0],
+      usr::plt::PlotType( usr::plt::scatter ) );
+  }
+
+  c.TopPad().DrawVLine( usr::plt::GetXmax( graphlist[0] ),
+    usr::plt::LineColor( usr::plt::col::gray ),
+    usr::plt::LineStyle( usr::plt::sty::lindensedot )
+    );
+  c.BottomPad().DrawVLine( usr::plt::GetXmax( graphlist[0] ),
+    usr::plt::LineColor( usr::plt::col::gray ),
+    usr::plt::LineStyle( usr::plt::sty::lindensedot )
+    );
+  c.BottomPad().DrawHLine( 1.1,
+    usr::plt::LineColor( usr::plt::col::gray ),
+    usr::plt::LineStyle( usr::plt::sty::lindashed ) );
+  c.BottomPad().DrawHLine( 0.9,
+    usr::plt::LineColor( usr::plt::col::gray ),
+    usr::plt::LineStyle( usr::plt::sty::lindashed ) );
+
+
+  c.TopPad().SetLogx( 1 );
+  c.BottomPad().SetLogx( 1 );
+  c.TopPad().SetLogy( 1 );
+  c.BottomPad().Xaxis().SetTitle( "#bar{N}(p.e.) / N_{pix}" );
+  c.BottomPad().Yaxis().SetTitle( "Readout / Laser" );
+  c.TopPad().Yaxis().SetTitle( "Readout [V-#mu s]" );
+  c.TopPad().FinalizeLegend( usr::plt::align::bottom_right );
 
   c.DrawLuminosity( "Filter Wheel Setup" );
   c.DrawCMSLabel( "", "Linearity Test" );
-  c.Pad().WriteLine( model );
+  c.TopPad().WriteLine( model );
+  c.TopPad().WriteLine( bias );
 
   c.SaveAsPDF( outputfile );
-
 
   return 0;
 
@@ -99,6 +151,7 @@ main( int argc, char* argv[] )
 TGraph*
 MakeLinearityGraph( const std::string& input,
                     std::string&       model,
+                    std::string&       bias,
                     std::string&       entry_text )
 {
   std::vector<LumiPoint> raw;
@@ -151,8 +204,9 @@ MakeLinearityGraph( const std::string& input,
     graph->SetPointError( i, en0*xunc/ N, lunc );
   }
 
-  model = usr::fstr( "%s(%d pix)", model, N );
-  entry_text = usr::fstr( "%s (%.1lfV)", entry_text, BV );
+  bias       = usr::fstr( "V_{bias} = %.1lf", BV );
+  model      = usr::fstr( "%s(%d pix)", model, N );
+  entry_text = usr::fstr( "%s", entry_text );
 
   return graph;
 }

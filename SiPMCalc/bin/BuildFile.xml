@@ -7,14 +7,15 @@
 <use name="UserUtils/Common"/>
 <use name="UserUtils/MathUtils"/>
 
-<bin file="RunToy.cc"           name="SiPM_RunToy"/>
-<bin file="FitLbox.cc"          name="SiPM_FitLbox"/>
-<bin file="FitDark.cc"          name="SiPM_FitDark"/>
-<bin file="PlotToy.cc"          name="SiPM_PlotToy"/>
-<bin file="PlotPullSummary.cc"  name="SiPM_PlotPullSummary"/>
-<bin file="DarkTrigger.cc"      name="SiPM_DarkTrigger"/>
-<bin file="CalcMean.cc"         name="SiPM_CalcMean"/>
-<bin file="FitLinearity.cc"     name="SiPM_FitLinearity"/>
-<bin file="CompareLinearity.cc" name="SiPM_CompareLinearity"/>
-<bin file="GantryLinearity.cc"  name="SiPM_GantryLinearity"/>
 <flags CXXFLAGS="-g"/>
+
+<bin file="RunToy.cc"           name="SiPM_RunToy"          />
+<bin file="FitLowLight.cc"      name="SiPM_FitLowLight"     />
+<bin file="FitDark.cc"          name="SiPM_FitDark"         />
+<bin file="PlotToy.cc"          name="SiPM_PlotToy"         />
+<bin file="PlotPullSummary.cc"  name="SiPM_PlotPullSummary" />
+<bin file="DarkTrigger.cc"      name="SiPM_DarkTrigger"     />
+<bin file="CalcMean.cc"         name="SiPM_CalcMean"        />
+<bin file="FitLinearity.cc"     name="SiPM_FitLinearity"    />
+<bin file="CompareLinearity.cc" name="SiPM_CompareLinearity"/>
+<bin file="GantryLinearity.cc"  name="SiPM_GantryLinearity" />

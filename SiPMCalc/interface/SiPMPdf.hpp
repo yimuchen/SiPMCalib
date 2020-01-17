@@ -53,19 +53,31 @@ public:
 
   SiPMPdf( const SiPMPdf&, const char* name = 0 );
 
-  virtual
-  ~SiPMPdf();
+  virtual ~SiPMPdf();
 
   virtual TObject* clone( const char* name ) const;
 
+  inline double
+         Eval() const { return evaluate(); }
   double gen_poisson( const int k ) const;
   double ap_eff( const int k, const int i ) const;
   double gauss_k( const int k  ) const;
   double binomial_prob( const int k, const int i ) const;
-  inline double
-  Eval() const { return evaluate(); }
 
-  void RunEstimate( const RooAbsData&, const std::string& plot="" );
+  int getAnalyticalIntegral( RooArgSet&  allVars,
+                             RooArgSet&  analVars,
+                             const char* rangeName = 0 ) const override;
+  double analyticalIntegral( int         code,
+                             const char* rangeName = 0 ) const override;
+
+  double analyticalIntegral( double x ) const;
+  double erf_ap_eff( const double x, const int k, const int i ) const;
+  double erf_k( const double x, const int k ) const ;
+
+  inline MDistro& darkdistro() { return mdistro; };
+
+
+  void RunEstimate( const RooAbsData&, const std::string& plot = "" );
 
 protected:
   RooRealProxy x;

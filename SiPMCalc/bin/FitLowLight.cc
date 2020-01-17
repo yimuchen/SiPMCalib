@@ -50,9 +50,10 @@ main( int argc, char* argv[] )
     ( "epsilon", usr::po::value<double>(),
     "External factor to be used for dark current contribution cutoff, leave floating if not provided" )
     ( "biasvoltage", usr::po::value<double>(),
-    "Bias voltage to be displayed on plot, not entry if left empty" )
+    "Bias voltage to be displayed on plot, no entry if left empty" )
     ( "lumitype", usr::po::value<std::string>()->default_value( "Laser setup" ),
     "Set up to be written on top right of the plot" )
+    ( "invert", "Check if one should invert the waveform for calculation" )
   ;
   usr::ArgumentExtender arg;
   arg.AddOptions( desc );
@@ -75,9 +76,10 @@ main( int argc, char* argv[] )
   const double adcbin     = arg.Arg<int>( "adcbin" );
   const unsigned start    = arg.ArgOpt<int>( "start", 0 );
   const unsigned end      = arg.ArgOpt<int>( "end", -1 );
+  const bool invert       = arg.CheckArg( "invert" );
 
   // Declaring fit variables
-  SiPMFormat fmt( input, adcbin, start, end, base  );
+  SiPMFormat fmt( input, adcbin, start, end, base, invert );
   const double min = std::numeric_limits<double>::min();
 
   RooRealVar ped( "ped", "ped", -300, 300 );
@@ -169,16 +171,16 @@ main( int argc, char* argv[] )
 
   const std::string rawfmt( "%10s %10.5lf %10.5lf\n" );
   usr::fout( "Raw Fit parameter results" );
-  usr::fout( rawfmt, "ped",     ped.getVal(),    ped.getError() );
-  usr::fout( rawfmt, "gain",    gain.getVal(),   gain.getError() );
-  usr::fout( rawfmt, "s0",      s0.getVal(),     s0.getError() );
-  usr::fout( rawfmt, "s1",      s1.getVal(),     s1.getError() );
-  usr::fout( rawfmt, "mean",    mean.getVal(),   mean.getError() );
+  usr::fout( rawfmt, "ped",     ped.getVal(),    ped.getError()    );
+  usr::fout( rawfmt, "gain",    gain.getVal(),   gain.getError()   );
+  usr::fout( rawfmt, "s0",      s0.getVal(),     s0.getError()     );
+  usr::fout( rawfmt, "s1",      s1.getVal(),     s1.getError()     );
+  usr::fout( rawfmt, "mean",    mean.getVal(),   mean.getError()   );
   usr::fout( rawfmt, "lambda",  lambda.getVal(), lambda.getError() );
-  usr::fout( rawfmt, "alpha",   alpha.getVal(),  alpha.getError() );
-  usr::fout( rawfmt, "beta",    beta.getVal(),   beta.getError() );
+  usr::fout( rawfmt, "alpha",   alpha.getVal(),  alpha.getError()  );
+  usr::fout( rawfmt, "beta",    beta.getVal(),   beta.getError()   );
   usr::fout( rawfmt, "dcfrac",  dcfrac.getVal(), dcfrac.getError() );
-  usr::fout( rawfmt, "epsilon", eps.getVal(),    eps.getError() );
+  usr::fout( rawfmt, "epsilon", eps.getVal(),    eps.getError()    );
 
 
   std::cout << "\n\n\n" << usr::separator( '-' ) << "\n\n\n" << std::endl;

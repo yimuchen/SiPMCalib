@@ -13,9 +13,10 @@ class SiPMFormat
 public:
   SiPMFormat( const std::string& file,
               const double       binwdith,
-              const unsigned     start = 0,// starting samples
-              const unsigned     end   = -1,// ending samples,
-              const std::string& baseline =""
+              const unsigned     start    = 0,// starting samples
+              const unsigned     end      = -1,// ending samples,
+              const std::string& baseline = "",
+              const bool         invert   = false
               );
   ~SiPMFormat();
 
@@ -42,9 +43,9 @@ public:
   inline unsigned
   NArea() const { return _arealist.size(); }
   inline double
-  Area( const unsigned i ){ return _arealist.at( i ) ;  }
+  Area( const unsigned i ){ return _arealist.at( i );  }
   inline std::vector<double>&
-  AreaList() { return _arealist; }
+  AreaList(){ return _arealist; }
 
 private:
   std::vector<double> _arealist;

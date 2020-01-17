@@ -18,7 +18,8 @@ MDistro::MDistro() :
   hiEdge( 0 ),
   epsilon( 0 ),
   width( 0 ),
-  spline( nullptr )
+  spline( ROOT::Math::Interpolation::kCSPLINE ),
+  spline_acc( ROOT::Math::Interpolation::kCSPLINE )
 {
   xArray.reserve( reserve_size );
   convArray.reserve( reserve_size );
@@ -36,7 +37,8 @@ MDistro::MDistro(
   hiEdge( 0 ),
   epsilon( 0 ),
   width( 0 ),
-  spline( nullptr )
+  spline( ROOT::Math::Interpolation::kCSPLINE ),
+  spline_acc( ROOT::Math::Interpolation::kCSPLINE )
 {
   xArray.reserve( reserve_size );
   convArray.reserve( reserve_size );
@@ -96,12 +98,13 @@ MDistro::MakeFFTArray()
   gaussArray.resize( nbins );
   xArray.resize( nbins );
   convArray.resize( nbins );
+  accArray.resize( nbins );
 
   for( unsigned i = 0; i < nbins; ++i ){
     const double x = xMin() + i * opepsilon;
-    xArray[i] = x;
-    mfuncArray[i]  = MFuncEval( x );
-    gaussArray[i]  = TMath::Gaus( x, xcen, width, kTRUE );
+    xArray[i]     = x;
+    mfuncArray[i] = MFuncEval( x );
+    gaussArray[i] = TMath::Gaus( x, xcen, width, kTRUE );
   }
 
 
@@ -116,12 +119,19 @@ MDistro::MakeFFTArray()
 
 
   // Shifting by half period (circular convolution theorem)
-  // 2 opepsilon for proper normalization.
+  // opepsilon for proper normalization.
   for( unsigned i = 0; i < nbins; ++i ){
-    convArray[i] = convTempArray[( i+nbins/2 )%nbins]  * 2 * opepsilon;
+    convArray[i] = convTempArray[( i+nbins/2 )%nbins]  * opepsilon;
+
+    if( i > 0 ){
+      accArray[i] = accArray[i-1] + convArray[i] * opepsilon ;
+    } else {
+      accArray[0] = convArray[0] * opepsilon ;
+    }
   }
 
-  spline = std::make_unique<ROOT::Math::Interpolator>( xArray, convArray );
+  spline.SetData( xArray, convArray );
+  spline_acc.SetData( xArray, accArray );
 }
 
 double
@@ -149,12 +159,25 @@ MDistro::xMax() const
 double
 MDistro::Evaluate( const double x ) const
 {
-  if( xArray.front() < x && x < xArray.back() ){
-    return std::max( spline->Eval( x ), 0. );
-  } else {
+  if( x < xArray.front() || xArray.back() < x ){
     return 0;
+  } else {
+    return std::max( spline.Eval( x ), 0. );
   }
 }
+
+double
+MDistro::EvaluateAccum( const double x ) const
+{
+  if( x < xArray.front() ){
+    return 0;
+  } else if( x > xArray.back() ){
+    return 1;
+  } else {
+    return std::max( spline_acc.Eval( x ), 0.0 );
+  }
+}
+
 
 double
 MDistro::MFuncEval( const double x ) const

@@ -25,7 +25,6 @@
 
 usr::Measurement CalcCrossTalk( const std::string&, const std::string& );
 usr::Measurement CalcDecayTime( const std::string&, const std::string& );
-
 std::vector<usr::Measurement> CalcAP( const std::string&, const std::string& );
 
 

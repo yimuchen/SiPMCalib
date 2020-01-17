@@ -27,7 +27,8 @@ SiPMFormat::SiPMFormat( const std::string& file,
                         const double       binwidth,
                         const unsigned     start,
                         const unsigned     end,
-                        const std::string& baseline )
+                        const std::string& baseline,
+                        const bool         invert    )
 {
   std::string line;
   std::ifstream fin( file, std::ios::in );
@@ -43,6 +44,8 @@ SiPMFormat::SiPMFormat( const std::string& file,
   >> _convfactor;
 
   MakeBaseLine( baseline );
+
+  const double inverting = invert ? 1 : -1 ;
 
   // Getting all other lines
   while( std::getline( fin, line ) ){
@@ -60,7 +63,7 @@ SiPMFormat::SiPMFormat( const std::string& file,
                         line[2*i+1] >= 'A' ? 10 + line[2*i+1] - 'A' :
                         line[2*i+1] - '0';
       const int8_t v = v1 << 4 | v2;
-      area += ( (double)v - _baseline[i] ) * _timeint * ( -1 );
+      area += ( (double)v - _baseline[i] ) * _timeint * inverting;
     }
 
     _arealist.push_back( area );
@@ -91,7 +94,7 @@ void
 SiPMFormat::TruncateDataSet( const double maxarea )
 {
   const double xmax  = usr::RoundUp( maxarea,  _binwidth );
-  const double nbins = (xmax - x().getMin() ) /_binwidth ;
+  const double nbins = ( xmax - x().getMin() ) /_binwidth;
   x().setMax( xmax );
   x().setBins( nbins );
 

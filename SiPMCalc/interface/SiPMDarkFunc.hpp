@@ -18,6 +18,7 @@ public:
     );
   ~MDistro();
 
+  double EvaluateAccum( const double x ) const ;
   double Evaluate( const double x ) const;
   void   SetParam( const double, const double, const double, const double );
 
@@ -35,10 +36,12 @@ public:
 
 private:
   unsigned nbins;
-  std::unique_ptr<ROOT::Math::Interpolator> spline;
+  ROOT::Math::Interpolator spline;
+  ROOT::Math::Interpolator spline_acc;
 
   std::vector<double> xArray;
   std::vector<double> convArray;
+  std::vector<double> accArray;
   // Delaring here, as we are going to reserve for faster allocation
   std::vector<double> convTempArray;
   std::vector<double> mfuncArray;
