@@ -71,11 +71,8 @@ MDistro::SetParam(
 void
 MDistro::ParamHash()
 {
-  const uint64_t hashval = usr::HashValue( loEdge )
-                           ^ usr::HashValue( hiEdge )
-                           ^ usr::HashValue( epsilon )
-                           ^ usr::HashValue( width );
-
+  const uint64_t hashval = usr::OrderedHash64( {loEdge, hiEdge
+                                                , epsilon, width} );
   if( hashval != paramHash ){
     // Saving Hash, recalculating FFT arrays.
     paramHash = hashval;
@@ -124,9 +121,9 @@ MDistro::MakeFFTArray()
     convArray[i] = convTempArray[( i+nbins/2 )%nbins]  * opepsilon;
 
     if( i > 0 ){
-      accArray[i] = accArray[i-1] + convArray[i] * opepsilon ;
+      accArray[i] = accArray[i-1] + convArray[i] * opepsilon;
     } else {
-      accArray[0] = convArray[0] * opepsilon ;
+      accArray[0] = convArray[0] * opepsilon;
     }
   }
 
