@@ -1,14 +1,11 @@
-a\1\2++ exclusion
 *.o
 *.so
 
-a\1\2ytho\1\2xclusion
 *.pyc
 
 files
 *.swp
 
-a\1\2at\1\2il\1\2xclusions
 *.txt
 *.png
 *.root
@@ -23,8 +20,8 @@ CMakeFiles/**
 build/**
 .vscode/**
 
-siv\1\2irectories
 !CMakeLists.txt
 
-s
+TEMP/*
+
 SiPMCalc/data/**
