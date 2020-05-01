@@ -1,0 +1,8 @@
+<use name="UserUtils/Common"/>
+<use name="UserUtils/PlotUtils"/>
+
+<flags CXXFLAGS="-g -lSpectrum"/>
+
+<bin name="SiPM_PlotTimeScan"     file="PlotTimeScan.cc"/>
+<bin name="SiPM_StabilityProfile" file="PlotProfile.cc"/>
+<bin name="SiPM_StabilityVars"    file="PlotVarHist.cc"/>
