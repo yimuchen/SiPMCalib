@@ -59,23 +59,23 @@ int main( int argc, char* argv[] )
   usr::plt::CommonXCanvas c( 3 );
 
   c.PlotGraph<0>( g_readout
-                , usr::plt::TrackY( usr::plt::TrackY::both )
+                , usr::plt::TrackY( usr::plt::tracky::both )
                 , usr::plt::PlotType( usr::plt::fittedfunc )
                 , usr::plt::LineColor( usr::plt::col::darkblue )
                 , usr::plt::FillColor( usr::plt::col::cyan )
                 , usr::plt::EntryText( "SiPM readout" ) );
   c.PlotGraph<1>( g_bias
-                , usr::plt::TrackY( usr::plt::TrackY::both )
+                , usr::plt::TrackY( usr::plt::tracky::both )
                 , usr::plt::PlotType( usr::plt::simplefunc )
                 , usr::plt::LineColor( usr::plt::col::darkgreen )
                 , usr::plt::EntryText( "LED Bias" ) );
   c.PlotGraph<2>( g_led
-                , usr::plt::TrackY( usr::plt::TrackY::both )
+                , usr::plt::TrackY( usr::plt::tracky::both )
                 , usr::plt::PlotType( usr::plt::simplefunc )
                 , usr::plt::LineColor( usr::plt::col::red )
                 , usr::plt::EntryText( "LED" ) );
   c.PlotGraph<2>( g_sipm
-                , usr::plt::TrackY( usr::plt::TrackY::both )
+                , usr::plt::TrackY( usr::plt::tracky::both )
                 , usr::plt::PlotType( usr::plt::simplefunc )
                 , usr::plt::LineColor( usr::plt::col::black )
                 , usr::plt::EntryText( "SiPM" ) );

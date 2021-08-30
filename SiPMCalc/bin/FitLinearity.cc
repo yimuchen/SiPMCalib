@@ -208,7 +208,7 @@ main( int argc, char* argv[] )
 
   c.PlotGraph( glist[0],
     usr::plt::PlotType( usr::plt::scatter ),
-    usr::plt::TrackY( usr::plt::TrackY::both ) );
+    usr::plt::TrackY( usr::plt::tracky::both ) );
   glist[0].SetMarkerColor( kGray+2 );
   glist[0].SetLineColor( kGray );
   glist[0].SetMarkerStyle( usr::plt::sty::mkrcircle );
@@ -217,7 +217,7 @@ main( int argc, char* argv[] )
   for( int i = 1; i < 7; ++i ){
     c.PlotGraph( glist[i],
       usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::TrackY( usr::plt::TrackY::both ),
+      usr::plt::TrackY( usr::plt::tracky::both ),
       usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
       usr::plt::MarkerSize( 0.2 ),
       usr::plt::MarkerColor( colorlist[i] ),

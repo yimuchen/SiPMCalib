@@ -105,7 +105,7 @@ main( int argc, char* argv[] )
       + ( yscan-ycentral ) * ( yscan-ycentral ) );
     c.PlotGraph( graphlist.at(i),
       usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::TrackY( usr::plt::TrackY( usr::plt::TrackY::both ) ),
+      usr::plt::TrackY( usr::plt::tracky::both ),
       usr::plt::EntryText( usr::fstr( "offset=%.1lf [mm]", dist ) ),
       usr::plt::MarkerColor( colorlist.at(i) ),
       usr::plt::MarkerStyle( markerlist.at(i) ),
@@ -118,7 +118,7 @@ main( int argc, char* argv[] )
   c.PlotScale( fitg, fitg, usr::plt::PlotType( usr::plt::fittedfunc ) );
 
   for( const auto& g : graphlist ){
-    c.PlotScale( g, fitg, usr::plt::PlotType( usr::plt::scatter ) );
+    c.PlotScale( g, &fitg, usr::plt::PlotType( usr::plt::scatter ) );
   }
 
 

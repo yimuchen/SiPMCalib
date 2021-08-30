@@ -72,12 +72,15 @@ public:
 
   double analyticalIntegral( double x ) const;
   double erf_ap_eff( const double x, const int k, const int i ) const;
-  double erf_k( const double x, const int k ) const ;
+  double erf_k( const double x, const int k ) const;
 
-  inline MDistro& darkdistro() { return mdistro; };
+  inline MDistro& darkdistro(){ return mdistro; };
 
-
-  void RunEstimate( const RooAbsData&, const std::string& plot = "" );
+  // Bunch of statistical functions used for the analysis
+  // Moving to a static method for individual testing
+  static double GeneralPoissonProb( const int x
+                                  , const double mean
+                                  , const double lambda );
 
 protected:
   RooRealProxy x;

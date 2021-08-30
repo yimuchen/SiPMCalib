@@ -119,20 +119,20 @@ main( int argc, char* argv[] )
     const double err = fabs( tau * f.GetParError( 1 ) / f.GetParameter( 1 ) );
     std::cout << tau << " " << err << std::endl;
     if( tau < 1 ){
-      c.Pad().WriteLine( usr::fstr( "Pulse Tail=%.0lf#pm%.0lf [ps]",
+      c.Pad().WriteLine( usr::fstr( "Pulse Tail=%.0lf#pm%.0lf ps",
         tau * 1000, err * 1000 ) );
     } else {
-      c.Pad().WriteLine( usr::fstr( "Pulse Tail=%.2lf#pm%.2lf [ns]",
+      c.Pad().WriteLine( usr::fstr( "Pulse Tail=%.2lf#pm%.2lf ns",
         tau, err ) );
     }
   } else {
     const double t = f.GetParameter( 2 );
     const double e = f.GetParError( 2 );
     if( t < 2 ){
-      c.Pad().WriteLine( usr::fstr( "Pulse Width=%.0lf#pm%.0lf [ps]",
+      c.Pad().WriteLine( usr::fstr( "Pulse Width=%.0lf#pm%.0lf ps",
         t * 1000, e * 1000 ) );
     } else {
-      c.Pad().WriteLine( usr::fstr( "Pulse Width=%.2lf#pm%.2lf [ns]",
+      c.Pad().WriteLine( usr::fstr( "Pulse Width=%.2lf#pm%.2lf ns",
         t, e ) );
     }
   }

@@ -91,7 +91,7 @@ main( int argc, char* argv[] )
     c.PlotGraph( g,
       usr::plt::EntryText( entrylist.at( i ) ),
       usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::TrackY( usr::plt::TrackY::both ),
+      usr::plt::TrackY( usr::plt::tracky::both ),
       usr::plt::LineColor( colorlist[i] ),
       usr::plt::MarkerColor( colorlist[i] ),
       usr::plt::MarkerSize( 0.2 ),

@@ -114,7 +114,7 @@ int main( int argc, char* argv[] )
 
   for( unsigned i = 0; i < profile_list.size(); ++i ){
     c.PlotHist( profile_list.at( i )._profile,
-      usr::plt::TrackY( usr::plt::TrackY::both ),
+      usr::plt::TrackY( usr::plt::tracky::both ),
       usr::plt::PlotType( usr::plt::scatter ),
       usr::plt::MarkerColor( colors.at( i ) ),
       usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),

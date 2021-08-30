@@ -103,12 +103,12 @@ main( int argc, char* argv[] )
   c.PlotGraph( xdriftgraph,
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::EntryText( "Lumi-aligned X" ),
-    usr::plt::TrackY( usr::plt::TrackY::both )
+    usr::plt::TrackY( usr::plt::tracky::both )
     );
   c.PlotGraph( ydriftgraph,
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::EntryText( "Lumi-aligned Y" ),
-    usr::plt::TrackY( usr::plt::TrackY::both )
+    usr::plt::TrackY( usr::plt::tracky::both )
     );
 
 

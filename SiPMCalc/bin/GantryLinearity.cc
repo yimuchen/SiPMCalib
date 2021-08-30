@@ -137,7 +137,7 @@ main( int argc, char* argv[] )
 
   c.PlotGraph( lumigraph,
     usr::plt::PlotType( usr::plt::scatter ),
-    usr::plt::TrackY( usr::plt::TrackY::both )
+    usr::plt::TrackY( usr::plt::tracky::both )
     );
 
   auto& fexpg = c.PlotFunc( expf,
@@ -168,7 +168,7 @@ main( int argc, char* argv[] )
     usr::plt::MarkerStyle( usr::plt::sty::mkrcircle  ),
     usr::plt::MarkerSize( 0.1 ),
     usr::plt::LineColor( usr::plt::col::gray, 0.5 ),
-    usr::plt::TrackY( usr::plt::TrackY::both )
+    usr::plt::TrackY( usr::plt::tracky::both )
     );
   c.TopPad().SetDataMax( ymax * 31 );// Expanding y range
 

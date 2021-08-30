@@ -48,7 +48,7 @@ main( int argc, char const* argv[] )
 
       c.PlotPdf( p0,
         usr::plt::PlotType( usr::plt::simplefunc ),
-        usr::plt::TrackY( usr::plt::TrackY::both ),
+        usr::plt::TrackY( usr::plt::tracky::both ),
         RooFit::Precision( 1e-5 ),
         usr::plt::LineColor( color.at( i % color.size() ) ),
         usr::plt::EntryText( usr::fstr( "#alpha = %.3lf, #beta = %.1lf",
@@ -72,7 +72,7 @@ main( int argc, char const* argv[] )
 
       c.PlotPdf( p0,
         usr::plt::PlotType( usr::plt::simplefunc ),
-        usr::plt::TrackY( usr::plt::TrackY::both ),
+        usr::plt::TrackY( usr::plt::tracky::both ),
         usr::plt::LineColor( color.at( i % color.size() ) ),
         usr::plt::EntryText( usr::fstr( "#alpha = %.3lf, #beta = %.1lf",
           alpha.getVal(), beta.getVal() ) )
@@ -226,15 +226,15 @@ main( int argc, char const* argv[] )
 
     c.PlotGraph( g,
       usr::plt::EntryText( "Analytic CDF function" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ),
+      usr::plt::TrackY( usr::plt::tracky::both ),
       usr::plt::LineColor( kRed ) );
     c.PlotGraph( f,
       usr::plt::EntryText( "After pulse function" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ),
+      usr::plt::TrackY( usr::plt::tracky::both ),
       usr::plt::LineColor( kBlue  ) );
     c.PlotGraph( cf,
       usr::plt::EntryText( "Empirical CDF" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ),
+      usr::plt::TrackY( usr::plt::tracky::both ),
       usr::plt::LineColor( kGreen ) );
 
     c.Pad().SetYaxisMin( 1e-3 );
@@ -275,12 +275,12 @@ main( int argc, char const* argv[] )
       c.PlotGraph( smeared.at( i ),
         usr::plt::EntryText( usr::fstr( "#epsilon=10^{%d}"
                                       , usr::GetExponent( eplist.at( i ) ) ) ),
-        usr::plt::TrackY( usr::plt::TrackY::both )
+        usr::plt::TrackY( usr::plt::tracky::both )
         );
       uc.PlotGraph( unsmeared.at( i ),
         usr::plt::EntryText( usr::fstr( "#epsilon=10^{%d}"
                                       , usr::GetExponent( eplist.at( i ) ) ) ),
-        usr::plt::TrackY( usr::plt::TrackY::both )
+        usr::plt::TrackY( usr::plt::tracky::both )
         );
 
       unsmeared.at( i ).SetLineColor( collist.at( i ) );

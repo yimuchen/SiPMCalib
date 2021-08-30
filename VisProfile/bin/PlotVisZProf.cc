@@ -33,7 +33,7 @@ main( int argc, char const* argv[] )
     auto& graph = c.PlotGraph( zprof.sharpness,
       usr::plt::PlotType( usr::plt::scatter ),
       usr::plt::EntryText( "Camera readout" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ) );
+      usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
     graph.SetMarkerSize( 0.2 );
@@ -52,11 +52,11 @@ main( int argc, char const* argv[] )
     auto& xgraph = c.PlotGraph( zprof.recox,
       usr::plt::PlotType( usr::plt::scatter ),
       usr::plt::EntryText( "FOV X" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ) );
+      usr::plt::TrackY( usr::plt::tracky::both ) );
     auto& ygraph = c.PlotGraph( zprof.recoy,
       usr::plt::PlotType( usr::plt::scatter ),
       usr::plt::EntryText( "FOV Y" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ) );
+      usr::plt::TrackY( usr::plt::tracky::both ) );
 
     xgraph.SetMarkerStyle( 20 );
     xgraph.SetMarkerSize( 0.2 );
@@ -90,11 +90,11 @@ main( int argc, char const* argv[] )
     auto& graph = c.PlotGraph( zprof.recoarea,
       usr::plt::PlotType( usr::plt::scatter ),
       usr::plt::EntryText( "Camera readout" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ) );
+      usr::plt::TrackY( usr::plt::tracky::both ) );
     auto& fgraph = c.PlotFunc( func,
       usr::plt::PlotType( usr::plt::simplefunc ),
       usr::plt::EntryText( "Fit (inv. sq.)" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ) );
+      usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
     graph.SetMarkerSize( 0.2 );
@@ -126,11 +126,11 @@ main( int argc, char const* argv[] )
     auto& graph = c.PlotGraph( zprof.recod,
       usr::plt::PlotType( usr::plt::scatter ),
       usr::plt::EntryText( "Camera readout" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ) );
+      usr::plt::TrackY( usr::plt::tracky::both ) );
     auto& fgraph = c.PlotFunc( func,
       usr::plt::PlotType( usr::plt::simplefunc ),
       usr::plt::EntryText( "Fit (N/(z+z_{0}))" ),
-      usr::plt::TrackY( usr::plt::TrackY::both ) );
+      usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
     graph.SetMarkerSize( 0.2 );

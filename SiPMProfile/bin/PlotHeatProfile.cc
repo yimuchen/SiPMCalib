@@ -36,43 +36,59 @@ main( int argc, char* argv[] )
   fin.open( arg.Arg( "data" ), std::ifstream::in );
 
   int linecount = 0;
-  unsigned t, ncapture, presample, postsample;
-  double convfactor;
-  int8_t max = 1 << 7;
-  int8_t min = ~max;
+  double t, adc;
+  unsigned bits;
   std::vector<std::vector<int16_t> > vecprofile;
 
   // Getting first line
   std::getline( fin, line );
   std::istringstream linestream( line );
-  linestream >> t >> ncapture >> presample >> postsample >> convfactor;
+  linestream >> t >> bits >> adc;
+  std::cout << "Time interval:" << t << " ns" << std::endl;
+  std::cout << "Bits:" << bits << std::endl;
+  std::cout << "ADC:"  << adc << " mV" <<std::endl;
 
-  const unsigned start = arg.Arg<unsigned>( "start" );
-  const unsigned end   = std::min( arg.Arg<unsigned>( "end" ),
-    presample + postsample );
+  return 0;
+
+  const unsigned start   = arg.Arg<unsigned>( "start" );
+  const unsigned end     = arg.Arg<unsigned>( "end" );
   const unsigned nsample = end - start;
+
+  int16_t max = 1 << 7;
+  int16_t min = ~max;
 
 
   // Getting all other lines
   while( std::getline( fin, line ) ){
     ++linecount;
-    if( linecount % 1000 == 0 ){
+    if( linecount % 100 == 0 ){
       std::cout << "\rLine " <<  linecount << "..." << std::flush;
     }
     vecprofile.push_back( std::vector<int16_t>() );
     vecprofile.back().reserve( nsample );
 
     for( unsigned i = start; i < end; ++i ){
-      const int16_t v1 = line[2*i] >= 'a' ? 10 + line[2*i] - 'a' :
-                         line[2*i] >= 'A' ? 10 + line[2*i] - 'A' :
-                         line[2*i] - '0';
-      const int16_t v2 = line[2*i+1] >= 'a' ? 10 + line[2*i+1] - 'a' :
-                         line[2*i+1] >= 'A' ? 10 + line[2*i+1] - 'A' :
-                         line[2*i+1] - '0';
-      const int8_t v = v1 << 4 | v2;
-      vecprofile.back().push_back( v);
-      max                  = std::max( v, max );
-      min                  = std::min( v, min );
+      int16_t val = 0;
+
+      for( unsigned j = 0; j < bits; ++j ){
+        val = val << 4;
+        const char c    = line[i*bits + j ];
+        const int16_t v = c >= 'a' ? 10 + c - 'a' :
+                          c >= 'A' ? 10 + c - 'A' :
+                          c - '0';
+        val |= v;
+      }
+
+      if( bits == 2 ){
+        const int8_t v = val;
+        vecprofile.back().push_back( v );
+      } else {
+        vecprofile.back().push_back( val );
+        std::cout << val << std::endl;
+      }
+
+      max = std::max( val, max );
+      min = std::min( val, min );
     }
 
   }
@@ -80,11 +96,11 @@ main( int argc, char* argv[] )
   std::cout << "Done reading!" << std::endl;
 
   // Creating historgram
-  const double ymax = (double)( max + 1 ) * convfactor * 256;
-  const double ymin = (double)( min - 1 ) * convfactor * 256;
+  const double ymax = (double)( max + 1 ) * adc;
+  const double ymin = (double)( min - 1 ) * adc;
 
-  const double xmin = (double)t*( (double)start - presample );
-  const double xmax = (double)t*( end - presample );
+  const double xmin = (double)t*( start );
+  const double xmax = (double)t*( end );
   std::cout << xmin << " " << xmax << std::endl;
   std::cout << ymin << " " << ymax << std::endl;
 
@@ -115,8 +131,8 @@ main( int argc, char* argv[] )
     if( amax > area && area > amin ){
 
       for( unsigned i = 0; i < nsample; ++i ){
-        const double x = (double)t*( ((double)start - presample) + i );
-        const double y = (double)( profile.at( i ) ) * convfactor * 256.;
+        const double x = (double)t*( ( (double)start ) + i );
+        const double y = (double)( profile.at( i ) ) * adc;
         if( x > xmax || x < xmin || y < ymin || y > ymax ){
           std::cout << " Weird point found!" << x << " " << y << std::endl;
         }
@@ -129,7 +145,7 @@ main( int argc, char* argv[] )
   // Setting the zero bins for aesthetics
   for( int i = 0; i < hist.GetNcells(); ++i ){
     if( hist.GetBinContent( i ) == 0 ){
-      hist.SetBinContent( i, 0.3 );  // Half a order of magnitude smaller
+      hist.SetBinContent( i, 0.3 );// Half a order of magnitude smaller
     }
   }
 
@@ -146,9 +162,9 @@ main( int argc, char* argv[] )
 
   c.Pad().SetTextCursor( 0.05, 0.9, usr::plt::font::top_left );
   c.Pad().WriteLine(
-    ( boost::format( "ADC bit=%.3lf[mV]" )%( convfactor*256 ) ).str() )
+    ( boost::format( "ADC bit=%.3lf[mV]" )%( adc ) ).str() )
   .WriteLine( ( boost::format( "Max: #pm %d[mV]" )
-                %( convfactor*256*127 ) ).str() )
+                %( adc*256*127 ) ).str() )
   .WriteLine( "Sample rate: 2ns^{-1}" )
   .WriteLine( "Trigger rate: 600#mu s^{-1}" );
 
@@ -158,6 +174,6 @@ main( int argc, char* argv[] )
 
   c.SetLogz( 1 );
 
-  c.SaveAsPDF( arg.Arg("output") );
+  c.SaveAsPDF( arg.Arg( "output" ) );
 
 }

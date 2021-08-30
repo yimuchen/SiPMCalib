@@ -26,19 +26,19 @@ main( int argc, char** argv )
     usr::plt::Simple1DCanvas c;
     c.PlotGraph( mc1,
       usr::plt::EntryText("Aperture r = 1mm"),
-      usr::plt::TrackY(usr::plt::TrackY::both)
+      usr::plt::TrackY(usr::plt::tracky::both)
       );
     c.PlotGraph( mc2,
       usr::plt::EntryText("Aperture r = 2mm"),
-      usr::plt::TrackY(usr::plt::TrackY::both)
+      usr::plt::TrackY(usr::plt::tracky::both)
       );
     c.PlotGraph( mc3,
     usr::plt::EntryText("Aperture r = 3mm"),
-      usr::plt::TrackY(usr::plt::TrackY::both)
+      usr::plt::TrackY(usr::plt::tracky::both)
     );
     c.PlotGraph( mc4,
     usr::plt::EntryText("Aperture r = 4mm"),
-      usr::plt::TrackY(usr::plt::TrackY::both)
+      usr::plt::TrackY(usr::plt::tracky::both)
     );
 
     mc1.SetLineColor( kRed );
@@ -68,19 +68,19 @@ main( int argc, char** argv )
     usr::plt::Ratio1DCanvas c;
     c.PlotGraph( mc0,
       usr::plt::EntryText("x-offset = 0mm"),
-      usr::plt::TrackY(usr::plt::TrackY::both)
+      usr::plt::TrackY(usr::plt::tracky::both)
       );
     c.PlotGraph( mc2,
     usr::plt::EntryText("x-offset = 2 mm"),
-      usr::plt::TrackY(usr::plt::TrackY::both)
+      usr::plt::TrackY(usr::plt::tracky::both)
     );
     c.PlotGraph( mc4,
       usr::plt::EntryText("x-offset = 4mm"),
-      usr::plt::TrackY(usr::plt::TrackY::both)
+      usr::plt::TrackY(usr::plt::tracky::both)
       );
     c.PlotGraph( mc8,
     usr::plt::EntryText("x-offset = 8mm"),
-      usr::plt::TrackY(usr::plt::TrackY::both)
+      usr::plt::TrackY(usr::plt::tracky::both)
     );
 
     mc0.SetLineColor( kRed );

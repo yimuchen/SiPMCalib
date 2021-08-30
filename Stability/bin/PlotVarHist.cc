@@ -5,7 +5,8 @@
 
 #include <vector>
 
-int main( int argc, char* argv[] )
+int
+main( int argc, char* argv[] )
 {
   usr::po::options_description desc( "Plotting 1D stability profiles\n"
                                      "Leave one of biasrange, temppulser, or tempsipm empty for it to be used"
@@ -36,9 +37,12 @@ int main( int argc, char* argv[] )
   while( std::getline( fin, line ) ){
     std::istringstream linestream( line );
     double time, readout, readouterr;
+    double chipid, x, y, z;
     double bias, ledtemp, sipmtemp;
-    linestream >> time >> readout >> readouterr
-    >> bias >> ledtemp >> sipmtemp;
+    linestream >> time >> chipid >> x >> y >> z
+    >> bias >> ledtemp >> sipmtemp
+    >> readout >> readouterr
+    ;
 
     bias_list.push_back( bias );
     led_list.push_back( ledtemp );
@@ -72,8 +76,8 @@ int main( int argc, char* argv[] )
     TSpectrum s( 20 );
     unsigned npeak = s.Search( &b_hist, 2, "nobackground" );
 
-    for( unsigned i = 0 ; i < npeak ; ++i ){
-      c.DrawVLine( s.GetPositionX()[i] ,
+    for( unsigned i = 0; i < npeak; ++i ){
+      c.DrawVLine( s.GetPositionX()[i],
         usr::plt::LineColor( usr::plt::col::red ) );
     }
 
@@ -89,10 +93,11 @@ int main( int argc, char* argv[] )
     TSpectrum s( 20 );
     unsigned npeak = s.Search( &s_hist, 2, "nobackground" );
 
-    for( unsigned i = 0 ; i < npeak ; ++i ){
-      c.DrawVLine( s.GetPositionX()[i] ,
+    for( unsigned i = 0; i < npeak; ++i ){
+      c.DrawVLine( s.GetPositionX()[i],
         usr::plt::LineColor( usr::plt::col::red ) );
     }
+
     c.Xaxis().SetTitle( "SiPM Temperature [^{#circ}C]" );
     c.Yaxis().SetTitle( "Data points" );
     c.SaveAsPDF( args.MakePDFFile( "SiPM" ) );
@@ -105,10 +110,11 @@ int main( int argc, char* argv[] )
     TSpectrum s( 20 );
     unsigned npeak = s.Search( &l_hist, 2, "nobackground" );
 
-    for( unsigned i = 0 ; i < npeak ; ++i ){
-      c.DrawVLine( s.GetPositionX()[i] ,
+    for( unsigned i = 0; i < npeak; ++i ){
+      c.DrawVLine( s.GetPositionX()[i],
         usr::plt::LineColor( usr::plt::col::red ) );
     }
+
     c.Xaxis().SetTitle( "LED Temperature [^{#circ}C]" );
     c.Yaxis().SetTitle( "Data points" );
     c.SaveAsPDF( args.MakePDFFile( "LED" ) );

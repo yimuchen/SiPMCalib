@@ -46,7 +46,7 @@ main( int argc, char* argv[] )
 
   c.PlotGraph( g2p7,
     usr::plt::EntryText( "LED@2.7V" ),
-    usr::plt::TrackY( usr::plt::TrackY::both ),
+    usr::plt::TrackY( usr::plt::tracky::both ),
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::LineColor( usr::plt::col::darkgreen ),
     usr::plt::MarkerColor( usr::plt::col::darkgreen ),
@@ -56,7 +56,7 @@ main( int argc, char* argv[] )
 
   c.PlotGraph( g3p2,
     usr::plt::EntryText( "LED@3.2V" ),
-    usr::plt::TrackY( usr::plt::TrackY::both ),
+    usr::plt::TrackY( usr::plt::tracky::both ),
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::LineColor( usr::plt::col::darkred ),
     usr::plt::MarkerColor( usr::plt::col::darkred ),
@@ -73,7 +73,7 @@ main( int argc, char* argv[] )
 
   c.PlotGraph( g4p3,
     usr::plt::EntryText( "LED@4.3V" ),
-    usr::plt::TrackY( usr::plt::TrackY::both ),
+    usr::plt::TrackY( usr::plt::tracky::both ),
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::LineColor( usr::plt::col::black ),
     usr::plt::MarkerColor( usr::plt::col::black ),
@@ -81,9 +81,9 @@ main( int argc, char* argv[] )
     usr::plt::MarkerSize( 0.4 )
     );
 
-  c.PlotScale( g4p3 , gf, usr::plt::PlotType( usr::plt::scatter ) );
-  c.PlotScale( g3p2 , gf, usr::plt::PlotType( usr::plt::scatter ) );
-  c.PlotScale( g2p7 , gf, usr::plt::PlotType( usr::plt::scatter ) );
+  c.PlotScale( g4p3 , &gf, usr::plt::PlotType( usr::plt::scatter ) );
+  c.PlotScale( g3p2 , &gf, usr::plt::PlotType( usr::plt::scatter ) );
+  c.PlotScale( g2p7 , &gf, usr::plt::PlotType( usr::plt::scatter ) );
 
   c.TopPad().SetLogx( kTRUE );
   c.TopPad().SetLogy( kTRUE );

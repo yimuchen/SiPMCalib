@@ -116,10 +116,28 @@ SiPMPdf::clone( const char* name ) const
 // ------------------------------------------------------------------------------
 // Implementation of function evaluation
 // ------------------------------------------------------------------------------
-static double GaussCDF( const double x, const double sig )
+static double
+GaussCDF( const double x, const double sig )
 {
   static const double sqrt2 = TMath::Sqrt( 2 );
   return 0.5 * ( 1+TMath::Erf( x/( sqrt2 * sig ) ) );
+}
+
+double
+SiPMPdf::GeneralPoissonProb( const int    x,
+                             const double mean,
+                             const double lambda )
+{
+  if( lambda == 0 ){
+    return TMath::Poisson( x, mean );
+  }
+
+  return TMath::Exp(
+    TMath::Log( mean )
+    + ( x-1 )*TMath::Log( mean + x * lambda )
+    - ( mean  + x*lambda )
+    - TMath::LnGamma( x+1 )
+    );
 }
 
 
@@ -128,7 +146,7 @@ SiPMPdf::evaluate() const
 {
   double prob = gen_poisson( 0 ) * gauss_k( 0 );
 
-  for( int k = 1; k < mean + 2*TMath::Sqrt( mean ) + 15; ++k ){
+  for( int k = 1; k < mean + 10*TMath::Sqrt( mean ) + 15; ++k ){
     double probk = binomial_prob( k, 0 ) * gauss_k( k );
 
     for( int i = 1; i <= k; ++i ){
@@ -149,20 +167,7 @@ SiPMPdf::evaluate() const
 double
 SiPMPdf::gen_poisson( const int k ) const
 {
-  if( lambda == 0 ){
-    return TMath::Poisson( k, mean );
-  }
-
-  const double y = ( mean + k * lambda );
-  double prod    = 1;
-
-  for( int i = 1; i <= k; ++i ){
-    prod *= y;
-    prod /= (double)( i );
-  }
-
-  prod *= mean / y;
-  return prod * TMath::Exp( -y );
+  return GeneralPoissonProb( k, mean, lambda );
 }
 
 double
@@ -175,14 +180,13 @@ SiPMPdf::ap_eff( const int k, const int i ) const
   if( i > 1 ){
     if( y < 0 ){ return 0; }
 
-    double ans = TMath::Exp( -y / beta ) / beta;
-
-    for( int j = 1; j <= i-1; ++j ){
-      ans *= ( y / beta );
-      ans /= double(j);
-    }
-
-    return ans;
+    // Moving to LnGamma method for evaluating factorials
+    return TMath::Exp(
+      ( i-1 ) * TMath::Log( y )
+      - y/beta
+      - i * TMath::Log( beta )
+      - TMath::LnGamma( i )
+      );
   } else {
     const double ap    = TMath::Exp( -y / beta ) / beta;
     const double smear = GaussCDF( y, sk );
@@ -220,15 +224,17 @@ SiPMPdf::binomial_prob( const int k, const int i ) const
 // Implementation of the analytical integration
 
 
-int SiPMPdf::getAnalyticalIntegral( RooArgSet&  allvars,
-                                    RooArgSet&  runvars,
-                                    const char* rangeName ) const
+int
+SiPMPdf::getAnalyticalIntegral( RooArgSet&  allvars,
+                                RooArgSet&  runvars,
+                                const char* rangeName ) const
 {
   if( matchArgs( allvars, runvars, x ) ){ return 1; }
   return 0;
 }
 
-double SiPMPdf::analyticalIntegral( const int code, const char* range ) const
+double
+SiPMPdf::analyticalIntegral( const int code, const char* range ) const
 {
   assert( code == 1 );
   const double xmin = x.min( range );
@@ -237,11 +243,12 @@ double SiPMPdf::analyticalIntegral( const int code, const char* range ) const
 }
 
 
-double SiPMPdf::analyticalIntegral( const double x ) const
+double
+SiPMPdf::analyticalIntegral( const double x ) const
 {
   double ans = gen_poisson( 0 ) * erf_k( x, 0 );
 
-  for( int k = 1; k < mean + 2*TMath::Sqrt( mean ) + 15; ++k ){
+  for( int k = 1; k < mean + 10*TMath::Sqrt( mean ) + 15; ++k ){
     double ans_k = binomial_prob( k, 0 ) * erf_k( x, k );
 
     for( int i = 1; i <= k; ++i ){
@@ -254,7 +261,8 @@ double SiPMPdf::analyticalIntegral( const double x ) const
   return ans;
 }
 
-double SiPMPdf::erf_k( const double xx, const int k ) const
+double
+SiPMPdf::erf_k( const double xx, const int k ) const
 {
   const double pk = ped + gain*k;
   const double sk = TMath::Sqrt( s0*s0 + k*s1*s1 );
@@ -268,7 +276,8 @@ double SiPMPdf::erf_k( const double xx, const int k ) const
   }
 }
 
-double SiPMPdf::erf_ap_eff( const double xx, const int k, const int i ) const
+double
+SiPMPdf::erf_ap_eff( const double xx, const int k, const int i ) const
 {
   const double pk = ped + gain * k;
   const double sk = TMath::Sqrt( s0*s0 + k*s1*s1 );

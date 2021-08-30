@@ -72,13 +72,13 @@ main( int argc, char** argv )
   // auto& mcg = c.PlotGraph( mc0,
   //   usr::plt::PlotType( usr::plt::simplefunc ),
   //   usr::plt::EntryText( "Simulation" ),
-  //   usr::plt::TrackY( usr::plt::TrackY::max ),
+  //   usr::plt::TrackY( usr::plt::tracky::max ),
   //    );
   auto& fitg = c.PlotFunc( func,
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::VisualizeError( fit ),
     usr::plt::EntryText( "Fitted Data" ),
-    usr::plt::TrackY( usr::plt::TrackY::max ),
+    usr::plt::TrackY( usr::plt::tracky::max ),
     usr::plt::LineColor( usr::plt::col::blue ),
     usr::plt::FillColor( usr::plt::col::cyan ) );
   auto& datag = c.PlotGraph( dataz,

@@ -1,6 +1,6 @@
 #include "SiPMCalib/SiPMCalc/interface/CrossTalkPdf.hpp"
-#include "SiPMCalib/SiPMCalc/interface/SiPMFormat.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMDarkPdf.hpp"
+#include "SiPMCalib/SiPMCalc/interface/SiPMFormat.hpp"
 
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
@@ -23,8 +23,8 @@
 #include "TF1.h"
 #include "TProfile.h"
 
-usr::Measurement CalcCrossTalk( const std::string&, const std::string& );
-usr::Measurement CalcDecayTime( const std::string&, const std::string& );
+usr::Measurement              CalcCrossTalk( const std::string&, const std::string& );
+usr::Measurement              CalcDecayTime( const std::string&, const std::string& );
 std::vector<usr::Measurement> CalcAP( const std::string&, const std::string& );
 
 
@@ -89,7 +89,7 @@ CalcAP(
   const double tmin    = timeinterval;
 
   RooRealVar x( "x", "Second peak time delay", tmin, tmax, "ns" );
-  x.setBins( nbins /2  );
+  x.setBins( nbins /4  );
   RooDataHist data( "data", "", RooArgSet( x ) );
 
   while( std::getline( fin, line ) ){
@@ -111,13 +111,13 @@ CalcAP(
                         line[2*i+1] - '0';
       cv2 = v1 << 4 | v2;
 
-      if( firstpeak == nopeak && cv1 <= cv0 && cv1 <= cv2 && cv1 < -3 ){
+      if( firstpeak == nopeak && cv1 <= cv0 && cv1 <= cv2 && cv1 < -1 ){
         firstpeak = i;
       }
       if( firstpeak != nopeak
           && firstpeak < i
           && cv1 < cv0-2 && cv1 < cv2
-          && cv1 < -3 // Adding a minimal threshold
+          && cv1 < -1// Adding a minimal threshold
           ){
         x = ( i-firstpeak ) * timeinterval;
         data.add( RooArgSet( x ) );
@@ -147,7 +147,7 @@ CalcAP(
   pdc.fitTo( data, RooFit::Range( 100, tmax ) );
   pap.fitTo( data, RooFit::Range( 30, 50 ) );
 
-  p.fitTo( data, RooFit::Range( 30, tmax ) );
+  p.fitTo( data, RooFit::Range( 20, tmax ) );
 
   const usr::Measurement ap_c( -apf.getVal(), apf.getError(), apf.getError() );
   const usr::Measurement dc_c( -dcf.getVal(), dcf.getError(), dcf.getError() );
@@ -223,9 +223,9 @@ CalcDecayTime(
   const std::string& input,
   const std::string& output )
 {
-  const unsigned start = 0;
-  const unsigned end   = 100;
-  SiPMFormat fmt( input, 8, start, end );
+  const unsigned start = 3;
+  const unsigned end   = 50;
+  SiPMFormat fmt( input, 2, start, end );
 
   RooRealVar ped( "ped", "ped", -200, 200 );
   RooRealVar gain( "gain", "gain", 1, 500 );
@@ -270,7 +270,7 @@ CalcDecayTime(
                         line[2*i+1] - '0';
       const int8_t v = v1 << 4 | v2;
       cv2 = v;
-      if( localpeak == nopeak && cv1 <= cv0 && cv1 <= cv2 && cv1 < -3 ){
+      if( localpeak == nopeak && cv1 <= cv0 && cv1 <= cv2 && cv1 < -1 ){
         localpeak = i;
       }
       cv0 = cv1;
@@ -307,13 +307,13 @@ CalcDecayTime(
   usr::plt::Ratio1DCanvas c;
 
   auto& g = c.PlotFunc( f,
-    usr::plt::TrackY( usr::plt::TrackY::both ),
+    usr::plt::TrackY( usr::plt::tracky::both ),
     usr::plt::EntryText( "Fit exp." ),
     usr::plt::LineColor( usr::plt::col::red ) );
   auto& gp = c.PlotHist( p,
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::EntryText( "1 Geiger Readout" ),
-    usr::plt::MarkerStyle( usr::plt::sty::mkrcircle),
+    usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
     usr::plt::MarkerSize( 0.2 ),
     usr::plt::LineColor( usr::plt::col::darkgray ) );
 
@@ -351,13 +351,13 @@ CalcCrossTalk(
   const std::string& output )
 {
   const unsigned start = 3;
-  const unsigned end   = 8;
-  SiPMFormat fmt( input, 4, start, end );// 10ns  is enough??
+  const unsigned end   = 6;
+  SiPMFormat fmt( input, 2, start, end );// 10ns  is enough??
 
   RooRealVar ped( "ped", "ped", -200, 200 );
-  RooRealVar gain( "gain", "gain", 1, 500 );
-  RooRealVar s0( "s0", "s0", 0.01, 100 );
-  RooRealVar s1( "s1", "s1", 0.01, 50 );
+  RooRealVar gain( "gain", "gain", 1, 100 );
+  RooRealVar s0( "s0", "s0", 0.01, 15 );
+  RooRealVar s1( "s1", "s1", 0.01, 5 );
   RooRealVar dcfrac( "dcfrac", "dcfrac", 0, 0.2 );
   RooRealVar epsilon( "epslion", "epsilon", 1e-5, 1e-1 );
 
@@ -463,8 +463,10 @@ CalcCrossTalk(
       threshold.Eval( x ) * 1.1,
       usr::fstr( "%.1f Threshold", i + 0.5 ) );
   }
-  const usr::Measurement p0515 =  usr::Efficiency::Minos(
-    threshold.Eval( derivmin.at( 1 ) ),  threshold.Eval( derivmin.at( 0 ) ) );
+
+
+  const usr::Measurement p0515 = derivmin.size() >= 2 ? usr::Efficiency::Minos(
+    threshold.Eval( derivmin.at( 1 ) ),  threshold.Eval( derivmin.at( 0 ) ) ) : usr::Measurement( 0, 0, 0 );
 
   c.DrawLuminosity( "Dark current trigger" );
   c.DrawCMSLabel( "", "Noise Parameter" );
