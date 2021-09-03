@@ -1,3 +1,4 @@
+#include "SiPMCalib/Common/interface/StdFormat.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMLowLightFit.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMWaveFormat.hpp"
 
@@ -93,7 +94,7 @@ SiPMLowLightFit::DataArguments()
     ( "input",     usr::po::value<std::string>(), "Input data file" )
     ( "waveform",  usr::po::value<bool>(),        "Whether in input data is a raw waveform (True) are integrated (False)" )
     ( "binwidth",  usr::po::value<double>(),      "The bin width to use for binned data" )
-    ( "maxarea",   usr::po::value<double>(),     "Maximum area for perform fit on, leave negative is this should be automatically" )
+    ( "maxarea",   usr::po::value<double>(),      "Maximum area for perform fit on, leave negative is this should be automatically" )
 
   /// Options unique to the waveform input format.
     ( "intstart",  usr::po::value<unsigned>(),  "Time cell to start the integration window" )
@@ -315,7 +316,10 @@ SiPMLowLightFit::make_array_from_waveform()
 void
 SiPMLowLightFit::make_array_from_sum()
 {
-  // TODO:
+  // Using the Common format class for get summed results
+  StdFormat sformat( _inputfile );
+  const auto results = sformat.DataAll();
+  _arealist.insert( _arealist.begin(), results.begin(), results.end() );
 }
 
 void

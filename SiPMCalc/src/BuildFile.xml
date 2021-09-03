@@ -2,6 +2,7 @@
 <use name="roofit"/>
 <use name="UserUtils/Common"/>
 <use name="UserUtils/PlotUtils"/>
+<use name="SiPMCalib/Common"/>
 
 <flags CXXFLAGS="-g -lSpectrum"/>
 <export>
