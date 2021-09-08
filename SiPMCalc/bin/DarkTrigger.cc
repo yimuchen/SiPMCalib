@@ -1,6 +1,5 @@
 #include "SiPMCalib/SiPMCalc/interface/CrossTalkPdf.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMDarkPdf.hpp"
-#include "SiPMCalib/SiPMCalc/interface/SiPMFormat.hpp"
 
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
