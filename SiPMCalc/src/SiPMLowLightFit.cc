@@ -10,6 +10,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "RooDataHist.h"
+
 void
 SiPMLowLightFit::set_all_defaults()
 {
