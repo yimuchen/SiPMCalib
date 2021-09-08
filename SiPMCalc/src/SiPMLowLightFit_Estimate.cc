@@ -3,10 +3,12 @@
 // ------------------------------------------------------------------------------
 #include "SiPMCalib/SiPMCalc/interface/SiPMLowLightFit.hpp"
 
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #include "UserUtils/MathUtils/interface/RooFitExt.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 
+#include "TError.h"
 #include "TF1.h"
 #include "TGraphErrors.h"
 #include "TH1D.h"
@@ -24,7 +26,6 @@ SiPMLowLightFit::RunPDFEstimation()
   _width_fit.reset( nullptr );
   _height_graph.reset( nullptr );
   _height_fit.reset( nullptr );
-
 
   _est_hist.reset( usr::TH1DFromRooData( *_data, *_x ) );
   _spectrum.reset( new TSpectrum( 20 ) );// 20 peaks should be plenty
@@ -44,9 +45,10 @@ SiPMLowLightFit::RunPDFEstimation()
 
   // Early exit if peak finding failed to more than 1 peak.
   if( _peakfits.size() < 2 ){
-    std::cout << "Peak finder found less than two peaks! Check to see if data "
-      " is behaving properly running as expected"
-              << std::endl;
+    usr::log::PrintLog( usr::log::WARNING,
+      "Peak finder found less than two peaks! Results from the estimations "
+      "routine will not be used. Check to see if data is behaving properly "
+      "running as expected" );
     return;
   }
 
