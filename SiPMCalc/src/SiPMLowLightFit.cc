@@ -46,9 +46,6 @@ SiPMLowLightFit::set_all_defaults()
                                   , *_alpha, *_beta
                                   , *_dcfrac, *_eps );
 
-  // output options
-  _verbose = 1;
-
   // Estimation options
   ignore_ped_est     = false;
   ignore_gain_est    = false;
@@ -114,11 +111,12 @@ SiPMLowLightFit::FitArguments()
   usr::po::options_description desc(
     "Options for fitting parameters adjustments. "
     "For the options corresponding to the fit parameter names, the argument "
-    "takes either 1, 2 or 3 doubles: "
-    " - 1 means that the variable should be fixed at the specified values"
-    " - 2 means that the variable range should span the specified values"
-    " - 3 means that the variable should have some estimated value + the specified range, "
-    "     the estimated value will overide any sort of automated estimations methods" );
+    "takes either 1, 2 or 3 doubles:\n"
+    " - 1 means that the variable should be fixed at the specified values\n"
+    " - 2 means that the variable range should span the specified values\n"
+    " - 3 means that the variable should have some estimated value + the "
+    "specified range, the estimated value will overide any sort of automated"
+    " estimations methods" );
   desc.add_options()
     ( "ped",     usr::po::multivalue<double>(), "pedestal peak central value" )
     ( "gain",    usr::po::multivalue<double>(), "1-p.e gain factor" )
@@ -132,16 +130,6 @@ SiPMLowLightFit::FitArguments()
     ( "epsilon", usr::po::multivalue<double>(), "Resolution factor to be used for the dark current curve" )
   ;
 
-  return desc;
-}
-
-usr::po::options_description
-SiPMLowLightFit::OutputArguments()
-{
-  usr::po::options_description desc( "Options for output" );
-  desc.add_options()
-    ( "verbose,v", usr::po::value<int>(), "verbosity level" )
-  ;
   return desc;
 }
 
