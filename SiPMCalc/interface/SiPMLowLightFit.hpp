@@ -1,7 +1,6 @@
 #ifndef SIPMCALIB_SIPMCALC_SIPMLOWLIGHTFIT_HPP
 #define SIPMCALIB_SIPMCALC_SIPMLOWLIGHTFIT_HPP
 
-#include "SiPMCalib/SiPMCalc/interface/SiPMFormat.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMPdf.hpp"
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
