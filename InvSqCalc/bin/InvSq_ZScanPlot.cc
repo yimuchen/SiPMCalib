@@ -16,14 +16,16 @@ ZProf( const double* vz, const double* param )
   const double o  = param[1];
   const double N  = param[2];
   const double P  = param[3];
+  const double N0 = param[4];
 
   const double D2 = o*o + ( z-z0 )*( z-z0 );
   // return N/D2 + P;
-  return ( N*( z-z0 ) )/( D2 * sqrt( D2 ) ) + P;
+  return ( N*N0*( z-z0 ) )/( D2 * sqrt( D2 ) ) + P;
 }
 
-TGraph* MakeZScanGraph( const StdFormat&, double uncscale );
-void    FitAndShiftData( TGraph* data, double& ped, double& zoffset );
+TGraph*     MakeZScanGraph( const StdFormat&, double uncscale );
+TFitResult* FitAndShiftData( TGraph* data, TF1* func,
+                             double& ped, double& zoffset );
 
 int
 main( int argc, char** argv )
@@ -32,6 +34,9 @@ main( int argc, char** argv )
   desc.add_options()
     ( "data,d", usr::po::value<std::string>(), "Data file" )
     ( "output,o", usr::po::value<std::string>(), "Output plot file" )
+    ( "norm,n", usr::po::defvalue<double>( 1.0 ),
+    "Estimated norm in the inverse square formula, this helps with the "
+    "convergence of fitter" )
     ( "uncscale,u", usr::po::defvalue<double>( 1 ),
     "Additional uncertainty scaling factor" )
   ;
@@ -40,17 +45,17 @@ main( int argc, char** argv )
   arg.AddOptions( desc );
   arg.ParseOptions( argc, argv );
 
-  double pedestal = 0;
-  double zoffset  = 0;
+  double pedestal = 0;// For storing the original fit results
+  double zoffset  = 0;  // For storing the original fit results
 
   StdFormat data( arg.Arg( "data" ) );
-  TGraph* dataz = MakeZScanGraph( data, arg.Arg<double>( "uncscale" ) );
-  FitAndShiftData( dataz, pedestal, zoffset );
+  TGraph* dataz     = MakeZScanGraph( data, arg.Arg<double>( "uncscale" ) );
+  const double xmin = usr::plt::GetXmin( dataz );
+  const double xmax = usr::plt::GetXmax( dataz );
+  TF1* func         = new TF1( "func", ZProf, xmin, xmax, 5 );
+  func->FixParameter( 4, arg.Arg<double>( "norm" ) );
+  TFitResult* fit = FitAndShiftData( dataz, func, pedestal, zoffset );
 
-  TF1 func = TF1( "func", ZProf,
-    usr::plt::GetXmin( dataz ), usr::plt::GetXmax( dataz ),
-    4 );
-  auto fit = dataz->Fit( &func, "EX0 M E N 0 S" );
   // Begin plotting
   usr::plt::Ratio1DCanvas c;
   auto& fitg = c.PlotFunc( func,
@@ -68,18 +73,19 @@ main( int argc, char** argv )
     usr::plt::MarkerSize( 0.3 ),
     usr::plt::LineColor( usr::plt::col::gray, 0.5 ) );
   c.PlotScale( fitg, fitg,
-    usr::plt::PlotType( usr::plt::fittedfunc ) );
+    usr::plt::PlotType( usr::plt::fittedfunc ),
+    usr::plt::FillColor( usr::plt::col::cyan ) );
   c.PlotScale( datag, fitg,
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::MarkerSize( 0.3 ) );
 
-  c.TopPad().Yaxis().SetTitle( "Luminosity - Ped. [pA]" );
+  c.TopPad().Yaxis().SetTitle( "Luminosity - Ped. [mV-ns]" );
   c.BottomPad().Xaxis().SetTitle( "Gantry z + z_{0} [mm]" );
-  c.BottomPad().Yaxis().SetTitle( "Data,MC/Fit" );
+  c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
 
   c.TopPad().SetLogy( kTRUE );
   c.TopPad().SetLogx( kTRUE );
-  c.TopPad().SetYaxisMin( dataz->GetY()[dataz->GetN()-1] / 30  );
+  c.TopPad().SetYaxisMin( usr::plt::GetYmin( dataz ) / 30  );
   c.BottomPad().SetLogx( kTRUE );
 
   c.DrawLuminosity( "LED setup" );
@@ -89,11 +95,11 @@ main( int argc, char** argv )
   .WriteLine( "#frac{L_{0}(z+z_{0})}{(x_{0}^{2} + (z+z_{0})^{2})^{3/2}} + Ped" )
   // .WriteLine( "" )
   .WriteLine( ( boost::format( "Fit Ped = %.2lf_{#pm%.3lf}" )
-                % pedestal % func.GetParError( 3 ) ).str() )
+                % pedestal % func->GetParError( 3 ) ).str() )
   .WriteLine( ( boost::format( "Fit z_{0} = %.2lf_{#pm%.3lf}" )
-                % -zoffset % func.GetParError( 0 ) ).str() )
+                % -zoffset % func->GetParError( 0 ) ).str() )
   .WriteLine( ( boost::format( "Fit x_{0} = %.2lf_{#pm%.3lf}" )
-                % func.GetParameter( 1 ) % func.GetParError( 0 ) ).str() )
+                % func->GetParameter( 1 ) % func->GetParError( 1 ) ).str() )
   .WriteLine( ( boost::format( "#chi^{2}/D.o.F = %.2lf" )
                 % ( fit->Chi2()/fit->Ndf() ) ).str() );
 
@@ -118,50 +124,52 @@ MakeZScanGraph( const StdFormat& sformat, const double uncscale )
     return x * uncscale;
   } );
 
-  std::cout << lumierr << std::endl;
-  std::cout << lerr_scaled << std::endl;
-
   return new TGraphErrors( z.size(),
     z.data(), lumi.data(),
     zero.data(), lerr_scaled.data() );
 }
 
 
-void
-FitAndShiftData( TGraph* data, double& ped, double& zoffset )
+TFitResult*
+FitAndShiftData( TGraph* data, TF1* func, double& ped, double& zoffset )
 {
-  TF1 func = TF1( "shiftfunc", ZProf,  0, 500, 4 );
-  TGraph datacopy( *data );
+  usr::log::PrintLog( usr::log::INFO,
+    "Getting the estimate values for fitting" );
+  const double lumimax = usr::plt::GetYmax( data );
+  const double lumimin = usr::plt::GetYmin( data );
+  const double zmin    = usr::plt::GetXmin( data );
 
-  for( unsigned i = 0; i < 100; ++i ){
-    const double lumimax = usr::plt::GetYmax( datacopy );
-    const double lumimin = usr::plt::GetYmin( datacopy );
-    const double zmin    = usr::plt::GetXmin( datacopy );
+  func->SetParameter( 0, 0 );
+  func->SetParameter( 1, 0 );
+  func->SetParameter( 2, ( lumimax*zmin*zmin )/func->GetParameter( 4 ) );
+  func->SetParameter( 3, lumimin );
 
-    func.SetParameters(
-      0.0, 0.0,
-      lumimax * zmin * zmin - lumimin,
-      lumimin
-      );
+  usr::log::PrintLog( usr::log::INFO, "Running the fit" );
+  data->Fit( func, "Q EX0 M E N 0" ).Get();
 
-    datacopy.Fit( &func, "Q EX0 N 0" );
+  // Saving the original fit results for the pedestal and zoffset
+  ped     = func->GetParameter( 3 );
+  zoffset = func->GetParameter( 0 );
 
-    if( fabs( func.GetParameter( 0 ) ) < fabs( func.GetParError( 0 ) ) &&
-        fabs( func.GetParameter( 3 ) ) < fabs( func.GetParError( 3 ) ) ){
-      break;
-    }
+  usr::log::PrintLog( usr::log::INFO,
+    "Shifting the data for better plotting" );
 
-    for( int j = 0; j < datacopy.GetN(); ++j ){
-      datacopy.GetX()[j] -= func.GetParameter( 0 );
-      datacopy.GetY()[j] -= func.GetParameter( 3 );
-    }
+  for( int j = 0; j < data->GetN(); ++j ){
+    data->GetX()[j] -= zoffset;
+    data->GetY()[j] -= ped;
   }
 
-  zoffset = data->GetX()[0] - datacopy.GetX()[0];
-  ped     = data->GetY()[0] - datacopy.GetY()[0];
+  usr::log::PrintLog( usr::log::INFO,
+    "Shifting the function for better plotting" );
+  func->SetParameter( 0, 0.0 );
+  func->SetRange( usr::plt::GetXmin( data ), usr::plt::GetXmax( data ) );
 
-  for( int i = 0; i < data->GetN(); ++i ){
-    data->GetX()[i] = datacopy.GetX()[i];
-    data->GetY()[i] = datacopy.GetY()[i];
-  }
+  usr::log::PrintLog( usr::log::INFO,
+    "Refitting to get a correct result container" );
+  TFitResult* ans = data->Fit( func, "Q EX0 M E N 0 S" ).Get();
+
+  usr::log::PrintLog( usr::log::INFO,
+    "Complete fitting routine" );
+
+  return ans;
 }
