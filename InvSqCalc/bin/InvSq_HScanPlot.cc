@@ -1,5 +1,4 @@
-#include "SiPMCalib/InvSqCalc/interface/LEDFormat.hpp"
-#include "SiPMCalib/InvSqCalc/interface/MCFormat.hpp"
+#include "SiPMCalib/Common/interface/StdFormat.hpp"
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
@@ -15,8 +14,6 @@
 #include "TLatex.h"
 #include "TLegend.h"
 #include "TStyle.h"
-
-#include "boost/format.hpp"
 
 double
 ExpFunc( const double* xy, const double* param )
@@ -34,34 +31,48 @@ ExpFunc( const double* xy, const double* param )
   return ( N*z )/( D2 * sqrt( D2 ) ) + P;
 }
 
+// Helper function for making 2D Histogram from plot.
+static TH2D* MakeHScanGraph( const StdFormat& sformat );
+
 int
 main( int argc, char** argv )
 {
-  usr::po::options_description desc( "Options for plot making" );
+  usr::po::options_description desc(
+    "Program for generating the plot of for the luminosity alignment method." );
   desc.add_options()
-    ( "data,d", usr::po::value<std::string>(), "Data file" )
-    ( "output,o", usr::po::value<std::string>(), "Output file" )
-    ( "type,t", usr::po::value<std::string>()->default_value( "static" ), "Type of LED configuration" )
+    ( "data,d", usr::po::value<std::string>(),
+    "Input data file" )
+    ( "output,o", usr::po::value<std::string>(),
+    "Output plot file" )
+    ( "type,t", usr::po::defvalue<std::string>( "static" ),
+    "Type of LED configuration" )
+    ( "verbose,v", usr::po::defvalue<int>( usr::log::WARNING ),
+    "Print level" )
   ;
 
   usr::ArgumentExtender arg;
   arg.AddOptions( desc );
   arg.ParseOptions( argc, argv );
 
-  LEDManager data( arg.Arg( "data" ) );
-  const double z = data._pointlist.front().z;
+  usr::log::SetLogLevel( arg.Arg<int>( "verbose" ) );
+  usr::log::PrintLog( usr::log::INFO, "Parsing the data file" );
+  StdFormat data( arg.Arg( "data" ) );
+  const double z = data.Z().at( 0 );
 
-  TH2D* hist = data.MakeHScanGraph( z );
+  TH2D* hist = MakeHScanGraph( data );
   TF2* func1 = new TF2( "func1", ExpFunc,
-    data.Xmin(), data.Xmax(),
-    data.Ymin(), data.Ymax(), 5 );
+    hist->GetXaxis()->GetXmin(),
+    hist->GetXaxis()->GetXmax(),
+    hist->GetYaxis()->GetXmin(),
+    hist->GetYaxis()->GetXmax(),
+    5 );
 
   func1->SetParameters(
     hist->GetMean( 1 ),
     hist->GetMean( 2 ),
     z,
-    ( data.LumiMax() - data.LumiMin() )* ( z*z ),
-    data.LumiMin()
+    hist->GetMaximum()* ( z*z ),
+    hist->GetMinimum()
     );
 
   std::cout << hist->GetMean( 1 ) << std::endl;
@@ -78,7 +89,7 @@ main( int argc, char** argv )
   const double zfit    = func1->GetParameter( 2 );
   const double Nfit    = func1->GetParameter( 3 );
   const double Pfit    = func1->GetParameter( 4 );
-  const double sipmlen = 1.3;
+  const double sipmlen = 1.4;
 
   TGraphErrors cen;
   cen.SetPoint( 0, xfit, yfit );
@@ -161,4 +172,39 @@ main( int argc, char** argv )
   c.SaveAsPDF( arg.Arg( "output" ) );
 
   return 0;
+}
+
+TH2D*
+MakeHScanGraph( const StdFormat& sformat )
+{
+  // Getting from standard format.
+  const std::vector<double> x       = sformat.X();
+  const std::vector<double> y       = sformat.Y();
+  const std::vector<double> lumi    = sformat.DataCol( 0 );
+  const std::vector<double> lumierr = sformat.DataCol( 1 );
+
+  // Addtional parsing.
+  const double xdiff   = fabs( x.at( 0 ) - x.at( 1 ) );
+  const double xmax    = usr::GetMaximum( x );
+  const double xmin    = usr::GetMinimum( x );
+  const double ymax    = usr::GetMaximum( y );
+  const double ymin    = usr::GetMinimum( y );
+  const unsigned nbins = ( xmax - xmin )/xdiff + 1;
+
+  // Creating histogram
+  TH2D* ans = new TH2D( ( "hist"+usr::RandomString( 6 ) ).c_str(), "",
+    nbins, xmin-0.5*xdiff, xmax+0.5*xdiff,
+    nbins, ymin-0.5*xdiff, ymax+0.5*xdiff
+     );
+
+  // Setting histogram values
+  for( unsigned i = 0; i < x.size(); ++i ){
+    const int binidx = ans->FindBin( x.at( i ), y.at( i ) );
+    ans->SetBinContent( binidx, lumi.at( i ) );
+    ans->SetBinError( binidx, lumierr.at( i ) );
+  }
+
+  ans->SetStats( 0 );
+
+  return ans;
 }

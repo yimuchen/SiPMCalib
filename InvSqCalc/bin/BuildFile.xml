@@ -2,6 +2,7 @@
 <use name="UserUtils/Common"/>
 <use name="UserUtils/MathUtils"/>
 <use name="UserUtils/PlotUtils"/>
+<use name="SiPMCalib/Common"/>
 <use name="SiPMCalib/InvSqCalc"/>
 
 <flags CXXFLAGS="-g"/>
