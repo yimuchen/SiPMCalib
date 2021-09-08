@@ -1,5 +1,6 @@
 #include "SiPMCalib/SiPMCalc/interface/SiPMLowLightFit.hpp"
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 
 #include <fstream>
 
@@ -19,7 +20,10 @@ main( int argc, char* argv[] )
   ;
 
   usr::po::options_description savedesc(
-    "Options for saving the results, leave blank to ignore save, notice that the savefile will be augmented by the common file parsings" );
+    "Options for saving the results, leave blank to ignore save, notice that the"
+    "savefile will be augmented by the common file parsings, Notice that if all "
+    "of savefit, savelatex and savetex are not set, then the full full will not "
+    "be run " );
   savedesc.add_options()
     ( "savefit", usr::po::value<std::string>(),
     "Saving the grand spectrum fit results" )
@@ -37,28 +41,35 @@ main( int argc, char* argv[] )
     "Saving the poisson estimation plot" )
   ;
 
+  usr::po::options_description vdesc( "verbose level settings" );
+  vdesc.add_options()
+    ( "verbose", usr::po::defvalue<int>( usr::log::WARNING ), "Print level for routine" )
+  ;
+
   usr::ArgumentExtender args;
   args.AddOptions( desc );
   args.AddOptions( savedesc );
   args.AddOptions( SiPMLowLightFit::DataArguments() );
   args.AddOptions( SiPMLowLightFit::FitArguments() );
-  args.AddOptions( SiPMLowLightFit::OutputArguments() );
   args.AddOptions( SiPMLowLightFit::OperationArguments() );
   args.AddOptions( SiPMLowLightFit::EstArguments() );
+  args.AddOptions( vdesc );
   args.ParseOptions( argc, argv );
 
+  usr::log::SetLogLevel( args.Arg<int>( "verbose" ) );
   args.AddDirScheme( usr::ArgumentExtender::ArgPathScheme( "outputdir", "" ) );
   args.AddNameScheme( usr::ArgumentExtender::ArgPathScheme( "commonpostfix", "" ) );
-
   SiPMLowLightFit* mgr = args.CheckArg( "configfile" ) ?
                          new SiPMLowLightFit( args.Arg<std::string>( "configfile" ) ) :
                          new SiPMLowLightFit();
   mgr->UpdateSettings( args );
 
   // Parsing the data
+  usr::log::PrintLog( usr::log::INFO, "Parsing the data file" );
   mgr->MakeBinnedData();
 
   // Running the estimations
+  usr::log::PrintLog( usr::log::INFO, "Running the PDF estimation" );
   mgr->RunPDFEstimation();
 
   // Saving the estimation plots if requested.
@@ -75,10 +86,18 @@ main( int argc, char* argv[] )
     mgr->PlotPoissonFit( args.MakePDFFile( args.Arg<std::string>( "saveestpoisson" ) ) );
   }
 
+  const bool runfit = args.CheckArg( "savefit" ) && args.CheckArg( "savelatex" )
+                      && args.CheckArg( "savetxt" );
+  if( !runfit ){
+    usr::log::PrintLog( usr::log::INFO, "Early exit!" );
+    return 0;
+  }
   // Running the fit
+  usr::log::PrintLog( usr::log::INFO, "Running the PDF fitting routine" );
   mgr->RunFit();
 
   // Saving the requested outputs
+  usr::log::PrintLog( usr::log::INFO, "Saving the fit result" );
   if( args.CheckArg( "savefit" ) ){
     mgr->PlotSpectrumFit( args.MakePDFFile( args.Arg<std::string>( "savefit" ) ) );
   }
