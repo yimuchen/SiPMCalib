@@ -1,5 +1,4 @@
 #include "SiPMCalib/SiPMCalc/interface/SiPMDarkPdf.hpp"
-#include "SiPMCalib/SiPMCalc/interface/SiPMFormat.hpp"
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/Maths.hpp"
@@ -58,6 +57,7 @@ main( int argc, char* argv[] )
   const unsigned start    = arg.ArgOpt<int>( "start", 0 );
   const unsigned end      = arg.ArgOpt<int>( "end", 60 );
 
+  /*
   SiPMFormat fmt( input, adcbin, start, end );
 
   RooRealVar ped( "ped", "ped", -200, 200 );
@@ -128,6 +128,6 @@ main( int argc, char* argv[] )
   usr::fout( sf, "s1 ",     s1.getVal(),      s1.getError() );
   usr::fout( sf, "dcfrac",  dcfrac.getVal(),  dcfrac.getError() );
   usr::fout( sf, "epslion", epsilon.getVal(), epsilon.getError() );
-
+  */
   return 0;
 }
