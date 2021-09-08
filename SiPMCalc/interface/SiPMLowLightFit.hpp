@@ -132,8 +132,6 @@ private:
   double _pedrms;
   double _maxarea;
 
-  int _verbose;
-
   // Default setting options
   void set_all_defaults();
 
