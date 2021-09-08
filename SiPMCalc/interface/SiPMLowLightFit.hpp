@@ -9,6 +9,7 @@
 #include "TGraphErrors.h"
 #include "TH1D.h"
 #include "TSpectrum.h"
+#include "RooRealVar.h"
 
 #include <iostream>
 #include <memory>
