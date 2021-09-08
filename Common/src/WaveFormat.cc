@@ -1,27 +1,15 @@
-#include "SiPMCalib/SiPMCalc/interface/SiPMWaveFormat.hpp"
+#include "SiPMCalib/Common/interface/WaveFormat.hpp"
 
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
-#include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 #else
 #include "UserUtils/Common/Maths.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
-#include "UserUtils/PlotUtils/Simple1DCanvas.hpp"
 #endif
 
-#include <algorithm>
-#include <boost/format.hpp>
 #include <fstream>
-#include <iostream>
-#include <map>
 #include <sstream>
-
-#include "TCanvas.h"
-#include "TF1.h"
-#include "TGraphErrors.h"
-#include "TH1D.h"
-#include "TSpectrum.h"
 
 static inline int16_t
 hex_to_int( const char x )
@@ -38,7 +26,7 @@ bit4_to_bit2( const int16_t x )
 }
 
 /**
- * @brief SiPMWaveFormat is a simple class for parsing the hex wave format used
+ * @brief WaveFormat is a simple class for parsing the hex wave format used
  * in standalone data collection.
  *
  * The First line of the file will contain 3 numbers:
@@ -48,8 +36,7 @@ bit4_to_bit2( const int16_t x )
  *
  * The following are lines of time series data in the hex format.
  */
-
-SiPMWaveFormat::SiPMWaveFormat( const std::string& file )
+WaveFormat::WaveFormat( const std::string& file )
 {
   std::string line;
   std::ifstream fin( file, std::ios::in );
@@ -111,7 +98,7 @@ SiPMWaveFormat::SiPMWaveFormat( const std::string& file )
 }
 
 
-SiPMWaveFormat::~SiPMWaveFormat(){}
+WaveFormat::~WaveFormat(){}
 
 /**
  * @brief Getting the stored waveform at some certain index, the results will
@@ -121,7 +108,7 @@ SiPMWaveFormat::~SiPMWaveFormat(){}
  * @param offset
  */
 std::vector<int16_t>
-SiPMWaveFormat::WaveformRaw( const unsigned index, const int16_t offset ) const
+WaveFormat::WaveformRaw( const unsigned index, const int16_t offset ) const
 {
   std::vector<int16_t> ans;
 
@@ -137,9 +124,9 @@ SiPMWaveFormat::WaveformRaw( const unsigned index, const int16_t offset ) const
  * window to perform the pedestal subtraction.
  */
 std::vector<double>
-SiPMWaveFormat::Waveform( const unsigned index,
-                          const unsigned pedstart,
-                          const unsigned pedstop ) const
+WaveFormat::Waveform( const unsigned index,
+                      const unsigned pedstart,
+                      const unsigned pedstop ) const
 {
   std::vector<double> ans;
   const double ped_value = PedValue( index, pedstart, pedstop );
@@ -156,11 +143,11 @@ SiPMWaveFormat::Waveform( const unsigned index,
  * window to perform the pedestal subtraction.
  */
 double
-SiPMWaveFormat::WaveformSum( const unsigned index,
-                             const unsigned intstart,
-                             const unsigned intstop,
-                             const unsigned pedstart,
-                             const unsigned pedstop ) const
+WaveFormat::WaveformSum( const unsigned index,
+                         const unsigned intstart,
+                         const unsigned intstop,
+                         const unsigned pedstart,
+                         const unsigned pedstop ) const
 {
   double ans             = 0;
   const double ped_value = PedValue( index, pedstart, pedstop );
@@ -183,9 +170,9 @@ SiPMWaveFormat::WaveformSum( const unsigned index,
  * the given pedestal window.
  */
 double
-SiPMWaveFormat::PedValue( const unsigned index,
-                          const unsigned pedstart,
-                          const unsigned pedstop ) const
+WaveFormat::PedValue( const unsigned index,
+                      const unsigned pedstart,
+                      const unsigned pedstop ) const
 {
   if( pedstart == unsigned(-1) || pedstop == unsigned(-1) ){
     return 0;
@@ -206,9 +193,9 @@ SiPMWaveFormat::PedValue( const unsigned index,
  * within the given pedestal window.
  */
 double
-SiPMWaveFormat::PedRMS( const unsigned index,
-                        const unsigned pedstart,
-                        const unsigned pedstop ) const
+WaveFormat::PedRMS( const unsigned index,
+                    const unsigned pedstart,
+                    const unsigned pedstop ) const
 {
   // Returns zero is the default empty range is given.
   if( pedstart == unsigned(-1) || pedstop == unsigned(-1) ){

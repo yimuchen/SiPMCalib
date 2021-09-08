@@ -1,0 +1,6 @@
+<use name="roofit"/>
+<use name="UserUtils/PlotUtils"/>
+
+<flags CXXFLAGS="-g -lSpectrum"/>
+
+<bin name="SiPM_PulserShape" file="PulserShape.cc"/>

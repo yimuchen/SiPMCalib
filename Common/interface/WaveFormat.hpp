@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 
-class SiPMWaveFormat
+class WaveFormat
 {
 public:
-  SiPMWaveFormat( const std::string& file );
-  ~SiPMWaveFormat();
+  WaveFormat( const std::string& file );
+  ~WaveFormat();
 
   inline double
   Time() const { return time; }

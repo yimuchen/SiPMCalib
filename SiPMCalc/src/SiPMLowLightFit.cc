@@ -1,6 +1,6 @@
 #include "SiPMCalib/Common/interface/StdFormat.hpp"
+#include "SiPMCalib/Common/interface/WaveFormat.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMLowLightFit.hpp"
-#include "SiPMCalib/SiPMCalc/interface/SiPMWaveFormat.hpp"
 
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
@@ -282,7 +282,7 @@ void
 SiPMLowLightFit::make_array_from_waveform()
 {
   // Using the common SiPM waveformat class to get wave from.
-  SiPMWaveFormat wformat( _inputfile );
+  WaveFormat wformat( _inputfile );
 
   // Looping over the value,
   for( unsigned i = 0; i < wformat.NWaveforms(); ++i ){

@@ -1,23 +1,23 @@
-#include "SiPMCalib/SiPMCalc/interface/SiPMWaveFormat.hpp"
+#include "SiPMCalib/Common/interface/WaveFormat.hpp"
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/PlotUtils/interface/Flat2DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 
-static void MakeRawWaveform( const SiPMWaveFormat&,
+static void MakeRawWaveform( const WaveFormat&,
                              const usr::ArgumentExtender& );
 
-static void MakeWaveform( const SiPMWaveFormat&,
+static void MakeWaveform( const WaveFormat&,
                           const usr::ArgumentExtender& );
 
-static void MakeIntegrated( const SiPMWaveFormat&,
+static void MakeIntegrated( const WaveFormat&,
                             const usr::ArgumentExtender& );
 
-static void MakePedestalPlot( const SiPMWaveFormat&,
+static void MakePedestalPlot( const WaveFormat&,
                               const usr::ArgumentExtender& );
 
-static void MakeOnePlot( const SiPMWaveFormat&,
+static void MakeOnePlot( const WaveFormat&,
                          const usr::ArgumentExtender& );
 
 int
@@ -68,7 +68,7 @@ main( int argc, char* argv[] )
   }
 
   // Making the raw data format container
-  SiPMWaveFormat wformat( args.Arg<std::string>( "data" ) );
+  WaveFormat wformat( args.Arg<std::string>( "data" ) );
 
   // Running the separate sub commands
   if( args.CheckArg( "rawout" ) ){
@@ -95,7 +95,7 @@ main( int argc, char* argv[] )
 }
 
 void
-MakeRawWaveform( const SiPMWaveFormat&        wformat,
+MakeRawWaveform( const WaveFormat&            wformat,
                  const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
@@ -163,7 +163,7 @@ MakeRawWaveform( const SiPMWaveFormat&        wformat,
 }
 
 void
-MakeWaveform( const SiPMWaveFormat&        wformat,
+MakeWaveform( const WaveFormat&            wformat,
               const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
@@ -244,7 +244,7 @@ MakeWaveform( const SiPMWaveFormat&        wformat,
 }
 
 static void
-MakeOnePlot( const SiPMWaveFormat&        wformat,
+MakeOnePlot( const WaveFormat&            wformat,
              const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
@@ -287,7 +287,7 @@ MakeOnePlot( const SiPMWaveFormat&        wformat,
 }
 
 static void
-MakeIntegrated( const SiPMWaveFormat&        wformat,
+MakeIntegrated( const WaveFormat&            wformat,
                 const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
@@ -342,7 +342,7 @@ MakeIntegrated( const SiPMWaveFormat&        wformat,
 }
 
 static void
-MakePedestalPlot( const SiPMWaveFormat&        wformat,
+MakePedestalPlot( const WaveFormat&            wformat,
                   const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments

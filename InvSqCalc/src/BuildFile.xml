@@ -1,7 +1,0 @@
-<use name="UserUtils/MathUtils"/>
-<use name="UserUtils/Common"/>
-
-<flags CXXFLAGS="-g"/>
-<export>
-  <lib name="1"/>
-</export>

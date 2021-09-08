@@ -1,3 +1,5 @@
+<use name="UserUtils/Common"/>
+
 <flags CXXFLAGS="-g"/>
 <export>
   <lib name="1"/>
