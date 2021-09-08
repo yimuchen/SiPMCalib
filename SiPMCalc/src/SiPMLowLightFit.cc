@@ -86,19 +86,32 @@ SiPMLowLightFit::SiPMLowLightFit( const std::string& config )
 usr::po::options_description
 SiPMLowLightFit::DataArguments()
 {
-  usr::po::options_description desc( "Options for parsing the data file for low-light SiPM spectrum model" );
+  usr::po::options_description desc(
+    "Options for parsing the data file for low-light SiPM spectrum model" );
   desc.add_options()
-    ( "input",     usr::po::value<std::string>(), "Input data file" )
-    ( "waveform",  usr::po::value<bool>(),        "Whether in input data is a raw waveform (True) are integrated (False)" )
-    ( "binwidth",  usr::po::value<double>(),      "The bin width to use for binned data" )
-    ( "maxarea",   usr::po::value<double>(),      "Maximum area for perform fit on, leave negative is this should be automatically" )
+    ( "input",     usr::po::reqvalue<std::string>(),
+    "Input data file" )
+    ( "waveform",  usr::po::reqvalue<bool>(),
+    "Whether in input data is a raw waveform (True) are integrated (False)" )
+    ( "binwidth",  usr::po::value<double>(),
+    "The bin width to use for binned data" )
+    ( "maxarea",   usr::po::value<double>(),
+    "Maximum area for perform fit on" )
 
   /// Options unique to the waveform input format.
-    ( "intstart",  usr::po::value<unsigned>(),  "Time cell to start the integration window" )
-    ( "intstop",   usr::po::value<unsigned>(),  "Time cell to stop the integration window" )
-    ( "pedstart",  usr::po::value<unsigned>(),  "Time cell to start the pedestal calculation, ignore this to not use pedestal subtraction" )
-    ( "pedstop",   usr::po::value<unsigned>(),  "Time cell to stop the pedestal calculation, ignore this to not use pedestal subtraction" )
-    ( "pedrms",   usr::po::value<double>(),     "Maximum RMS of values within the pedestal window, event is discarded if this value is surpassed" )
+    ( "intstart",  usr::po::value<unsigned>(),
+    "Time slice to start the integration window" )
+    ( "intstop",   usr::po::value<unsigned>(),
+    "Time slice to stop the integration window" )
+    ( "pedstart",  usr::po::value<unsigned>(),
+    "Time slice to start the pedestal calculation, ignore to skip pedestal "
+    "subtraction" )
+    ( "pedstop",   usr::po::value<unsigned>(),
+    "Time slice to stop the pedestal calculation, ignore to skip pedestal "
+    "subtraction" )
+    ( "pedrms",   usr::po::value<double>(),
+    "Maximum RMS of values within the pedestal window, event is discarded if "
+    "this value is surpassed" )
   ;
   ;
 
@@ -122,11 +135,11 @@ SiPMLowLightFit::FitArguments()
     ( "gain",    usr::po::multivalue<double>(), "1-p.e gain factor" )
     ( "s0",      usr::po::multivalue<double>(), "Electrical noise" )
     ( "s1",      usr::po::multivalue<double>(), "pixel gain variation" )
-    ( "mean",    usr::po::multivalue<double>(), "Mean number of incident photons" )
+    ( "mean",    usr::po::multivalue<double>(), "Mean number of p.es" )
     ( "lambda",  usr::po::multivalue<double>(), "Crosstalk proability" )
     ( "alpha",   usr::po::multivalue<double>(), "Afterpulsing probability" )
     ( "beta",    usr::po::multivalue<double>(), "Afterpulting timescale factor" )
-    ( "dcfrac",  usr::po::multivalue<double>(), "Dark current contamination probability" )
+    ( "dcfrac",  usr::po::multivalue<double>(), "Dark current probability" )
     ( "epsilon", usr::po::multivalue<double>(), "Resolution factor to be used for the dark current curve" )
   ;
 
@@ -136,14 +149,23 @@ SiPMLowLightFit::FitArguments()
 usr::po::options_description
 SiPMLowLightFit::OperationArguments()
 {
-  usr::po::options_description desc( "Options of labeling the SiPM operation parameters that the fit have difficulty figuring out independently" );
+  usr::po::options_description desc(
+    "Options of labeling the SiPM operation parameters that the fit have "
+    "difficulty figuring out independently" );
 
   desc.add_options()
-    ( "intwindow", usr::po::value<double>(), "The integration window required for waveform sums, notice that this will be overwritten for waveform formats (units: ns)" )
-    ( "sipmtime", usr::po::value<double>(), "SiPM recovery time, this calculation routines would not include functions to calculated this. (units: ns)" )
-    ( "lumitype", usr::po::value<std::string>(), "Luminosity type to print on the top right of the plots" )
-    ( "sipmtype", usr::po::value<std::string>(), "SiPM type to print on the top left of plots" )
-    ( "biasv",    usr::po::value<std::string>(), "String to print on the top left of the plots to indicated the operation condition" )
+    ( "intwindow", usr::po::value<double>(),
+    "The integration window required for waveform sums, this will overwrite "
+    "intstart/intstop results used for waveform formats (units: ns)" )
+    ( "sipmtime", usr::po::value<double>(),
+    "SiPM recovery time, this calculation routines would not include functions "
+    "to calculated this. (units: ns)" )
+    ( "lumitype", usr::po::value<std::string>(),
+    "Luminosity type display on plots" )
+    ( "sipmtype", usr::po::value<std::string>(),
+    "SiPM type to display on plots" )
+    ( "biasv",    usr::po::value<std::string>(),
+    "String on plot used to indicated the bias condition" )
   ;
 
   return desc;
@@ -175,28 +197,29 @@ SiPMLowLightFit::UpdateSettings( const usr::ArgumentExtender& args )
   _maxarea   = args.ArgOpt<double>(   "maxarea",   _maxarea   );
 
   // Updating the fitting arguments
-  auto arg1 = []( RooRealVar& x, double val ){
-                x = val;
-                x.setConstant( true );
-              };
-  auto arg2 = []( RooRealVar& x, double min, double max ){
-                x.setRange( min, max );
-                x.setConstant( false );
-              };
-  auto arg3 = []( RooRealVar& x, double val, double min, double max ){
-                x = val;
-                x.setRange( min, max );
-                x.setConstant( false );
-              };
-  auto update_arg = [&args, &arg1, &arg2, &arg3]( RooRealVar& x, const std::string& var ){
+  auto f1 = []( RooRealVar& x, double val ){
+              x = val;
+              x.setConstant( true );
+            };
+  auto f2 = []( RooRealVar& x, double min, double max ){
+              x.setRange( min, max );
+              x.setConstant( false );
+            };
+  auto f3 = []( RooRealVar& x, double val, double min, double max ){
+              x = val;
+              x.setRange( min, max );
+              x.setConstant( false );
+            };
+  auto update_arg = [&args, &f1, &f2, &f3]( RooRealVar& x,
+                                            const std::string& var ){
                       if( args.CheckArg( var ) ){
                         const auto vec = args.ArgList<double>( var );
                         if( vec.size() == 1 ){
-                          arg1( x, vec[0] );
+                          f1( x, vec[0] );
                         } else if( vec.size() == 2 ){
-                          arg2( x, vec[0], vec[1] );
+                          f2( x, vec[0], vec[1] );
                         } else if( vec.size() == 3 ){
-                          arg3( x, vec[0], vec[1], vec[2] );
+                          f3( x, vec[0], vec[1], vec[2] );
                         }
                       }
                     };
@@ -234,9 +257,12 @@ SiPMLowLightFit::UpdateSettings( const usr::ArgumentExtender& args )
   lock( ignore_mean_est,   "mean"   );
   lock( ignore_lambda_est, "lambda" );
 
-  _est_minpeak       = args.ArgOpt<double>( "estminpeak",       _est_minpeak       );
-  _est_gausswindow   = args.ArgOpt<double>( "estgausswindow",   _est_gausswindow   );
-  _est_maxgausswidth = args.ArgOpt<double>( "estmaxgausswidth", _est_maxgausswidth );
+  _est_minpeak = args.ArgOpt<double>( "estminpeak"
+                                    , _est_minpeak       );
+  _est_gausswindow = args.ArgOpt<double>( "estgausswindow"
+                                        , _est_gausswindow   );
+  _est_maxgausswidth = args.ArgOpt<double>( "estmaxgausswidth"
+                                          , _est_maxgausswidth );
 
   // Operation parameters related variables
   _intwindow = args.ArgOpt<double>( "intwindow", _intwindow );
@@ -261,8 +287,9 @@ SiPMLowLightFit::MakeBinnedData()
   std::sort( _arealist.begin(), _arealist.end() );
 
   // Parsing for converting into data.
-  const double xmin  = usr::RoundDown( _arealist.front(), _binwidth );
-  const double xmax  = usr::RoundUp(  std::min( _arealist.back(), _maxarea ),  _binwidth );
+  const double xmin = usr::RoundDown( _arealist.front(), _binwidth );
+  const double xmax = usr::RoundUp( std::min( _arealist.back(), _maxarea )
+                                  , _binwidth );
   const double nbins = ( xmax - xmin ) / _binwidth;
 
   x().setRange( xmin, xmax );

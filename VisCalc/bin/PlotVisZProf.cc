@@ -23,10 +23,6 @@ main( int argc, char const* argv[] )
 {
   auto zprof = MakeProfileGraph( argv[1] );
 
-  // TF1 func( "func", "[0]*(x-[1])*(x-[1]) + [2]", 35, 42 );
-  // func.SetParameters( usr::plt::GetYmax( zprof ), 40, 0 );
-  // zprof->Fit( &func, "\1\2 0 R" );
-
   {// Sharpness graphs
     usr::plt::Simple1DCanvas c;
 
@@ -68,9 +64,6 @@ main( int argc, char const* argv[] )
     ygraph.SetMarkerColor( kBlue );
     ygraph.SetLineColor( kBlue );
 
-    // c.DrawHLine(  7, kGray, 2 );
-    // c.DrawHLine( -7, kGray, 2 );
-
     c.Xaxis().SetTitle( "Gantry Z [mm]" );
     c.Yaxis().SetTitle( "Drift from Center [pix]" );
 
@@ -79,7 +72,7 @@ main( int argc, char const* argv[] )
 
     c.SaveAsPDF( "zscan_xydrift.pdf" );
   }
-  {// Reconstructe\1\2re\1\2lot
+  {// Reconstructed plot
     TF1 func( "func", "[0]/((x-[1])*(x-[1]))",
               usr::plt::GetXmin( zprof.recoarea ),
               usr::plt::GetXmax( zprof.recoarea ) );

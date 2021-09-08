@@ -2,14 +2,12 @@
 <use name="boost_program_options"/>
 
 <use name="SiPMCalib/SiPMCalc"/>
-<use name="SiPMCalib/InvSqCalc"/>
-<use name="UserUtils/PlotUtils"/>
 <use name="UserUtils/Common"/>
 <use name="UserUtils/MathUtils"/>
+<use name="UserUtils/PlotUtils"/>
 
 <flags CXXFLAGS="-g"/>
 
-<!--bin file="RunToy.cc"           name="SiPM_RunToy"          /-->
 <bin file="FitLowLight.cc"      name="SiPM_FitLowLight"     />
 <bin file="FitDark.cc"          name="SiPM_FitDark"         />
 <bin file="DisplayWaveform.cc"  name="SiPM_DisplayWaveform" />

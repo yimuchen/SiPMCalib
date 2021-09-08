@@ -26,7 +26,7 @@ main( int argc, char* argv[] )
   usr::po::options_description desc(
     "Options for plotting a SiPM waveform from our hexadecimal data format" );
   desc.add_options()
-    ( "data", usr::po::value<std::string>(), "Data .txt file" )
+    ( "data", usr::po::reqvalue<std::string>(), "Data .txt file" )
     ( "rawout", usr::po::value<std::string>(),
     "Output file for name raw waveform display, leave blank to skip" )
     ( "waveout", usr::po::value<std::string>(),

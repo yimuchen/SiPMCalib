@@ -1,0 +1,7 @@
+<use name="SiPMCalib/Common"/>
+<use name="UserUtils/PlotUtils"/>
+
+<flags CXXFLAGS="-g"/>
+
+<bin name="SiPM_VisCalc_PlotXYProf"    file="PlotXYProf.cc"/>
+<bin name="SiPM_VisCalc_PlotVisZProf"  file="PlotVisZProf.cc"/>
