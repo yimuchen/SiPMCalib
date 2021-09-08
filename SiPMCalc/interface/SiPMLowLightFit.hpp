@@ -10,6 +10,7 @@
 #include "TH1D.h"
 #include "TSpectrum.h"
 #include "RooRealVar.h"
+#include "RooAbsData.h"
 
 #include <iostream>
 #include <memory>
