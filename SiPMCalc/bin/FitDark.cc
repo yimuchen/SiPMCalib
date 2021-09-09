@@ -1,3 +1,5 @@
+#include "SiPMCalib/Common/interface/MakeRooData.hpp"
+#include "SiPMCalib/Common/interface/WaveFormat.hpp"
 #include "SiPMCalib/SiPMCalc/interface/SiPMDarkPdf.hpp"
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
@@ -57,41 +59,46 @@ main( int argc, char* argv[] )
   const unsigned start    = arg.ArgOpt<int>( "start", 0 );
   const unsigned end      = arg.ArgOpt<int>( "end", 60 );
 
-  /*
-  SiPMFormat fmt( input, adcbin, start, end );
+  WaveFormat wformat( input );
 
+
+  RooRealVar x( "x", "x", -1000, 10000 );
   RooRealVar ped( "ped", "ped", -200, 200 );
   RooRealVar gain( "gain", "gain", 1, 500 );
   RooRealVar s0( "s0", "s0", 0.01, 100 );
   RooRealVar s1( "s1", "s1", 0.01, 50 );
   RooRealVar dcfrac( "dcfrac", "dcfrac", 0, 0.2 );
   RooRealVar epsilon( "epslion", "epsilon", 1e-5, 1e-1 );
-
   SiPMDarkPdf pdf( "dark", "dark",
-                   fmt.x(), ped, gain, s0, s1, dcfrac, epsilon );
-  pdf.RunEstimate( fmt.data() );
+                   x, ped, gain, s0, s1, dcfrac, epsilon );
+
+  const auto list = wformat.SumList( start, end );
+
+  SetRange( x, adcbin, -1, list );
+  std::unique_ptr<RooDataHist> data( MakeData( x, list, -1 ) );
+  pdf.RunEstimate( *data );
 
   const double max = arg.ArgOpt<double>( "maxarea",
     ped.getVal() + 1.5*gain.getVal() );
-  fmt.TruncateDataSet( max );
+  data.reset( MakeData( x, list, max ) );
 
-  pdf.fitTo( fmt.data(),
+  pdf.fitTo( *data,
     RooFit::Range( ped.getVal() - 3*s0.getVal()
                  , ped.getVal() + 1.2*gain.getVal() ) );
-  pdf.fitTo( fmt.data(),
+  pdf.fitTo( *data,
     RooFit::Range( ped.getVal() - 3*s0.getVal()
                  , ped.getVal() + 1.2*gain.getVal() ) );
-  pdf.fitTo( fmt.data(),
+  pdf.fitTo( *data,
     RooFit::Range( ped.getVal() - 3*s0.getVal()
                  , ped.getVal() + 1.2*gain.getVal() ) );
 
-  usr::plt::Ratio1DCanvas c( fmt.x() );
+  usr::plt::Ratio1DCanvas c( x );
   auto& fitgraph = c.PlotPdf( pdf,
-    RooFit::Normalization( fmt.data().sumEntries() ),
+    RooFit::Normalization( data->sumEntries() ),
     usr::plt::LineColor( usr::plt::col::blue ),
     usr::plt::FillColor( usr::plt::col::cyan ),
     usr::plt::EntryText( "Model Fit" ) );
-  auto& datgraph = c.PlotData( fmt.data(),
+  auto& datgraph = c.PlotData( *data,
     usr::plt::EntryText( "SiPM readout" ),
     usr::plt::MarkerSize( 0.2 ) );
 
@@ -101,8 +108,7 @@ main( int argc, char* argv[] )
     usr::plt::PlotType( usr::plt::scatter ) );
 
   // More information from fit parameters values
-  const unsigned opend = std::min( end, fmt.PreSamples() + fmt.PostSamples() );
-  const double window  = ( opend-start ) * fmt.TimeInterval();
+  const double window = ( end-start ) * wformat.Time();
   const usr::Measurement pdc( dcfrac.getVal(),
                               dcfrac.getError(), dcfrac.getError() );
   const usr::Measurement tdc = window / 1000. / pdc;
@@ -128,6 +134,5 @@ main( int argc, char* argv[] )
   usr::fout( sf, "s1 ",     s1.getVal(),      s1.getError() );
   usr::fout( sf, "dcfrac",  dcfrac.getVal(),  dcfrac.getError() );
   usr::fout( sf, "epslion", epsilon.getVal(), epsilon.getError() );
-  */
   return 0;
 }

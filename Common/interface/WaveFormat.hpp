@@ -39,6 +39,11 @@ public:
                       const unsigned pedstart = -1,
                       const unsigned pedstop  = -1 ) const;
 
+  std::vector<double> SumList( const unsigned intstart = 0,
+                               const unsigned intstop  = -1,
+                               const unsigned pedstart = -1,
+                               const unsigned pedstrop = -1 ) const;
+
   double PedValue( const unsigned index,
                    const unsigned pedstart,
                    const unsigned pedstop ) const;

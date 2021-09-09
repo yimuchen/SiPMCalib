@@ -3,8 +3,6 @@
 
 <flags CXXFLAGS="-g -lSpectrum"/>
 
-<bin name="SiPM_CompareZStab"     file="CompareZstability.cc"/>
 <bin name="SiPM_FitProfile"       file="FitProfile.cc"/>
 <bin name="SiPM_PlotTimeScan"     file="PlotTimeScan.cc"/>
 <bin name="SiPM_StabilityProfile" file="PlotProfile.cc"/>
-<bin name="SiPM_StabilityVars"    file="PlotVarHist.cc"/>

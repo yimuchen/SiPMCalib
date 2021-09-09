@@ -164,6 +164,23 @@ WaveFormat::WaveformSum( const unsigned index,
   return ans;
 }
 
+std::vector<double>
+WaveFormat::SumList( const unsigned intstart,
+                   const unsigned intstop,
+                   const unsigned pedstart,
+                   const unsigned pedstop ) const
+{
+  std::vector<double> ans;
+  ans.reserve( NWaveforms() );
+
+  for( unsigned i = 0; i < NWaveforms(); ++i ){
+    ans.push_back( WaveformSum( intstart, intstop, pedstart, pedstop ) );
+  }
+
+  std::sort( ans.begin(), ans.end() );
+
+  return ans;
+}
 
 /**
  * @brief Returning the average voltage value of samples at a given index within
