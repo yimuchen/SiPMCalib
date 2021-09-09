@@ -86,8 +86,8 @@ main( int argc, char* argv[] )
     mgr->PlotPoissonFit( args.MakePDFFile( args.Arg<std::string>( "saveestpoisson" ) ) );
   }
 
-  const bool runfit = args.CheckArg( "savefit" ) && args.CheckArg( "savelatex" )
-                      && args.CheckArg( "savetxt" );
+  const bool runfit = args.CheckArg( "savefit" ) || args.CheckArg( "savelatex" )
+                      || args.CheckArg( "savetxt" );
   if( !runfit ){
     usr::log::PrintLog( usr::log::INFO, "Early exit!" );
     return 0;
