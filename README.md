@@ -14,6 +14,7 @@ also work. The CMSSW environment is only used for easier code organization.
 On a machine with that support the correct architecture, run the following commands:
 
 ```bash
+source /cvmfs/cms.cern.ch/cmsset_default.sh
 export SCRAM_ARCH=slc7_amd64_gcc700
 cmsrel CMSSW_10_3_1_patch1
 cd CMSSW_10_3_1_patch1/src
