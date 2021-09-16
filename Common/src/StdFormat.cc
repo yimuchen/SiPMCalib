@@ -1,5 +1,8 @@
 #include "SiPMCalib/Common/interface/StdFormat.hpp"
 
+#include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
+
+#include <exception>
 #include <fstream>
 #include <sstream>
 
@@ -8,6 +11,11 @@ StdFormat::StdFormat( const std::string& filename )
   // Getting everything row by row
   std::ifstream infile( filename );
   std::string line;
+
+  if( !infile.is_open() ){
+    throw std::runtime_error(
+      usr::fstr( "Input file %s cannot be opened!", filename ) );
+  }
 
   while( std::getline( infile, line ) ){
     std::istringstream linestream( line );

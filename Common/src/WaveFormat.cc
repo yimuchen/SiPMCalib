@@ -41,6 +41,11 @@ WaveFormat::WaveFormat( const std::string& file )
   std::string line;
   std::ifstream fin( file, std::ios::in );
 
+  if( !fin.is_open() ){
+    throw std::runtime_error(
+      usr::fstr( "Input file [%s] cannot be opened!", file ) );
+  }
+
   // Getting first line
   std::getline( fin, line );
   std::istringstream linestream( line );
@@ -166,9 +171,9 @@ WaveFormat::WaveformSum( const unsigned index,
 
 std::vector<double>
 WaveFormat::SumList( const unsigned intstart,
-                   const unsigned intstop,
-                   const unsigned pedstart,
-                   const unsigned pedstop ) const
+                     const unsigned intstop,
+                     const unsigned pedstart,
+                     const unsigned pedstop ) const
 {
   std::vector<double> ans;
   ans.reserve( NWaveforms() );
