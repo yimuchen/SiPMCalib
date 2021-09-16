@@ -34,7 +34,7 @@ main( int argc, char* argv[] )
     ( "sumout", usr::po::value<std::string>(),
     "Output file name of the integral display, leave blank to skip" )
     ( "oneout", usr::po::value<std::string>(),
-    "Output filename of the single wavefor file, leave blank to skip" )
+    "Output filename of the single waveform file, leave blank to skip" )
     ( "pedout", usr::po::value<std::string>(),
     "Output filename for the Pedestal value plot, leave blank to skip" )
     ( "start", usr::po::value<unsigned>()->default_value( 0 ),
@@ -60,12 +60,6 @@ main( int argc, char* argv[] )
   usr::ArgumentExtender args;
   args.AddOptions( desc );
   args.ParseOptions( argc, argv );
-
-  // Making sure that there is some data to generate.
-  if( !args.CheckArg( "data" ) ){
-    std::cerr << "Please provide input data" << std::endl;
-    return 1;
-  }
 
   // Making the raw data format container
   WaveFormat wformat( args.Arg<std::string>( "data" ) );
@@ -372,5 +366,4 @@ MakePedestalPlot( const WaveFormat&            wformat,
   c.Yaxis().SetTitle( "Number of cells" );
 
   c.SaveAsPDF( output );
-
 }
