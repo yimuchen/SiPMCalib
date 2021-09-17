@@ -37,23 +37,23 @@ main( int argc, char* argv[] )
     "Output filename of the single waveform file, leave blank to skip" )
     ( "pedout", usr::po::value<std::string>(),
     "Output filename for the Pedestal value plot, leave blank to skip" )
-    ( "start", usr::po::value<unsigned>()->default_value( 0 ),
+    ( "start", usr::po::defvalue<unsigned>( 0 ),
     "starting sample of the waveform display" )
-    ( "stop", usr::po::value<unsigned>()->default_value( 2147483647 ),
+    ( "stop", usr::po::defvalue<unsigned>( 2147483647 ),
     "ending sample of the waveform display" )
-    ( "pedstart", usr::po::value<unsigned>()->default_value( -1 ),
+    ( "pedstart", usr::po::defvalue<unsigned>( -1 ),
     "starting sample of the pedestal subtraction window" )
-    ( "pedstop", usr::po::value<unsigned>()->default_value( -1 ),
+    ( "pedstop", usr::po::defvalue<unsigned>( -1 ),
     "ending sample of the pedestal subtraction window" )
-    ( "pedrms", usr::po::value<double>()->default_value( 1000 ),
+    ( "pedrms", usr::po::defvalue<double>( 10000 ),
     "maximum RMS [mV] allowed in pedestal, discarding events otherwise" )
-    ( "intstart", usr::po::value<unsigned>()->default_value( 0 ),
+    ( "intstart", usr::po::defvalue<unsigned>( 0 ),
     "starting sample of the integration window" )
-    ( "intstop", usr::po::value<unsigned>()->default_value( 2147483647 ),
+    ( "intstop", usr::po::defvalue<unsigned>( 2147483647 ),
     "ending sample of the intergration window" )
-    ( "sumbinwidth", usr::po::value<double>()->default_value( 1.6 ),
+    ( "sumbinwidth", usr::po::defvalue<double>( 1.6 ),
     "Width of the sum histogram bins [mV-ns]" )
-    ( "oneidx", usr::po::value<unsigned>()->default_value( 0 ),
+    ( "oneidx", usr::po::defvalue<unsigned>( 0 ),
     "Index of the single waveform output" );
   ;
 
