@@ -23,9 +23,9 @@ main( int argc, char* argv[] )
 {
   usr::po::options_description desc( "Options for fitting data to lower light SiPM spectrum model" );
   desc.add_options()
-    ( "data", usr::po::value<std::string>(),
+    ( "data", usr::po::reqvalue<std::string>(),
     "Input data .txt file" )
-    ( "output", usr::po::value<std::string>(),
+    ( "output", usr::po::reqvalue<std::string>(),
     "Primary output file name" )
     ( "estcheck", usr::po::value<std::string>(),
     "Estimation output files, leave blank for no output" )
@@ -42,15 +42,6 @@ main( int argc, char* argv[] )
   arg.AddOptions( desc );
   arg.ParseOptions( argc, argv );
 
-  if( !arg.CheckArg( "data" ) ){
-    std::cerr << "Please include input data" << std::endl;
-    return 1;
-  }
-  if( !arg.CheckArg( "output" ) ){
-    std::cerr << "Please specify output" << std::endl;
-    return 1;
-  }
-
   arg.SetNameScheme( {{"output", ""}} );
 
   const std::string input = arg.Arg( "data" );
@@ -60,7 +51,6 @@ main( int argc, char* argv[] )
   const unsigned end      = arg.ArgOpt<int>( "end", 60 );
 
   WaveFormat wformat( input );
-
 
   RooRealVar x( "x", "x", -1000, 10000 );
   RooRealVar ped( "ped", "ped", -200, 200 );
