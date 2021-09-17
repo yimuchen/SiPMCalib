@@ -41,11 +41,6 @@ main( int argc, char* argv[] )
     "Saving the poisson estimation plot" )
   ;
 
-  usr::po::options_description vdesc( "verbose level settings" );
-  vdesc.add_options()
-    ( "verbose", usr::po::defvalue<int>( usr::log::WARNING ), "Print level for routine" )
-  ;
-
   usr::ArgumentExtender args;
   args.AddOptions( desc );
   args.AddOptions( savedesc );
@@ -53,23 +48,23 @@ main( int argc, char* argv[] )
   args.AddOptions( SiPMLowLightFit::FitArguments() );
   args.AddOptions( SiPMLowLightFit::OperationArguments() );
   args.AddOptions( SiPMLowLightFit::EstArguments() );
-  args.AddOptions( vdesc );
+  args.AddVerboseOpt();
   args.ParseOptions( argc, argv );
 
-  usr::log::SetLogLevel( args.Arg<int>( "verbose" ) );
   args.AddDirScheme( usr::ArgumentExtender::ArgPathScheme( "outputdir", "" ) );
-  args.AddNameScheme( usr::ArgumentExtender::ArgPathScheme( "commonpostfix", "" ) );
+  args.AddNameScheme( usr::ArgumentExtender::ArgPathScheme( "commonpostfix"
+                                                          , "" ) );
   SiPMLowLightFit* mgr = args.CheckArg( "configfile" ) ?
                          new SiPMLowLightFit( args.Arg<std::string>( "configfile" ) ) :
                          new SiPMLowLightFit();
   mgr->UpdateSettings( args );
 
   // Parsing the data
-  usr::log::PrintLog( usr::log::INFO, "Parsing the data file" );
+  usr::log::PrintLog( usr::log::DEBUG, "Parsing the data file" );
   mgr->MakeBinnedData();
 
   // Running the estimations
-  usr::log::PrintLog( usr::log::INFO, "Running the PDF estimation" );
+  usr::log::PrintLog( usr::log::DEBUG, "Running the PDF estimation" );
   mgr->RunPDFEstimation();
 
   // Saving the estimation plots if requested.
@@ -94,16 +89,16 @@ main( int argc, char* argv[] )
                       args.CheckArg( "savelatex" ) ||
                       args.CheckArg( "savetxt" );
   if( !runfit ){
-    usr::log::PrintLog( usr::log::INFO, "Early exit!" );
+    usr::log::PrintLog( usr::log::DEBUG, "Early exit!" );
     return 0;
   }
 
   // Running the fit
-  usr::log::PrintLog( usr::log::INFO, "Running the PDF fitting routine" );
+  usr::log::PrintLog( usr::log::DEBUG, "Running the PDF fitting routine" );
   mgr->RunFit();
 
   // Saving the requested outputs
-  usr::log::PrintLog( usr::log::INFO, "Saving the fit result" );
+  usr::log::PrintLog( usr::log::DEBUG, "Saving the fit result" );
   if( args.CheckArg( "savefit" ) ){
     mgr->PlotSpectrumFit(
       args.MakePDFFile( args.Arg<std::string>( "savefit" ) ) );
