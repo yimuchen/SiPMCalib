@@ -2,9 +2,11 @@
 
 #ifdef CMSSW_GIT_HASH
 #include "UserUtils/Common/interface/Maths.hpp"
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 #else
 #include "UserUtils/Common/Maths.hpp"
+#include "UserUtils/Common/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/STLUtils/StringUtils.hpp"
 #endif
 
@@ -42,7 +44,7 @@ WaveFormat::WaveFormat( const std::string& file )
   std::ifstream fin( file, std::ios::in );
 
   if( !fin.is_open() ){
-    throw std::runtime_error(
+    usr::log::PrintLog( usr::log::FATAL,// Throws exception
       usr::fstr( "Input file [%s] cannot be opened!", file ) );
   }
 

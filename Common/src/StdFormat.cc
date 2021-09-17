@@ -1,5 +1,6 @@
 #include "SiPMCalib/Common/interface/StdFormat.hpp"
 
+#include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
 #include "UserUtils/Common/interface/STLUtils/StringUtils.hpp"
 
 #include <exception>
@@ -13,7 +14,7 @@ StdFormat::StdFormat( const std::string& filename )
   std::string line;
 
   if( !infile.is_open() ){
-    throw std::runtime_error(
+    usr::log::PrintLog( usr::log::FATAL,// Exception will be thrown
       usr::fstr( "Input file %s cannot be opened!", filename ) );
   }
 
