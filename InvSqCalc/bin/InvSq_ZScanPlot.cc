@@ -1,4 +1,5 @@
 /**
+ * @ingroup InvSqCalc
  * @file InvSq_ZScanPlot.cc
  * @brief Command `SiPM_InvSq_ZScanPlot`: Running the inverse square fit a data
  * file collected with z scan.
@@ -66,8 +67,8 @@ ZProf( const double* vz, const double* param )
 
 TGraphErrors MakeZScanGraph( const StdFormat&, double uncscale );
 
-TFitResult   FitAndShiftData( TGraph& data, TF1& func,
-                              double& ped, double& zoffset );
+TFitResult FitAndShiftData( TGraph& data, TF1& func,
+                            double& ped, double& zoffset );
 
 /**
  * @brief Main routine for plotting inverse z scan. Go to the source file for
@@ -96,10 +97,9 @@ main( int argc, char** argv )
   const double xmin = usr::plt::GetXmin( dataz );
   const double xmax = usr::plt::GetXmax( dataz );
 
-  // Making the data
   TF1 func( "func", ZProf, xmin, xmax, 5 );
   const TFitResult fit = FitAndShiftData( dataz, func, pedestal, zoffset );
-  // Begin plotting
+
   usr::plt::Ratio1DCanvas c;
   auto& fitg = c.PlotFunc( func,
     usr::plt::PlotType( usr::plt::fittedfunc ),
@@ -123,7 +123,6 @@ main( int argc, char** argv )
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::MarkerSize( 0.2 ) );
 
-
   c.TopPad().Yaxis().SetTitle( "Luminosity - Ped. [mV-ns]" );
   c.BottomPad().Xaxis().SetTitle( "Gantry z + z_{0} [mm]" );
   c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
@@ -137,8 +136,9 @@ main( int argc, char** argv )
   c.DrawCMSLabel( "Preliminary", "HGCal" );
   c.TopPad()
   .SetTextCursor( c.TopPad().InnerTextLeft(), 0.45 )
-  .WriteLine( "#frac{L_{0}(z+z_{0})}{(x_{0}^{2} + (z+z_{0})^{2})^{3/2}} + Ped" )
-  // .WriteLine( "" )
+  .WriteLine( "#frac{L_{0}(z+z_{0})}{(x_{0}^{2} + (z+z_{0})^{2})^{3/2}} + Ped" );
+  c.TopPad()
+  .SetTextCursor( c.TopPad().InnerTextLeft(), 0.25 )
   .WriteLine( usr::fstr( "Fit Ped = %.2lf_{#pm%.3lf}",  pedestal, func.GetParError( 3 ) ) )
   .WriteLine( usr::fstr( "Fit z_{0} = %.2lf_{#pm%.3lf}", -zoffset, func.GetParError( 0 ) ) )
   .WriteLine( usr::fstr( "Fit x_{0} = %.2lf_{#pm%.3lf}", func.GetParameter( 1 ), func.GetParError( 1 ) ) )
