@@ -6,5 +6,6 @@
 
 <flags CXXFLAGS="-g"/>
 
-<bin name="SiPM_InvSq_HScanPlot"    file="InvSq_HScanPlot.cc"    />
-<bin name="SiPM_InvSq_ZScanPlot"    file="InvSq_ZScanPlot.cc"    />
+<bin name="SiPM_InvSq_HScanPlot"       file="InvSq_HScanPlot.cc"       />
+<bin name="SiPM_InvSq_ZScanPlot"       file="InvSq_ZScanPlot.cc"       />
+<bin name="SiPM_InvSq_ReduceFilePower" file="InvSq_ReduceFilePower.cc" />
