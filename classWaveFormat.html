@@ -91,31 +91,28 @@ $(function() {
 <li>The conversion factor of a 1 bit to mV.</li>
 </ul>
 <p >All other lines are expected to strings of MxN hexidecimal digits representing the waveformat. This calls will effectively store the format as a matrix of LxM integers, representing the L waveforms extracted for the M samples in a single waveform. Additional functions are provided to the common data processing routines. </p>
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00024">24</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad643f997757830214a55979d1adecc6c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#ad643f997757830214a55979d1adecc6c">WaveFormat</a> (const std::string &amp;file, const bool invert=true)</td></tr>
 <tr class="memdesc:ad643f997757830214a55979d1adecc6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construction of the waveform array form a given input file.  <a href="classWaveFormat.html#ad643f997757830214a55979d1adecc6c">More...</a><br /></td></tr>
 <tr class="separator:ad643f997757830214a55979d1adecc6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8e8a8fee48848c184eef3593d3b9b14"><td class="memItemLeft" align="right" valign="top"><a id="ad8e8a8fee48848c184eef3593d3b9b14" name="ad8e8a8fee48848c184eef3593d3b9b14"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>Time</b> () const</td></tr>
-<tr class="memdesc:ad8e8a8fee48848c184eef3593d3b9b14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the time interval of a single waveform sample. <br /></td></tr>
+<tr class="memitem:ad8e8a8fee48848c184eef3593d3b9b14"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#ad8e8a8fee48848c184eef3593d3b9b14">Time</a> () const</td></tr>
+<tr class="memdesc:ad8e8a8fee48848c184eef3593d3b9b14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the time interval of a single waveform sample.  <a href="classWaveFormat.html#ad8e8a8fee48848c184eef3593d3b9b14">More...</a><br /></td></tr>
 <tr class="separator:ad8e8a8fee48848c184eef3593d3b9b14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab29bd0e1b0e9a75af428fea63f59e5d2"><td class="memItemLeft" align="right" valign="top"><a id="ab29bd0e1b0e9a75af428fea63f59e5d2" name="ab29bd0e1b0e9a75af428fea63f59e5d2"></a>
-unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>NBits</b> () const</td></tr>
-<tr class="memdesc:ab29bd0e1b0e9a75af428fea63f59e5d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the number of bits for a single sample. <br /></td></tr>
+<tr class="memitem:ab29bd0e1b0e9a75af428fea63f59e5d2"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#ab29bd0e1b0e9a75af428fea63f59e5d2">NBits</a> () const</td></tr>
+<tr class="memdesc:ab29bd0e1b0e9a75af428fea63f59e5d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the number of bits for a single sample.  <a href="classWaveFormat.html#ab29bd0e1b0e9a75af428fea63f59e5d2">More...</a><br /></td></tr>
 <tr class="separator:ab29bd0e1b0e9a75af428fea63f59e5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98e497403a17f8d9ca36910af1810302"><td class="memItemLeft" align="right" valign="top"><a id="a98e497403a17f8d9ca36910af1810302" name="a98e497403a17f8d9ca36910af1810302"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>ADC</b> () const</td></tr>
-<tr class="memdesc:a98e497403a17f8d9ca36910af1810302"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the conversion factor of 1 bit to mV. <br /></td></tr>
+<tr class="memitem:a98e497403a17f8d9ca36910af1810302"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#a98e497403a17f8d9ca36910af1810302">ADC</a> () const</td></tr>
+<tr class="memdesc:a98e497403a17f8d9ca36910af1810302"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the conversion factor of 1 bit to mV.  <a href="classWaveFormat.html#a98e497403a17f8d9ca36910af1810302">More...</a><br /></td></tr>
 <tr class="separator:a98e497403a17f8d9ca36910af1810302"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18d33e51dd87c5d13f68a2decd6cf672"><td class="memItemLeft" align="right" valign="top"><a id="a18d33e51dd87c5d13f68a2decd6cf672" name="a18d33e51dd87c5d13f68a2decd6cf672"></a>
-unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>NWaveforms</b> () const</td></tr>
-<tr class="memdesc:a18d33e51dd87c5d13f68a2decd6cf672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the number of waveforms collected in the file. <br /></td></tr>
+<tr class="memitem:a18d33e51dd87c5d13f68a2decd6cf672"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#a18d33e51dd87c5d13f68a2decd6cf672">NWaveforms</a> () const</td></tr>
+<tr class="memdesc:a18d33e51dd87c5d13f68a2decd6cf672"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the number of waveforms collected in the file.  <a href="classWaveFormat.html#a18d33e51dd87c5d13f68a2decd6cf672">More...</a><br /></td></tr>
 <tr class="separator:a18d33e51dd87c5d13f68a2decd6cf672"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ea24c3e233f8d42eb5e09e40aa37006"><td class="memItemLeft" align="right" valign="top"><a id="a8ea24c3e233f8d42eb5e09e40aa37006" name="a8ea24c3e233f8d42eb5e09e40aa37006"></a>
-unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>NSamples</b> () const</td></tr>
-<tr class="memdesc:a8ea24c3e233f8d42eb5e09e40aa37006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the number of samples for a single sample. <br /></td></tr>
+<tr class="memitem:a8ea24c3e233f8d42eb5e09e40aa37006"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#a8ea24c3e233f8d42eb5e09e40aa37006">NSamples</a> () const</td></tr>
+<tr class="memdesc:a8ea24c3e233f8d42eb5e09e40aa37006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the number of samples for a single sample.  <a href="classWaveFormat.html#a8ea24c3e233f8d42eb5e09e40aa37006">More...</a><br /></td></tr>
 <tr class="separator:a8ea24c3e233f8d42eb5e09e40aa37006"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad324f72a5bf0dbda155afb652d1e1228"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#ad324f72a5bf0dbda155afb652d1e1228">WaveformRaw</a> (const unsigned index, const int16_t offset=0) const</td></tr>
 <tr class="memdesc:ad324f72a5bf0dbda155afb652d1e1228"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting the original (integer) waveform at some certain index.  <a href="classWaveFormat.html#ad324f72a5bf0dbda155afb652d1e1228">More...</a><br /></td></tr>
@@ -129,28 +126,22 @@ unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>NSamples</b> () c
 <tr class="memitem:a3b6fc235d06185fa4da43849f0a8f177"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#a3b6fc235d06185fa4da43849f0a8f177">SumList</a> (const unsigned intstart=0, const unsigned intstop=-1, const unsigned pedstart=-1, const unsigned pedstrop=-1) const</td></tr>
 <tr class="memdesc:a3b6fc235d06185fa4da43849f0a8f177"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getting all waveform areas given the integration window and optional. pedestal subtraction window.  <a href="classWaveFormat.html#a3b6fc235d06185fa4da43849f0a8f177">More...</a><br /></td></tr>
 <tr class="separator:a3b6fc235d06185fa4da43849f0a8f177"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affaf3113532c4bebcc488e2fe0218ff5"><td class="memItemLeft" align="right" valign="top"><a id="affaf3113532c4bebcc488e2fe0218ff5" name="affaf3113532c4bebcc488e2fe0218ff5"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>PedValue</b> (const unsigned index, const unsigned pedstart, const unsigned pedstop) const</td></tr>
-<tr class="memdesc:affaf3113532c4bebcc488e2fe0218ff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the average voltage value of samples within the given pedestal window. If you set this start and stop index values to be -1 (default), then the pedestal value would be strictly 0. The value return will be in units of mV. <br /></td></tr>
+<tr class="memitem:affaf3113532c4bebcc488e2fe0218ff5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#affaf3113532c4bebcc488e2fe0218ff5">PedValue</a> (const unsigned index, const unsigned pedstart, const unsigned pedstop) const</td></tr>
+<tr class="memdesc:affaf3113532c4bebcc488e2fe0218ff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the average voltage value of samples within the given pedestal window. If you set this start and stop index values to be -1 (default), then the pedestal value would be strictly 0. The value return will be in units of mV.  <a href="classWaveFormat.html#affaf3113532c4bebcc488e2fe0218ff5">More...</a><br /></td></tr>
 <tr class="separator:affaf3113532c4bebcc488e2fe0218ff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca66759eddcd9e14b7fa7f9800d1a1be"><td class="memItemLeft" align="right" valign="top"><a id="aca66759eddcd9e14b7fa7f9800d1a1be" name="aca66759eddcd9e14b7fa7f9800d1a1be"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>PedRMS</b> (const unsigned index, const unsigned pedstart, const unsigned pedstop) const</td></tr>
-<tr class="memdesc:aca66759eddcd9e14b7fa7f9800d1a1be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the standard deviation of the samples at a given event index within the given pedestal window. <br /></td></tr>
+<tr class="memitem:aca66759eddcd9e14b7fa7f9800d1a1be"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#aca66759eddcd9e14b7fa7f9800d1a1be">PedRMS</a> (const unsigned index, const unsigned pedstart, const unsigned pedstop) const</td></tr>
+<tr class="memdesc:aca66759eddcd9e14b7fa7f9800d1a1be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returning the standard deviation of the samples at a given event index within the given pedestal window.  <a href="classWaveFormat.html#aca66759eddcd9e14b7fa7f9800d1a1be">More...</a><br /></td></tr>
 <tr class="separator:aca66759eddcd9e14b7fa7f9800d1a1be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a37d0e640e1f54db6784082eb68be7429"><td class="memItemLeft" align="right" valign="top"><a id="a37d0e640e1f54db6784082eb68be7429" name="a37d0e640e1f54db6784082eb68be7429"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>time</b></td></tr>
+<tr class="memitem:a37d0e640e1f54db6784082eb68be7429"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#a37d0e640e1f54db6784082eb68be7429">time</a></td></tr>
 <tr class="separator:a37d0e640e1f54db6784082eb68be7429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69e50e58b2cab5d7eec6ebd47e83cba4"><td class="memItemLeft" align="right" valign="top"><a id="a69e50e58b2cab5d7eec6ebd47e83cba4" name="a69e50e58b2cab5d7eec6ebd47e83cba4"></a>
-unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>nbits</b></td></tr>
+<tr class="memitem:a69e50e58b2cab5d7eec6ebd47e83cba4"><td class="memItemLeft" align="right" valign="top">unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#a69e50e58b2cab5d7eec6ebd47e83cba4">nbits</a></td></tr>
 <tr class="separator:a69e50e58b2cab5d7eec6ebd47e83cba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab274f821c3c71db3d5025e52883f8e59"><td class="memItemLeft" align="right" valign="top"><a id="ab274f821c3c71db3d5025e52883f8e59" name="ab274f821c3c71db3d5025e52883f8e59"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>adc</b></td></tr>
+<tr class="memitem:ab274f821c3c71db3d5025e52883f8e59"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#ab274f821c3c71db3d5025e52883f8e59">adc</a></td></tr>
 <tr class="separator:ab274f821c3c71db3d5025e52883f8e59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a833bd9b0ae21232ec6c70df342fae47c"><td class="memItemLeft" align="right" valign="top"><a id="a833bd9b0ae21232ec6c70df342fae47c" name="a833bd9b0ae21232ec6c70df342fae47c"></a>
-std::vector&lt; std::vector&lt; int16_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_waveforms</b></td></tr>
+<tr class="memitem:a833bd9b0ae21232ec6c70df342fae47c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::vector&lt; int16_t &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html#a833bd9b0ae21232ec6c70df342fae47c">_waveforms</a></td></tr>
 <tr class="separator:a833bd9b0ae21232ec6c70df342fae47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -182,9 +173,210 @@ std::vector&lt; std::vector&lt; int16_t &gt; &gt;&#160;</td><td class="memItemRi
 <p >The user can also specify where the waveform should be inverted or not (change downward firing pulse to be upwards firing pulses).</p>
 <p >For the data collection of the DRS4, there are occasionally bad samples due to bit flips in the ADC chip. Here we filter out these single bit flips by checking the neighboring cells up to 2 samples away in either direction, and check if the maximum variation in the sample value is more than 70 bits (nothing in the system is expected to be this fast). If a sample readout is determined to contain a bit flip, then the readout is replace with the average of the readout before and after the bad sample. </p>
 
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8cc_source.html#l00044">44</a> of file <a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a>.</p>
+
+</div>
+</div>
+<a id="aea1ce1db983354b03d27591f2b064635" name="aea1ce1db983354b03d27591f2b064635"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea1ce1db983354b03d27591f2b064635">&#9670;&nbsp;</a></span>~WaveFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">WaveFormat::~WaveFormat </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8cc_source.html#l00105">105</a> of file <a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a>.</p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a98e497403a17f8d9ca36910af1810302" name="a98e497403a17f8d9ca36910af1810302"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98e497403a17f8d9ca36910af1810302">&#9670;&nbsp;</a></span>ADC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double WaveFormat::ADC </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00046">46</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab29bd0e1b0e9a75af428fea63f59e5d2" name="ab29bd0e1b0e9a75af428fea63f59e5d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab29bd0e1b0e9a75af428fea63f59e5d2">&#9670;&nbsp;</a></span>NBits()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned WaveFormat::NBits </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00040">40</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a8ea24c3e233f8d42eb5e09e40aa37006" name="a8ea24c3e233f8d42eb5e09e40aa37006"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ea24c3e233f8d42eb5e09e40aa37006">&#9670;&nbsp;</a></span>NSamples()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned WaveFormat::NSamples </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00058">58</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a18d33e51dd87c5d13f68a2decd6cf672" name="a18d33e51dd87c5d13f68a2decd6cf672"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18d33e51dd87c5d13f68a2decd6cf672">&#9670;&nbsp;</a></span>NWaveforms()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned WaveFormat::NWaveforms </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00052">52</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
+</div>
+</div>
+<a id="aca66759eddcd9e14b7fa7f9800d1a1be" name="aca66759eddcd9e14b7fa7f9800d1a1be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca66759eddcd9e14b7fa7f9800d1a1be">&#9670;&nbsp;</a></span>PedRMS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double WaveFormat::PedRMS </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>pedstart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>pedstop</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8cc_source.html#l00154">154</a> of file <a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a>.</p>
+
+</div>
+</div>
+<a id="affaf3113532c4bebcc488e2fe0218ff5" name="affaf3113532c4bebcc488e2fe0218ff5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affaf3113532c4bebcc488e2fe0218ff5">&#9670;&nbsp;</a></span>PedValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double WaveFormat::PedValue </td>
+          <td>(</td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>pedstart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned&#160;</td>
+          <td class="paramname"><em>pedstop</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8cc_source.html#l00131">131</a> of file <a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a>.</p>
+
+</div>
+</div>
 <a id="a3b6fc235d06185fa4da43849f0a8f177" name="a3b6fc235d06185fa4da43849f0a8f177"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3b6fc235d06185fa4da43849f0a8f177">&#9670;&nbsp;</a></span>SumList()</h2>
 
@@ -224,6 +416,35 @@ std::vector&lt; std::vector&lt; int16_t &gt; &gt;&#160;</td><td class="memItemRi
 </div><div class="memdoc">
 <p >The output will be sorted according to area. </p>
 
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8cc_source.html#l00230">230</a> of file <a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a>.</p>
+
+</div>
+</div>
+<a id="ad8e8a8fee48848c184eef3593d3b9b14" name="ad8e8a8fee48848c184eef3593d3b9b14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8e8a8fee48848c184eef3593d3b9b14">&#9670;&nbsp;</a></span>Time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double WaveFormat::Time </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00034">34</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
 </div>
 </div>
 <a id="a2e3c49d86a58f81f3e5af34ad1a9667a" name="a2e3c49d86a58f81f3e5af34ad1a9667a"></a>
@@ -259,6 +480,8 @@ std::vector&lt; std::vector&lt; int16_t &gt; &gt;&#160;</td><td class="memItemRi
 </div><div class="memdoc">
 <p >If the pedestal start and stop index is specified, then the pedestal value is subtracted the entire waveform values. See <a class="el" href="classWaveFormat.html#affaf3113532c4bebcc488e2fe0218ff5" title="Returning the average voltage value of samples within the given pedestal window. If you set this star...">WaveFormat::PedValue</a> to see how the pedestal value is calculated. </p>
 
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8cc_source.html#l00180">180</a> of file <a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a>.</p>
+
 </div>
 </div>
 <a id="ad324f72a5bf0dbda155afb652d1e1228" name="ad324f72a5bf0dbda155afb652d1e1228"></a>
@@ -287,6 +510,8 @@ std::vector&lt; std::vector&lt; int16_t &gt; &gt;&#160;</td><td class="memItemRi
       </table>
 </div><div class="memdoc">
 <p >The user can specify a certain offset to be applied for the entire waveform. </p>
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8cc_source.html#l00113">113</a> of file <a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a>.</p>
 
 </div>
 </div>
@@ -335,13 +560,112 @@ std::vector&lt; std::vector&lt; int16_t &gt; &gt;&#160;</td><td class="memItemRi
 </div><div class="memdoc">
 <p >The return value would be in units of mV-ns. The temporal time would be multiplied to the summation results. Here the user can also specify the pedestal window for pedestal subtraction if needed. </p>
 
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8cc_source.html#l00202">202</a> of file <a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a833bd9b0ae21232ec6c70df342fae47c" name="a833bd9b0ae21232ec6c70df342fae47c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a833bd9b0ae21232ec6c70df342fae47c">&#9670;&nbsp;</a></span>_waveforms</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::vector&lt;int16_t&gt; &gt; WaveFormat::_waveforms</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00090">90</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
+</div>
+</div>
+<a id="ab274f821c3c71db3d5025e52883f8e59" name="ab274f821c3c71db3d5025e52883f8e59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab274f821c3c71db3d5025e52883f8e59">&#9670;&nbsp;</a></span>adc</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double WaveFormat::adc</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00089">89</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a69e50e58b2cab5d7eec6ebd47e83cba4" name="a69e50e58b2cab5d7eec6ebd47e83cba4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69e50e58b2cab5d7eec6ebd47e83cba4">&#9670;&nbsp;</a></span>nbits</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned WaveFormat::nbits</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00088">88</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
+</div>
+</div>
+<a id="a37d0e640e1f54db6784082eb68be7429" name="a37d0e640e1f54db6784082eb68be7429"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37d0e640e1f54db6784082eb68be7429">&#9670;&nbsp;</a></span>time</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double WaveFormat::time</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="WaveFormat_8hpp_source.html#l00087">87</a> of file <a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>.</p>
+
 </div>
 </div>
 
 <p><code>#include &lt;<a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a>&gt;</code></p>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/github/workspace/Common/interface/<a class="el" href="WaveFormat_8hpp_source.html">WaveFormat.hpp</a></li>
-<li>/github/workspace/Common/src/WaveFormat.cc</li>
+<li>/github/workspace/Common/src/<a class="el" href="WaveFormat_8cc_source.html">WaveFormat.cc</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->

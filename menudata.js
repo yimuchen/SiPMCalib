@@ -26,7 +26,7 @@ var menudata={children:[
 {text:"Main Page",url:"index.html"},
 {text:"Common",url:"group__Common.html"},
 {text:"SiPMCalc",url:"@ref SiPMCalc"},
-{text:"InvSqCalc",url:"@ref InvSqCalc"},
+{text:"InvSqCalc",url:"group__InvSqCalc.html"},
 {text:"Pulser",url:"@ref Pulser"},
 {text:"TimeCalc",url:"@ref TimeCalc"},
 {text:"VisCalc",url:"@ref VisCalc"},
@@ -39,4 +39,7 @@ var menudata={children:[
 {text:"Functions",url:"functions_func.html"},
 {text:"Typedefs",url:"functions_type.html"}]}]},
 {text:"Files",url:"files.html",children:[
-{text:"File List",url:"files.html"}]}]}
+{text:"File List",url:"files.html"},
+{text:"File Members",url:"globals.html",children:[
+{text:"All",url:"globals.html"},
+{text:"Functions",url:"globals_func.html"}]}]}]}

@@ -102,12 +102,47 @@ Functions</h2></td></tr>
 <tr class="memitem:gab43611bc3a8c3eea4a709c813ffd82fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Common.html#gab43611bc3a8c3eea4a709c813ffd82fc">SetRange</a> (RooRealVar &amp;var, const double binwidth, const double maxarea, const std::vector&lt; double &gt; &amp;datapoints)</td></tr>
 <tr class="memdesc:gab43611bc3a8c3eea4a709c813ffd82fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setting a RooRealVar range based on a series of data points.  <a href="group__Common.html#gab43611bc3a8c3eea4a709c813ffd82fc">More...</a><br /></td></tr>
 <tr class="separator:gab43611bc3a8c3eea4a709c813ffd82fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6db01afacb6df577ce7c38c6b025c6ac"><td class="memItemLeft" align="right" valign="top"><a id="ga6db01afacb6df577ce7c38c6b025c6ac" name="ga6db01afacb6df577ce7c38c6b025c6ac"></a>
-RooDataHist *&#160;</td><td class="memItemRight" valign="bottom"><b>MakeData</b> (RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea)</td></tr>
-<tr class="memdesc:ga6db01afacb6df577ce7c38c6b025c6ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a formally setup of RooRealVar and a vector of data, create a RooDataHist object. <br /></td></tr>
+<tr class="memitem:ga6db01afacb6df577ce7c38c6b025c6ac"><td class="memItemLeft" align="right" valign="top">RooDataHist *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Common.html#ga6db01afacb6df577ce7c38c6b025c6ac">MakeData</a> (RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea)</td></tr>
+<tr class="memdesc:ga6db01afacb6df577ce7c38c6b025c6ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a formally setup of RooRealVar and a vector of data, create a RooDataHist object.  <a href="group__Common.html#ga6db01afacb6df577ce7c38c6b025c6ac">More...</a><br /></td></tr>
 <tr class="separator:ga6db01afacb6df577ce7c38c6b025c6ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga6db01afacb6df577ce7c38c6b025c6ac" name="ga6db01afacb6df577ce7c38c6b025c6ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6db01afacb6df577ce7c38c6b025c6ac">&#9670;&nbsp;</a></span>MakeData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">RooDataHist * MakeData </td>
+          <td>(</td>
+          <td class="paramtype">RooRealVar &amp;&#160;</td>
+          <td class="paramname"><em>var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>maxarea</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="MakeRooData_8cc_source.html#l00044">44</a> of file <a class="el" href="MakeRooData_8cc_source.html">MakeRooData.cc</a>.</p>
+
+</div>
+</div>
 <a id="gab43611bc3a8c3eea4a709c813ffd82fc" name="gab43611bc3a8c3eea4a709c813ffd82fc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gab43611bc3a8c3eea4a709c813ffd82fc">&#9670;&nbsp;</a></span>SetRange()</h2>
 
@@ -149,6 +184,8 @@ RooDataHist *&#160;</td><td class="memItemRight" valign="bottom"><b>MakeData</b>
 <li>The range of variable lands on a bin edge that are integer multiples of the specified bin with.</li>
 <li>The range of variable minimally covers the maximum and minimum of the data points (maximum value can be over written ) </li>
 </ul>
+
+<p class="definition">Definition at line <a class="el" href="MakeRooData_8cc_source.html#l00017">17</a> of file <a class="el" href="MakeRooData_8cc_source.html">MakeRooData.cc</a>.</p>
 
 </div>
 </div>

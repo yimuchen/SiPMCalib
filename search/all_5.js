@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['makedata_0',['MakeData',['../group__Common.html#ga6db01afacb6df577ce7c38c6b025c6ac',1,'MakeData(RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea):&#160;MakeRooData.cc'],['../group__Common.html#ga6db01afacb6df577ce7c38c6b025c6ac',1,'MakeData(RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea):&#160;MakeRooData.cc']]],
-  ['mdistro_1',['MDistro',['../classMDistro.html',1,'']]]
+  ['invsq_5freducefilepower_2ecc_0',['InvSq_ReduceFilePower.cc',['../InvSq__ReduceFilePower_8cc.html',1,'']]],
+  ['invsq_5fzscanplot_2ecc_1',['InvSq_ZScanPlot.cc',['../InvSq__ZScanPlot_8cc.html',1,'']]],
+  ['invsqcalc_2',['InvSqCalc',['../group__InvSqCalc.html',1,'(Global Namespace)'],['../md__github_workspace_InvSqCalc_doc_InvSqCalc.html',1,'(Global Namespace)']]]
 ];

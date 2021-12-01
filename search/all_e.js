@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['z_0',['Z',['../classStdFormat.html#aba5a259ed9b6fb68a1c985d19727f7b1',1,'StdFormat']]],
-  ['zprofilegraphs_1',['ZprofileGraphs',['../structZprofileGraphs.html',1,'']]]
+  ['x_0',['X',['../classStdFormat.html#a385704843be68a3320560f6bd9656e85',1,'StdFormat']]]
 ];

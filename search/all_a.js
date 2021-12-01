@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['time_0',['Time',['../classStdFormat.html#a9fabfb56dbea76cfd67f183b2e8e2d75',1,'StdFormat::Time()'],['../classWaveFormat.html#ad8e8a8fee48848c184eef3593d3b9b14',1,'WaveFormat::Time()']]]
+  ['rowformat_0',['RowFormat',['../structStdFormat_1_1RowFormat.html',1,'StdFormat']]],
+  ['rowselect_1',['RowSelect',['../classStdFormat.html#a1c254948fb622145792fc45c5afa3fd5',1,'StdFormat']]]
 ];
