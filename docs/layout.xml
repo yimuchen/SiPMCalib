@@ -114,10 +114,7 @@
   <!-- Layout definition for a file page -->
   <file>
     <briefdescription visible="yes"/>
-    <includes visible="$SHOW_INCLUDE_FILES"/>
-    <includegraph visible="$INCLUDE_GRAPH"/>
-    <includedbygraph visible="$INCLUDED_BY_GRAPH"/>
-    <sourcelink visible="yes"/>
+    <detaileddescription title=""/>
     <memberdecl>
       <classes visible="yes" title=""/>
       <namespaces visible="yes" title=""/>
@@ -125,11 +122,10 @@
       <defines title=""/>
       <typedefs title=""/>
       <enums title=""/>
-      <functions title=""/>
+      <functions title="Helper subroutines and functions"/>
       <variables title=""/>
       <membergroups visible="yes"/>
     </memberdecl>
-    <detaileddescription title=""/>
     <memberdef>
       <inlineclasses title=""/>
       <defines title=""/>
@@ -138,6 +134,10 @@
       <functions title=""/>
       <variables title=""/>
     </memberdef>
+    <sourcelink visible="yes"/>
+    <includes visible="yes"/>
+    <includegraph visible="$INCLUDE_GRAPH"/>
+    <includedbygraph visible="$INCLUDED_BY_GRAPH"/>
     <authorsection/>
   </file>
 
