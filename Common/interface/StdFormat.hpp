@@ -4,8 +4,14 @@
 #include <string>
 #include <vector>
 
-// Simple class for handling the standard output format of the gantry control
-// system.
+/**
+ * @brief Standard File format data extraction class
+ * @ingroup Common
+ * @details
+ *
+ * The construction fo this class
+ *
+ */
 class StdFormat
 {
 public:
