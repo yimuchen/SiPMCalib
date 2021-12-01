@@ -87,59 +87,71 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >The construction fo this class </p>
+<div class="textblock"><p >The standard file format expects data to be organized into columns with the following format:</p>
+<ul>
+<li>time (relative to data collection command initialization) [seconds]</li>
+<li>detector element ID.</li>
+<li>The gantry x, y, z coordinates for a single data collection. [mm]</li>
+<li>The measured bias voltage of the LED system [mV]</li>
+<li>The measured LED temperature [C]</li>
+<li>The measured SiPM temperature [C]</li>
+<li>The remaining N columns are generically called "Data" and will depend on what data collection routine is used for generate the data file.</li>
+</ul>
+<p >Each row in the data file will be organized into the a <a class="el" href="structStdFormat_1_1RowFormat.html" title="Simple container for a single row of data in a standard format data file.">RowFormat</a> object. And the various function can be used to extract columns into a standard std::vector container, to be passed to other computation routines. Users can also pass a row selection function pointer to the column extraction functions to limit the rows of data used for some data collection routine. </p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structStdFormat_1_1RowFormat.html">RowFormat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple container for a single row of data in a standard format data file.  <a href="structStdFormat_1_1RowFormat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ab1348379d29603b1099f31cc00d3ba61"><td class="memItemLeft" align="right" valign="top"><a id="ab1348379d29603b1099f31cc00d3ba61" name="ab1348379d29603b1099f31cc00d3ba61"></a>
-typedef bool(*&#160;</td><td class="memItemRight" valign="bottom"><b>RowSelect</b>) (const <a class="el" href="structStdFormat_1_1RowFormat.html">RowFormat</a> &amp;)</td></tr>
+<tr class="memitem:ab1348379d29603b1099f31cc00d3ba61"><td class="memItemLeft" align="right" valign="top">typedef bool(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>) (const <a class="el" href="structStdFormat_1_1RowFormat.html">RowFormat</a> &amp;)</td></tr>
 <tr class="separator:ab1348379d29603b1099f31cc00d3ba61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7dd72ee5c7332e137bd6a88782006162"><td class="memItemLeft" align="right" valign="top"><a id="a7dd72ee5c7332e137bd6a88782006162" name="a7dd72ee5c7332e137bd6a88782006162"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>StdFormat</b> (const std::string &amp;)</td></tr>
+<tr class="memitem:a7dd72ee5c7332e137bd6a88782006162"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#a7dd72ee5c7332e137bd6a88782006162">StdFormat</a> (const std::string &amp;)</td></tr>
+<tr class="memdesc:a7dd72ee5c7332e137bd6a88782006162"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new <a class="el" href="classStdFormat.html" title="Standard File format data extraction class.">StdFormat</a> from a file path.  <a href="classStdFormat.html#a7dd72ee5c7332e137bd6a88782006162">More...</a><br /></td></tr>
 <tr class="separator:a7dd72ee5c7332e137bd6a88782006162"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fabfb56dbea76cfd67f183b2e8e2d75"><td class="memItemLeft" align="right" valign="top"><a id="a9fabfb56dbea76cfd67f183b2e8e2d75" name="a9fabfb56dbea76cfd67f183b2e8e2d75"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Time</b> (RowSelect=NoSelect) const</td></tr>
-<tr class="separator:a9fabfb56dbea76cfd67f183b2e8e2d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace9d5c0d6a4f9689ae6c94400a40d916"><td class="memItemLeft" align="right" valign="top"><a id="ace9d5c0d6a4f9689ae6c94400a40d916" name="ace9d5c0d6a4f9689ae6c94400a40d916"></a>
-std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DetId</b> (RowSelect=NoSelect) const</td></tr>
-<tr class="separator:ace9d5c0d6a4f9689ae6c94400a40d916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a385704843be68a3320560f6bd9656e85"><td class="memItemLeft" align="right" valign="top"><a id="a385704843be68a3320560f6bd9656e85" name="a385704843be68a3320560f6bd9656e85"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>X</b> (RowSelect=NoSelect) const</td></tr>
-<tr class="separator:a385704843be68a3320560f6bd9656e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5c4a1d6edbbffa96d0764032da4459c"><td class="memItemLeft" align="right" valign="top"><a id="ae5c4a1d6edbbffa96d0764032da4459c" name="ae5c4a1d6edbbffa96d0764032da4459c"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Y</b> (RowSelect=NoSelect) const</td></tr>
-<tr class="separator:ae5c4a1d6edbbffa96d0764032da4459c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba5a259ed9b6fb68a1c985d19727f7b1"><td class="memItemLeft" align="right" valign="top"><a id="aba5a259ed9b6fb68a1c985d19727f7b1" name="aba5a259ed9b6fb68a1c985d19727f7b1"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Z</b> (RowSelect=NoSelect) const</td></tr>
-<tr class="separator:aba5a259ed9b6fb68a1c985d19727f7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88ce563364eb5c759d5c4ca50e1c66d5"><td class="memItemLeft" align="right" valign="top"><a id="a88ce563364eb5c759d5c4ca50e1c66d5" name="a88ce563364eb5c759d5c4ca50e1c66d5"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Bias</b> (RowSelect=NoSelect) const</td></tr>
-<tr class="separator:a88ce563364eb5c759d5c4ca50e1c66d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a702d9fd4505846437acd3e25991000da"><td class="memItemLeft" align="right" valign="top"><a id="a702d9fd4505846437acd3e25991000da" name="a702d9fd4505846437acd3e25991000da"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>LedTemp</b> (RowSelect=NoSelect) const</td></tr>
-<tr class="separator:a702d9fd4505846437acd3e25991000da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8442c80ac5e1035af6d290ba4ee96da"><td class="memItemLeft" align="right" valign="top"><a id="af8442c80ac5e1035af6d290ba4ee96da" name="af8442c80ac5e1035af6d290ba4ee96da"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SiPMTemp</b> (RowSelect=NoSelect) const</td></tr>
-<tr class="separator:af8442c80ac5e1035af6d290ba4ee96da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a375da8fb721892bf19d2656292228c7b"><td class="memItemLeft" align="right" valign="top"><a id="a375da8fb721892bf19d2656292228c7b" name="a375da8fb721892bf19d2656292228c7b"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DataAll</b> (RowSelect=NoSelect) const</td></tr>
+<tr class="memitem:a375da8fb721892bf19d2656292228c7b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#a375da8fb721892bf19d2656292228c7b">DataAll</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:a375da8fb721892bf19d2656292228c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting all data columns as a single vector.  <a href="classStdFormat.html#a375da8fb721892bf19d2656292228c7b">More...</a><br /></td></tr>
 <tr class="separator:a375da8fb721892bf19d2656292228c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac84e6e89c4090157fcf4072c96842fb6"><td class="memItemLeft" align="right" valign="top"><a id="ac84e6e89c4090157fcf4072c96842fb6" name="ac84e6e89c4090157fcf4072c96842fb6"></a>
-std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>DataCol</b> (unsigned col, RowSelect=NoSelect) const</td></tr>
+<tr class="memitem:ac84e6e89c4090157fcf4072c96842fb6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#ac84e6e89c4090157fcf4072c96842fb6">DataCol</a> (unsigned col, <a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:ac84e6e89c4090157fcf4072c96842fb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting a specific column of the data columns.  <a href="classStdFormat.html#ac84e6e89c4090157fcf4072c96842fb6">More...</a><br /></td></tr>
 <tr class="separator:ac84e6e89c4090157fcf4072c96842fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:a9fabfb56dbea76cfd67f183b2e8e2d75"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#a9fabfb56dbea76cfd67f183b2e8e2d75">Time</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:a9fabfb56dbea76cfd67f183b2e8e2d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting some column into a std::vector container.  <a href="classStdFormat.html#a9fabfb56dbea76cfd67f183b2e8e2d75">More...</a><br /></td></tr>
+<tr class="separator:a9fabfb56dbea76cfd67f183b2e8e2d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace9d5c0d6a4f9689ae6c94400a40d916"><td class="memItemLeft" align="right" valign="top">std::vector&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#ace9d5c0d6a4f9689ae6c94400a40d916">DetId</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:ace9d5c0d6a4f9689ae6c94400a40d916"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting some column into a std::vector container.  <a href="classStdFormat.html#ace9d5c0d6a4f9689ae6c94400a40d916">More...</a><br /></td></tr>
+<tr class="separator:ace9d5c0d6a4f9689ae6c94400a40d916"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a385704843be68a3320560f6bd9656e85"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#a385704843be68a3320560f6bd9656e85">X</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:a385704843be68a3320560f6bd9656e85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting some column into a std::vector container.  <a href="classStdFormat.html#a385704843be68a3320560f6bd9656e85">More...</a><br /></td></tr>
+<tr class="separator:a385704843be68a3320560f6bd9656e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5c4a1d6edbbffa96d0764032da4459c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#ae5c4a1d6edbbffa96d0764032da4459c">Y</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:ae5c4a1d6edbbffa96d0764032da4459c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting some column into a std::vector container.  <a href="classStdFormat.html#ae5c4a1d6edbbffa96d0764032da4459c">More...</a><br /></td></tr>
+<tr class="separator:ae5c4a1d6edbbffa96d0764032da4459c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba5a259ed9b6fb68a1c985d19727f7b1"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#aba5a259ed9b6fb68a1c985d19727f7b1">Z</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:aba5a259ed9b6fb68a1c985d19727f7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting some column into a std::vector container.  <a href="classStdFormat.html#aba5a259ed9b6fb68a1c985d19727f7b1">More...</a><br /></td></tr>
+<tr class="separator:aba5a259ed9b6fb68a1c985d19727f7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88ce563364eb5c759d5c4ca50e1c66d5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#a88ce563364eb5c759d5c4ca50e1c66d5">Bias</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:a88ce563364eb5c759d5c4ca50e1c66d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting some column into a std::vector container.  <a href="classStdFormat.html#a88ce563364eb5c759d5c4ca50e1c66d5">More...</a><br /></td></tr>
+<tr class="separator:a88ce563364eb5c759d5c4ca50e1c66d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a702d9fd4505846437acd3e25991000da"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#a702d9fd4505846437acd3e25991000da">LedTemp</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:a702d9fd4505846437acd3e25991000da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting some column into a std::vector container.  <a href="classStdFormat.html#a702d9fd4505846437acd3e25991000da">More...</a><br /></td></tr>
+<tr class="separator:a702d9fd4505846437acd3e25991000da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8442c80ac5e1035af6d290ba4ee96da"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStdFormat.html#af8442c80ac5e1035af6d290ba4ee96da">SiPMTemp</a> (<a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>=<a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a>) const</td></tr>
+<tr class="memdesc:af8442c80ac5e1035af6d290ba4ee96da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracting some column into a std::vector container.  <a href="classStdFormat.html#af8442c80ac5e1035af6d290ba4ee96da">More...</a><br /></td></tr>
+<tr class="separator:af8442c80ac5e1035af6d290ba4ee96da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
 <tr class="memitem:aeff0944378bbbbf7030574b009d7b79b"><td class="memItemLeft" align="right" valign="top"><a id="aeff0944378bbbbf7030574b009d7b79b" name="aeff0944378bbbbf7030574b009d7b79b"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>NoSelect</b> (const <a class="el" href="structStdFormat_1_1RowFormat.html">RowFormat</a> &amp;)</td></tr>
+<tr class="memdesc:aeff0944378bbbbf7030574b009d7b79b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default row selection that does no explicit selection. <br /></td></tr>
 <tr class="separator:aeff0944378bbbbf7030574b009d7b79b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
@@ -148,6 +160,243 @@ Private Attributes</h2></td></tr>
 std::vector&lt; <a class="el" href="structStdFormat_1_1RowFormat.html">RowFormat</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>_rows</b></td></tr>
 <tr class="separator:ab407fb9d8bf0df15b1ed8b7d395951ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ab1348379d29603b1099f31cc00d3ba61" name="ab1348379d29603b1099f31cc00d3ba61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1348379d29603b1099f31cc00d3ba61">&#9670;&nbsp;</a></span>RowSelect</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef bool(* StdFormat::RowSelect) (const <a class="el" href="structStdFormat_1_1RowFormat.html">RowFormat</a> &amp;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Data selection short hand, function should return true for the rows that should be extracted </p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7dd72ee5c7332e137bd6a88782006162" name="a7dd72ee5c7332e137bd6a88782006162"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7dd72ee5c7332e137bd6a88782006162">&#9670;&nbsp;</a></span>StdFormat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">StdFormat::StdFormat </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Should the file be unable to open, either because of permission issues or because the file doesn't exist, this will raise an exception. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a88ce563364eb5c759d5c4ca50e1c66d5" name="a88ce563364eb5c759d5c4ca50e1c66d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88ce563364eb5c759d5c4ca50e1c66d5">&#9670;&nbsp;</a></span>Bias()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::Bias </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >User can provide a row selection function to extract specific rows of interest. </p>
+
+</div>
+</div>
+<a id="a375da8fb721892bf19d2656292228c7b" name="a375da8fb721892bf19d2656292228c7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a375da8fb721892bf19d2656292228c7b">&#9670;&nbsp;</a></span>DataAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::DataAll </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >In the case of the low-light data collection, all waveform data are placed into the latter columns. This method aggregates all data columns into a single vector, effectively removing all column and row structure (what is needed for low-light analysis.) The user can still be specify which rows are used for extraction of the data vector. </p>
+
+</div>
+</div>
+<a id="ac84e6e89c4090157fcf4072c96842fb6" name="ac84e6e89c4090157fcf4072c96842fb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac84e6e89c4090157fcf4072c96842fb6">&#9670;&nbsp;</a></span>DataCol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::DataCol </td>
+          <td>(</td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>col</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Depending on which data collection process was invoked to collect the data, different columns typically mean different data variation. This method extract exactly 1 data column into the a single vector container. Notice that the column starts from the 0 for the 0th data column (9th column in the data file.) </p>
+
+</div>
+</div>
+<a id="ace9d5c0d6a4f9689ae6c94400a40d916" name="ace9d5c0d6a4f9689ae6c94400a40d916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace9d5c0d6a4f9689ae6c94400a40d916">&#9670;&nbsp;</a></span>DetId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; int &gt; StdFormat::DetId </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >User can provide a row selection function to extract specific rows of interest. </p>
+
+</div>
+</div>
+<a id="a702d9fd4505846437acd3e25991000da" name="a702d9fd4505846437acd3e25991000da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a702d9fd4505846437acd3e25991000da">&#9670;&nbsp;</a></span>LedTemp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::LedTemp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >User can provide a row selection function to extract specific rows of interest. </p>
+
+</div>
+</div>
+<a id="af8442c80ac5e1035af6d290ba4ee96da" name="af8442c80ac5e1035af6d290ba4ee96da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8442c80ac5e1035af6d290ba4ee96da">&#9670;&nbsp;</a></span>SiPMTemp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::SiPMTemp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >User can provide a row selection function to extract specific rows of interest. </p>
+
+</div>
+</div>
+<a id="a9fabfb56dbea76cfd67f183b2e8e2d75" name="a9fabfb56dbea76cfd67f183b2e8e2d75"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fabfb56dbea76cfd67f183b2e8e2d75">&#9670;&nbsp;</a></span>Time()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::Time </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >User can provide a row selection function to extract specific rows of interest. </p>
+
+</div>
+</div>
+<a id="a385704843be68a3320560f6bd9656e85" name="a385704843be68a3320560f6bd9656e85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a385704843be68a3320560f6bd9656e85">&#9670;&nbsp;</a></span>X()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::X </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >User can provide a row selection function to extract specific rows of interest. </p>
+
+</div>
+</div>
+<a id="ae5c4a1d6edbbffa96d0764032da4459c" name="ae5c4a1d6edbbffa96d0764032da4459c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5c4a1d6edbbffa96d0764032da4459c">&#9670;&nbsp;</a></span>Y()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::Y </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >User can provide a row selection function to extract specific rows of interest. </p>
+
+</div>
+</div>
+<a id="aba5a259ed9b6fb68a1c985d19727f7b1" name="aba5a259ed9b6fb68a1c985d19727f7b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba5a259ed9b6fb68a1c985d19727f7b1">&#9670;&nbsp;</a></span>Z()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; double &gt; StdFormat::Z </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classStdFormat.html#ab1348379d29603b1099f31cc00d3ba61">RowSelect</a>&#160;</td>
+          <td class="paramname"><em>selector</em> = <code><a class="el" href="classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b">NoSelect</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >User can provide a row selection function to extract specific rows of interest. </p>
+
+</div>
+</div>
 
 <p><code>#include &lt;<a class="el" href="StdFormat_8hpp_source.html">StdFormat.hpp</a>&gt;</code></p>
 <hr/>The documentation for this class was generated from the following files:<ul>

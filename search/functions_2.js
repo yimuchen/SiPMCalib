@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['waveform_0',['Waveform',['../classWaveFormat.html#a2e3c49d86a58f81f3e5af34ad1a9667a',1,'WaveFormat']]],
-  ['waveformat_1',['WaveFormat',['../classWaveFormat.html#a1718572d439866942f06c5a51babb9de',1,'WaveFormat']]],
-  ['waveformraw_2',['WaveformRaw',['../classWaveFormat.html#ad324f72a5bf0dbda155afb652d1e1228',1,'WaveFormat']]],
-  ['waveformsum_3',['WaveformSum',['../classWaveFormat.html#a8ee7de2451af4fc7ab214e0fbf21da2b',1,'WaveFormat']]]
+  ['dataall_0',['DataAll',['../classStdFormat.html#a375da8fb721892bf19d2656292228c7b',1,'StdFormat']]],
+  ['dataarguments_1',['DataArguments',['../classSiPMLowLightFit.html#a16aa0a70914841824e3e8ce60d16ae51',1,'SiPMLowLightFit']]],
+  ['datacol_2',['DataCol',['../classStdFormat.html#ac84e6e89c4090157fcf4072c96842fb6',1,'StdFormat']]],
+  ['detid_3',['DetId',['../classStdFormat.html#ace9d5c0d6a4f9689ae6c94400a40d916',1,'StdFormat']]]
 ];

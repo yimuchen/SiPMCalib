@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dataarguments_0',['DataArguments',['../classSiPMLowLightFit.html#a16aa0a70914841824e3e8ce60d16ae51',1,'SiPMLowLightFit']]]
+  ['adc_0',['ADC',['../classWaveFormat.html#a98e497403a17f8d9ca36910af1810302',1,'WaveFormat']]]
 ];

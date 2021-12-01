@@ -77,12 +77,13 @@ $(function() {
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">Common</div></div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p >This is a test </p>
+<p >Common computation routines used for the calibration process. This will mainly be designed for input file parsing, and other data formatting routines. </p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -90,8 +91,67 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Standard File format data extraction class.  <a href="classStdFormat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structStdFormat_1_1RowFormat.html">StdFormat::RowFormat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simple container for a single row of data in a standard format data file.  <a href="structStdFormat_1_1RowFormat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWaveFormat.html">WaveFormat</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class for parsing standard waveform formats files.  <a href="classWaveFormat.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:gab43611bc3a8c3eea4a709c813ffd82fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Common.html#gab43611bc3a8c3eea4a709c813ffd82fc">SetRange</a> (RooRealVar &amp;var, const double binwidth, const double maxarea, const std::vector&lt; double &gt; &amp;datapoints)</td></tr>
+<tr class="memdesc:gab43611bc3a8c3eea4a709c813ffd82fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setting a RooRealVar range based on a series of data points.  <a href="group__Common.html#gab43611bc3a8c3eea4a709c813ffd82fc">More...</a><br /></td></tr>
+<tr class="separator:gab43611bc3a8c3eea4a709c813ffd82fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6db01afacb6df577ce7c38c6b025c6ac"><td class="memItemLeft" align="right" valign="top"><a id="ga6db01afacb6df577ce7c38c6b025c6ac" name="ga6db01afacb6df577ce7c38c6b025c6ac"></a>
+RooDataHist *&#160;</td><td class="memItemRight" valign="bottom"><b>MakeData</b> (RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea)</td></tr>
+<tr class="memdesc:ga6db01afacb6df577ce7c38c6b025c6ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Given a formally setup of RooRealVar and a vector of data, create a RooDataHist object. <br /></td></tr>
+<tr class="separator:ga6db01afacb6df577ce7c38c6b025c6ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="gab43611bc3a8c3eea4a709c813ffd82fc" name="gab43611bc3a8c3eea4a709c813ffd82fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab43611bc3a8c3eea4a709c813ffd82fc">&#9670;&nbsp;</a></span>SetRange()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SetRange </td>
+          <td>(</td>
+          <td class="paramtype">RooRealVar &amp;&#160;</td>
+          <td class="paramname"><em>var</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>binwidth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const double&#160;</td>
+          <td class="paramname"><em>maxarea</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>datapoints</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Given a bin width, a maximum area, and a series of data values, this functions automatically setups up the RooRealVar var such that:</p><ul>
+<li>The range of variable lands on a bin edge that are integer multiples of the specified bin with.</li>
+<li>The range of variable minimally covers the maximum and minimum of the data points (maximum value can be over written ) </li>
+</ul>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->

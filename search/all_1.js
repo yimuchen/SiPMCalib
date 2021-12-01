@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dataarguments_0',['DataArguments',['../classSiPMLowLightFit.html#a16aa0a70914841824e3e8ce60d16ae51',1,'SiPMLowLightFit']]]
+  ['bias_0',['Bias',['../classStdFormat.html#a88ce563364eb5c759d5c4ca50e1c66d5',1,'StdFormat']]]
 ];

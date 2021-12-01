@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['sipm_20calibration_20analysis_20package_0',['SiPM calibration analysis package',['../index.html',1,'']]],
-  ['sipmdarkpdf_1',['SiPMDarkPdf',['../classSiPMDarkPdf.html',1,'']]],
-  ['sipmlowlightfit_2',['SiPMLowLightFit',['../classSiPMLowLightFit.html',1,'']]],
-  ['sipmpdf_3',['SiPMPdf',['../classSiPMPdf.html',1,'']]],
-  ['stdformat_4',['StdFormat',['../classStdFormat.html',1,'']]]
+  ['makedata_0',['MakeData',['../group__Common.html#ga6db01afacb6df577ce7c38c6b025c6ac',1,'MakeData(RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea):&#160;MakeRooData.cc'],['../group__Common.html#ga6db01afacb6df577ce7c38c6b025c6ac',1,'MakeData(RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea):&#160;MakeRooData.cc']]],
+  ['mdistro_1',['MDistro',['../classMDistro.html',1,'']]]
 ];

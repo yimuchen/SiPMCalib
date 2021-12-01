@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['common_0',['Common',['../group__Common.html',1,'(Global Namespace)'],['../md__github_workspace_Common_doc_Common.html',1,'(Global Namespace)']]],
-  ['crosstalkpdf_1',['CrossTalkPdf',['../classCrossTalkPdf.html',1,'']]]
+  ['adc_0',['ADC',['../classWaveFormat.html#a98e497403a17f8d9ca36910af1810302',1,'WaveFormat']]]
 ];
