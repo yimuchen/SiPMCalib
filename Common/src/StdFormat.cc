@@ -1,7 +1,3 @@
-/**
- * @file StdFormat.cc
- * @brief This is a test
- */
 #include "SiPMCalib/Common/interface/StdFormat.hpp"
 
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
