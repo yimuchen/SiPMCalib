@@ -19,9 +19,10 @@ CMakeFiles/**
 */CMakeFiles/**
 build/**
 .vscode/**
-
 !CMakeLists.txt
-
-TEMP/*
-
 SiPMCalc/data/**
+
+# Documentation related
+docs/html/*
+docs/style.css.map
+docs/style.css
