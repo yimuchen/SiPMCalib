@@ -28,18 +28,22 @@ bit4_to_bit2( const int16_t x )
 }
 
 /**
- * @brief WaveFormat is a simple class for parsing the hex wave format used
- * in standalone data collection.
+ * @brief Construction of the waveform array form a given input file.
  *
- * The First line of the file will contain 3 numbers:
- * - the time interval per samples (in)
- * - The number of bits in the samples
- * - The conversion factor of a single bit to mV.
+ * The user can also specify where the waveform should be inverted or not (change
+ * downward firing pulse to be upwards firing pulses).
  *
- * The following are lines of time series data in the hex format.
+ * For the data collection of the DRS4, there are occasionally bad samples due to
+ * bit flips in the ADC chip. Here we filter out these single bit flips by
+ * checking the neighboring cells up to 2 samples away in either direction, and
+ * check if the maximum variation in the sample value is more than 70 bits
+ * (nothing in the system is expected to be this fast). If a sample readout is
+ * determined to contain a bit flip, then the readout is replace with the average
+ * of the readout before and after the bad sample.
  */
-WaveFormat::WaveFormat( const std::string& file )
+WaveFormat::WaveFormat( const std::string& file, const bool invert )
 {
+  const unsigned factor = invert ? -1 : 1;
   std::string line;
   std::ifstream fin( file, std::ios::in );
 
@@ -65,17 +69,10 @@ WaveFormat::WaveFormat( const std::string& file )
         value = value << 4 | bit_value;
       }
 
-      if( nbits == 4 ){
-        _waveforms.back()[index] = value;
-      } else {
-        _waveforms.back()[index] = bit4_to_bit2( value );
-      }
+      _waveforms.back()[index] = nbits == 4 ? factor * value :
+                                 bit4_to_bit2( value * factor );
     }
 
-    // Making a very basic peak processor where the DRS failed to wipe the
-    // previous waveform. Searching the neighboring cells up to 2 away.
-    // If the maximum distance on either side is larger than 70 ADCs (7mV) away,
-    // This cells is assumed to be a peak.
     auto is_peak_cell
       = [this]( const unsigned index )->bool {
           const auto& w         = this->_waveforms.back();
@@ -108,11 +105,9 @@ WaveFormat::WaveFormat( const std::string& file )
 WaveFormat::~WaveFormat(){}
 
 /**
- * @brief Getting the stored waveform at some certain index, the results will
- * be shifted by some given offset.
+ * @brief Getting the original (integer) waveform at some certain index.
  *
- * @param index
- * @param offset
+ * The user can specify a certain offset to be applied for the entire waveform.
  */
 std::vector<int16_t>
 WaveFormat::WaveformRaw( const unsigned index, const int16_t offset ) const
@@ -127,71 +122,10 @@ WaveFormat::WaveformRaw( const unsigned index, const int16_t offset ) const
 }
 
 /**
- * @brief Getting the stored waveform with some pedestal subtraction if given a
- * window to perform the pedestal subtraction.
- */
-std::vector<double>
-WaveFormat::Waveform( const unsigned index,
-                      const unsigned pedstart,
-                      const unsigned pedstop ) const
-{
-  std::vector<double> ans;
-  const double ped_value = PedValue( index, pedstart, pedstop );
-
-  for( unsigned i = 0; i < NSamples(); ++i ){
-    ans.push_back( _waveforms.at( index ).at( i ) * ADC() - ped_value );
-  }
-
-  return ans;
-}
-
-/**
- * @brief Getting the stored waveform with some pedestal subtraction if given a
- * window to perform the pedestal subtraction.
- */
-double
-WaveFormat::WaveformSum( const unsigned index,
-                         const unsigned intstart,
-                         const unsigned intstop,
-                         const unsigned pedstart,
-                         const unsigned pedstop ) const
-{
-  double ans             = 0;
-  const double ped_value = PedValue( index, pedstart, pedstop );
-
-  const unsigned start = std::max( intstart, (unsigned)0 );
-  const unsigned stop  = std::min( intstop, NSamples() );
-
-  for( unsigned i = start; i < stop; ++i ){
-    ans += _waveforms.at( index ).at( i )*ADC()  - ped_value;
-  }
-
-  ans *= -Time();
-
-  return ans;
-}
-
-std::vector<double>
-WaveFormat::SumList( const unsigned intstart,
-                     const unsigned intstop,
-                     const unsigned pedstart,
-                     const unsigned pedstop ) const
-{
-  std::vector<double> ans;
-  ans.reserve( NWaveforms() );
-
-  for( unsigned i = 0; i < NWaveforms(); ++i ){
-    ans.push_back( WaveformSum( intstart, intstop, pedstart, pedstop ) );
-  }
-
-  std::sort( ans.begin(), ans.end() );
-
-  return ans;
-}
-
-/**
- * @brief Returning the average voltage value of samples at a given index within
- * the given pedestal window.
+ * @brief Returning the average voltage value of samples within the given
+ * pedestal window. If you set this start and stop index values to be -1
+ * (default), then the pedestal value would be strictly 0. The value return will
+ * be in units of mV.
  */
 double
 WaveFormat::PedValue( const unsigned index,
@@ -233,4 +167,79 @@ WaveFormat::PedRMS( const unsigned index,
   }
 
   return usr::StdDev( list );
+}
+
+/**
+ * @brief Getting a stored waveform after converting to readout values.
+ *
+ * If the pedestal start and stop index is specified, then the pedestal value is
+ * subtracted the entire waveform values. See WaveFormat::PedValue to see how the
+ * pedestal value is calculated.
+ */
+std::vector<double>
+WaveFormat::Waveform( const unsigned index,
+                      const unsigned pedstart,
+                      const unsigned pedstop ) const
+{
+  std::vector<double> ans;
+  const double ped_value = PedValue( index, pedstart, pedstop );
+
+  for( unsigned i = 0; i < NSamples(); ++i ){
+    ans.push_back( _waveforms.at( index ).at( i ) * ADC() - ped_value );
+  }
+
+  return ans;
+}
+
+/**
+ * @brief Calculating the area of a waveform given some intergration window.
+ *
+ * The return value would be in units of mV-ns. The temporal time would be
+ * multiplied to the summation results. Here the user can also specify the
+ * pedestal window for pedestal subtraction if needed.
+ */
+double
+WaveFormat::WaveformSum( const unsigned index,
+                         const unsigned intstart,
+                         const unsigned intstop,
+                         const unsigned pedstart,
+                         const unsigned pedstop ) const
+{
+  double ans             = 0;
+  const double ped_value = PedValue( index, pedstart, pedstop );
+
+  const unsigned start = std::max( intstart, (unsigned)0 );
+  const unsigned stop  = std::min( intstop, NSamples() );
+
+  for( unsigned i = start; i < stop; ++i ){
+    ans += _waveforms.at( index ).at( i )*ADC()  - ped_value;
+  }
+
+  ans *= Time();
+
+  return ans;
+}
+
+/**
+ * @brief Getting all waveform areas given the integration window and optional.
+ * pedestal subtraction window.
+ *
+ * The output will be sorted according to area.
+ */
+std::vector<double>
+WaveFormat::SumList( const unsigned intstart,
+                     const unsigned intstop,
+                     const unsigned pedstart,
+                     const unsigned pedstop ) const
+{
+  std::vector<double> ans;
+  ans.reserve( NWaveforms() );
+
+  for( unsigned i = 0; i < NWaveforms(); ++i ){
+    ans.push_back( WaveformSum( intstart, intstop, pedstart, pedstop ) );
+  }
+
+  std::sort( ans.begin(), ans.end() );
+
+  return ans;
 }

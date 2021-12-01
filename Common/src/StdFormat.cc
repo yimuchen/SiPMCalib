@@ -7,6 +7,12 @@
 #include <fstream>
 #include <sstream>
 
+/**
+ * @brief Construct a new StdFormat from a file path.
+ *
+ * Should the file be unable to open, either because of permission issues or
+ * because the file doesn't exist, this will raise an exception.
+ */
 StdFormat::StdFormat( const std::string& filename )
 {
   // Getting everything row by row
@@ -58,22 +64,14 @@ COLUMN( Bias,     double, bias     );
 COLUMN( LedTemp,  double, ledtemp  );
 COLUMN( SiPMTemp, double, sipmtemp );
 
-// Special case for data manipulations
-std::vector<double>
-StdFormat::DataAll( RowSelect selector ) const
-{
-  std::vector<double> ans;
-
-  for( const auto& row : _rows ){
-    if( selector( row ) ){
-      ans.insert( ans.end(), row.data.begin(), row.data.end() );
-    }
-  }
-
-  return ans;
-}
-
-// Special case for data manipulations
+/**
+ * @brief Extracting a specific column of the data columns.
+ *
+ * Depending on which data collection process was invoked to collect the data,
+ * different columns typically mean different data variation. This method extract
+ * exactly 1 data column into the a single vector container. Notice that the
+ * column starts from the 0 for the 0th data column (9th column in the data file.)
+ */
 std::vector<double>
 StdFormat::DataCol( unsigned col, RowSelect selector ) const
 {
@@ -83,6 +81,29 @@ StdFormat::DataCol( unsigned col, RowSelect selector ) const
   for( const auto& row : _rows ){
     if( selector( row ) ){
       ans.push_back( row.data[col] );
+    }
+  }
+
+  return ans;
+}
+
+/**
+ * @brief Extracting all data columns as a single vector.
+ *
+ * In the case of the low-light data collection, all waveform data are placed
+ * into the latter columns. This method aggregates all data columns into a single
+ * vector, effectively removing all column and row structure (what is needed for
+ * low-light analysis.) The user can still be specify which rows are used for
+ * extraction of the data vector.
+ */
+std::vector<double>
+StdFormat::DataAll( RowSelect selector ) const
+{
+  std::vector<double> ans;
+
+  for( const auto& row : _rows ){
+    if( selector( row ) ){
+      ans.insert( ans.end(), row.data.begin(), row.data.end() );
     }
   }
 
