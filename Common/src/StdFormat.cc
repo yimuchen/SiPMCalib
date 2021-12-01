@@ -1,3 +1,7 @@
+/**
+ * @file StdFormat.cc
+ * @brief This is a test
+ */
 #include "SiPMCalib/Common/interface/StdFormat.hpp"
 
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
@@ -39,6 +43,13 @@ StdFormat::StdFormat( const std::string& filename )
     _rows.push_back( r );
   }
 }
+
+/**
+ * @brief Empty constructor that should not be accessible to the user.
+ */
+StdFormat::StdFormat()
+{}
+
 
 // Macro for generating the column selector
 #define COLUMN( FNAME, TYPE, MEMBER )          \
@@ -108,4 +119,55 @@ StdFormat::DataAll( RowSelect selector ) const
   }
 
   return ans;
+}
+
+/**
+ * @brief Making a reduced version of the data set based on some row selection.
+ *
+ * This is handy if the same selection is performed over and over again over many
+ * routines, or you require a new data file that require some none-trivial
+ * selection.
+ */
+StdFormat
+StdFormat::MakeReduced( RowSelect selector ) const
+{
+  StdFormat ans;
+
+  for( const auto& row : _rows ){
+    if( selector( row ) ){
+      ans._rows.push_back( row );
+    }
+  }
+
+  return ans;
+}
+
+/**
+ * @brief Writing the current dataset to a file.
+ *
+ * This is handy for the creation of reduced file sets by some standard
+ * selection.
+ */
+void
+StdFormat::WriteToFile( const std::string& filename ) const
+{
+  std::ofstream outfile( filename );
+
+  if( !outfile.is_open() ){
+    usr::log::PrintLog( usr::log::FATAL,// Exception will be thrown
+      usr::fstr( "Input file %s cannot be opened!", filename ) );
+  }
+
+  for( const auto& row : _rows ){
+    outfile << usr::fstr( "%.2f %d %.1f %.1f %.1f %.1f %.1f %.1f"
+                        , row.time, row.id
+                        , row.x, row.y, row.z
+                        , row.bias, row.ledtemp, row.sipmtemp );
+
+    for( const auto x : row.data ){
+      outfile << usr::fstr( " %lf", x );
+    }
+
+    outfile << std::endl;
+  }
 }

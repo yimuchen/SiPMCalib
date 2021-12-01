@@ -1,6 +1,7 @@
 #ifndef SIPMCALIB_COMMON_STDFORMAT
 #define SIPMCALIB_COMMON_STDFORMAT
 
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -54,7 +55,7 @@ private:
   std::vector<RowFormat> _rows;
 
 public:
-  typedef bool (* RowSelect)( const RowFormat& );
+  typedef std::function<bool ( const RowFormat& )> RowSelect;
   /**< Data selection short hand, function should return true for the rows that
    * should be extracted*/
 
@@ -64,18 +65,21 @@ public:
    * @details User can provide a row selection function to extract specific rows
    * of interest.
    */
-  std::vector<double> Time( RowSelect                  = NoSelect ) const;
-  std::vector<int>    DetId( RowSelect                 = NoSelect ) const;
-  std::vector<double> X( RowSelect                     = NoSelect ) const;
-  std::vector<double> Y( RowSelect                     = NoSelect ) const;
-  std::vector<double> Z( RowSelect                     = NoSelect ) const;
-  std::vector<double> Bias( RowSelect                  = NoSelect ) const;
-  std::vector<double> LedTemp( RowSelect               = NoSelect ) const;
-  std::vector<double> SiPMTemp( RowSelect              = NoSelect ) const;
+  std::vector<double> Time( RowSelect     = NoSelect ) const;
+  std::vector<int>    DetId( RowSelect    = NoSelect ) const;
+  std::vector<double> X( RowSelect        = NoSelect ) const;
+  std::vector<double> Y( RowSelect        = NoSelect ) const;
+  std::vector<double> Z( RowSelect        = NoSelect ) const;
+  std::vector<double> Bias( RowSelect     = NoSelect ) const;
+  std::vector<double> LedTemp( RowSelect  = NoSelect ) const;
+  std::vector<double> SiPMTemp( RowSelect = NoSelect ) const;
   /** @} */
 
   std::vector<double> DataAll( RowSelect               = NoSelect ) const;
   std::vector<double> DataCol( unsigned col, RowSelect = NoSelect ) const;
+
+  StdFormat MakeReduced( RowSelect ) const;
+  void      WriteToFile( const std::string& filename ) const;
 
 private:
   /**
@@ -86,6 +90,8 @@ private:
   {
     return true;
   }
+
+  StdFormat(); // Bare construction for reduced
 };
 
 #endif
