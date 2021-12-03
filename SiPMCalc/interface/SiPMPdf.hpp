@@ -13,7 +13,8 @@ class SiPMPdf : public RooAbsPdf
 {
 public:
   // Full model constructor
-  SiPMPdf( const char*, const char*,
+  SiPMPdf( const char*,
+           const char*,
            RooAbsReal& x,
            RooAbsReal& ped,
            RooAbsReal& gain,
@@ -24,11 +25,10 @@ public:
            RooAbsReal& alpha,
            RooAbsReal& beta,
            RooAbsReal& dcfraction,
-           RooAbsReal& epsilon
-           );
-
+           RooAbsReal& epsilon );
   // No dark current
-  SiPMPdf( const char*, const char*,
+  SiPMPdf( const char*,
+           const char*,
            RooAbsReal& x,
            RooAbsReal& ped,
            RooAbsReal& gain,
@@ -37,28 +37,24 @@ public:
            RooAbsReal& mean,
            RooAbsReal& lambda,
            RooAbsReal& alpha,
-           RooAbsReal& beta
-           );
-
+           RooAbsReal& beta );
   // No after pulsing
-  SiPMPdf( const char*, const char*,
+  SiPMPdf( const char*,
+           const char*,
            RooAbsReal& x,
            RooAbsReal& ped,
            RooAbsReal& gain,
            RooAbsReal& s0,
            RooAbsReal& s1,
            RooAbsReal& mean,
-           RooAbsReal& lambda
-           );
-
+           RooAbsReal& lambda );
   SiPMPdf( const SiPMPdf&, const char* name = 0 );
-
   virtual ~SiPMPdf();
 
   virtual TObject* clone( const char* name ) const;
 
   inline double
-         Eval() const { return evaluate(); }
+  Eval() const { return evaluate(); }
   double gen_poisson( const int k ) const;
   double ap_eff( const int k, const int i ) const;
   double gauss_k( const int k  ) const;
@@ -78,9 +74,9 @@ public:
 
   // Bunch of statistical functions used for the analysis
   // Moving to a static method for individual testing
-  static double GeneralPoissonProb( const int x
-                                  , const double mean
-                                  , const double lambda );
+  static double GeneralPoissonProb( const int    x,
+                                    const double mean,
+                                    const double lambda );
 
 protected:
   RooRealProxy x;

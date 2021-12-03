@@ -6,7 +6,8 @@
  * @ingroup Common
  * @brief Setting a RooRealVar range based on a series of data points.
  *
- * Given a bin width, a maximum area, and a series of data values, this functions
+ * Given a bin width, a maximum area, and a series of data values, this
+ *functions
  * automatically setups up the RooRealVar var such that:
  * - The range of variable lands on a bin edge that are integer multiples of the
  *   specified bin with.
@@ -27,13 +28,14 @@ SetRange( RooRealVar&                var,
   // Additional parsing to be done of the
   const double xmin  = usr::RoundDown( dmin, binwidth );
   const double xmax  = usr::RoundUp( std::min( dmax, m ), binwidth );
-  const double nbins = ( xmax - xmin ) / binwidth;
+  const double nbins = ( xmax-xmin ) / binwidth;
 
   // Setting the range
   var.setRange( xmin, xmax );
   var.setBins( nbins );
 
 }
+
 
 /**
  * @ingroup Common

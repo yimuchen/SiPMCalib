@@ -10,15 +10,13 @@ class MDistro
 {
 public:
   MDistro();
-  MDistro(
-    const double loEdge,
-    const double hiEdge,
-    const double epsilon,
-    const double width
-    );
+  MDistro( const double loEdge,
+           const double hiEdge,
+           const double epsilon,
+           const double width );
   ~MDistro();
 
-  double EvaluateAccum( const double x ) const ;
+  double EvaluateAccum( const double x ) const;
   double Evaluate( const double x ) const;
   void   SetParam( const double, const double, const double, const double );
 
@@ -35,7 +33,7 @@ public:
   double width;
 
 private:
-  unsigned nbins;
+  unsigned                 nbins;
   ROOT::Math::Interpolator spline;
   ROOT::Math::Interpolator spline_acc;
 
@@ -46,7 +44,7 @@ private:
   std::vector<double> convTempArray;
   std::vector<double> mfuncArray;
   std::vector<double> gaussArray;
-  uint64_t paramHash;
+  uint64_t            paramHash;
 
   void ParamHash();
   void MakeFFTArray();

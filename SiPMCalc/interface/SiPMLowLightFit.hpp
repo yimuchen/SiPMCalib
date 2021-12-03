@@ -15,8 +15,8 @@
 #include <iostream>
 #include <memory>
 
-// Standardized Class for handling Lowlight fit requests, including batch fitting
-// with a similar configuration files, testing estimation formats
+// Standardized Class for handling Lowlight fit requests, including batch
+// fitting with a similar configuration files, testing estimation formats
 class SiPMLowLightFit
 {
 public:
@@ -98,7 +98,7 @@ public:
   usr::Measurement ProbAfterpulse() const;
   usr::Measurement AfterpulseTimeNS() const;
   usr::Measurement DarkcurrentTimeNS() const;
-  usr::Measurement ExcessNoiseFactor( const usr::Measurement& ) const ;
+  usr::Measurement ExcessNoiseFactor( const usr::Measurement& ) const;
 
 private:
   // Since RooFit object declaration after additional parsing to get the
@@ -114,24 +114,24 @@ private:
   std::unique_ptr<RooRealVar> _beta;
   std::unique_ptr<RooRealVar> _dcfrac;
   std::unique_ptr<RooRealVar> _eps;
-  std::unique_ptr<SiPMPdf> _pdf;
+  std::unique_ptr<SiPMPdf>    _pdf;
 
   // The data format to be used by the used by the fit
-  std::vector<double> _arealist;
+  std::vector<double>         _arealist;
   std::unique_ptr<RooAbsData> _data;
   std::unique_ptr<RooRealVar> _x;
 
   // Options for reading data formats.
   std::string _inputfile;
-  bool _waveform;
-  double _binwidth;
-  unsigned _timeint;
-  unsigned _intstart;
-  unsigned _intstop;
-  unsigned _pedstart;
-  unsigned _pedstop;
-  double _pedrms;
-  double _maxarea;
+  bool        _waveform;
+  double      _binwidth;
+  unsigned    _timeint;
+  unsigned    _intstart;
+  unsigned    _intstop;
+  unsigned    _pedstart;
+  unsigned    _pedstop;
+  double      _pedrms;
+  double      _maxarea;
 
   // Default setting options
   void set_all_defaults();
@@ -142,24 +142,24 @@ private:
 
   // Fit function estimation related objects and methods
   std::vector<std::unique_ptr<TF1> > _peakfits;
-  std::unique_ptr<TSpectrum> _spectrum;
-  std::unique_ptr<TH1D> _est_hist;
-  std::unique_ptr<TGraphErrors> _gain_graph;
-  std::unique_ptr<TGraphErrors> _width_graph;
-  std::unique_ptr<TGraphErrors> _height_graph;
-  std::unique_ptr<TF1> _gain_fit;
-  std::unique_ptr<TF1> _width_fit;
-  std::unique_ptr<TF1> _height_fit;
-  bool ignore_ped_est;
-  bool ignore_gain_est;
-  bool ignore_s0_est;
-  bool ignore_s1_est;
-  bool ignore_mean_est;
-  bool ignore_lambda_est;
+  std::unique_ptr<TSpectrum>         _spectrum;
+  std::unique_ptr<TH1D>              _est_hist;
+  std::unique_ptr<TGraphErrors>      _gain_graph;
+  std::unique_ptr<TGraphErrors>      _width_graph;
+  std::unique_ptr<TGraphErrors>      _height_graph;
+  std::unique_ptr<TF1>               _gain_fit;
+  std::unique_ptr<TF1>               _width_fit;
+  std::unique_ptr<TF1>               _height_fit;
+  bool                               ignore_ped_est;
+  bool                               ignore_gain_est;
+  bool                               ignore_s0_est;
+  bool                               ignore_s1_est;
+  bool                               ignore_mean_est;
+  bool                               ignore_lambda_est;
 
   double _est_minpeak;
-  int _est_gausswindow;
-  int _est_maxgausswidth;
+  int    _est_gausswindow;
+  int    _est_maxgausswidth;
 
   TF1* good_local_peak_fit( double x );
   void run_gain_est();
@@ -167,8 +167,8 @@ private:
   void run_height_est();
 
   // operation parameters
-  double _intwindow;
-  double _sipmtime;
+  double      _intwindow;
+  double      _sipmtime;
   std::string _sipmtype;
   std::string _lumitype;
   std::string _biasv;

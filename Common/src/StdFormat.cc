@@ -17,17 +17,18 @@ StdFormat::StdFormat( const std::string& filename )
 {
   // Getting everything row by row
   std::ifstream infile( filename );
-  std::string line;
+  std::string   line;
 
   if( !infile.is_open() ){
     usr::log::PrintLog( usr::log::FATAL,// Exception will be thrown
-      usr::fstr( "Input file %s cannot be opened!", filename ) );
+                        usr::fstr( "Input file %s cannot be opened!",
+                                   filename ) );
   }
 
   while( std::getline( infile, line ) ){
     std::istringstream linestream( line );
-    RowFormat r;
-    double data = 0;
+    RowFormat          r;
+    double             data = 0;
     linestream >> r.time >> r.id
     >> r.x >> r.y >> r.z
     >> r.bias >> r.ledtemp  >> r.sipmtemp;
@@ -39,6 +40,7 @@ StdFormat::StdFormat( const std::string& filename )
     _rows.push_back( r );
   }
 }
+
 
 /**
  * @brief Empty constructor that should not be accessible to the user.
@@ -75,9 +77,11 @@ COLUMN( SiPMTemp, double, sipmtemp );
  * @brief Extracting a specific column of the data columns.
  *
  * Depending on which data collection process was invoked to collect the data,
- * different columns typically mean different data variation. This method extract
+ * different columns typically mean different data variation. This method
+ *extract
  * exactly 1 data column into the a single vector container. Notice that the
- * column starts from the 0 for the 0th data column (9th column in the data file.)
+ * column starts from the 0 for the 0th data column (9th column in the data
+ *file.)
  */
 std::vector<double>
 StdFormat::DataCol( unsigned col, RowSelect selector ) const
@@ -94,11 +98,13 @@ StdFormat::DataCol( unsigned col, RowSelect selector ) const
   return ans;
 }
 
+
 /**
  * @brief Extracting all data columns as a single vector.
  *
  * In the case of the low-light data collection, all waveform data are placed
- * into the latter columns. This method aggregates all data columns into a single
+ * into the latter columns. This method aggregates all data columns into a
+ *single
  * vector, effectively removing all column and row structure (what is needed for
  * low-light analysis.) The user can still be specify which rows are used for
  * extraction of the data vector.
@@ -117,10 +123,12 @@ StdFormat::DataAll( RowSelect selector ) const
   return ans;
 }
 
+
 /**
  * @brief Making a reduced version of the data set based on some row selection.
  *
- * This is handy if the same selection is performed over and over again over many
+ * This is handy if the same selection is performed over and over again over
+ *many
  * routines, or you require a new data file that require some none-trivial
  * selection.
  */
@@ -138,6 +146,7 @@ StdFormat::MakeReduced( RowSelect selector ) const
   return ans;
 }
 
+
 /**
  * @brief Writing the current dataset to a file.
  *
@@ -151,14 +160,23 @@ StdFormat::WriteToFile( const std::string& filename ) const
 
   if( !outfile.is_open() ){
     usr::log::PrintLog( usr::log::FATAL,// Exception will be thrown
-      usr::fstr( "Input file %s cannot be opened!", filename ) );
+                        usr::fstr( "Input file %s cannot be opened!",
+                                   filename ) );
   }
 
   for( const auto& row : _rows ){
     outfile << usr::fstr( "%.2f %d %.1f %.1f %.1f %.1f %.1f %.1f"
-                        , row.time, row.id
-                        , row.x, row.y, row.z
-                        , row.bias, row.ledtemp, row.sipmtemp );
+                          ,
+                          row.time,
+                          row.id
+                          ,
+                          row.x,
+                          row.y,
+                          row.z
+                          ,
+                          row.bias,
+                          row.ledtemp,
+                          row.sipmtemp );
 
     for( const auto x : row.data ){
       outfile << usr::fstr( " %lf", x );

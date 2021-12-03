@@ -40,14 +40,14 @@ public:
   struct RowFormat
   {
 public:
-    double              time;
-    int                 id;
-    double              x;
-    double              y;
-    double              z;
-    double              bias;
-    double              ledtemp;
-    double              sipmtemp;
+    double time;
+    int id;
+    double x;
+    double y;
+    double z;
+    double bias;
+    double ledtemp;
+    double sipmtemp;
     std::vector<double> data;
   };
 
@@ -90,6 +90,7 @@ private:
   {
     return true;
   }
+
 
   StdFormat(); // Bare construction for reduced
 };

@@ -10,12 +10,15 @@ main( int argc, char* argv[] )
   usr::po::options_description desc(
     "Single run fit options for default low light fit" );
   desc.add_options()
-    ( "configfile,c", usr::po::value<std::string>(),
+    ( "configfile,c",
+    usr::po::value<std::string>(),
     "Configuration file for overloading default settings in json format. "
     "Leave empty to load all-default fitting" )
-    ( "outputdir,o", usr::po::defvalue<std::string>( "results/" ),
+    ( "outputdir,o",
+    usr::po::defvalue<std::string>( "results/" ),
     "Output directory of the various objects" )
-    ( "commonpostfix,p", usr::po::defvalue<std::string>( "" ),
+    ( "commonpostfix,p",
+    usr::po::defvalue<std::string>( "" ),
     "Output prefix for the all files" )
   ;
 
@@ -25,19 +28,26 @@ main( int argc, char* argv[] )
     "of savefit, savelatex and savetex are not set, then the full full will not "
     "be run " );
   savedesc.add_options()
-    ( "savefit", usr::po::value<std::string>(),
+    ( "savefit",
+    usr::po::value<std::string>(),
     "Saving the grand spectrum fit results" )
-    ( "savelatex", usr::po::value<std::string>(),
+    ( "savelatex",
+    usr::po::value<std::string>(),
     "Saving the fit results as a latex table" )
-    ( "savetxt", usr::po::value<std::string>(),
+    ( "savetxt",
+    usr::po::value<std::string>(),
     "Saving the fit results as a raw .txt file" )
-    ( "saveestpeak", usr::po::value<std::string>(),
+    ( "saveestpeak",
+    usr::po::value<std::string>(),
     "Saving the peak estimation plot" )
-    ( "saveestgain", usr::po::value<std::string>(),
+    ( "saveestgain",
+    usr::po::value<std::string>(),
     "Saving the gain estimation fit plot" )
-    ( "saveestwidth", usr::po::value<std::string>(),
+    ( "saveestwidth",
+    usr::po::value<std::string>(),
     "Saving the width estimation fit plot" )
-    ( "saveestpoisson", usr::po::value<std::string>(),
+    ( "saveestpoisson",
+    usr::po::value<std::string>(),
     "Saving the poisson estimation plot" )
   ;
 
@@ -52,10 +62,11 @@ main( int argc, char* argv[] )
   args.ParseOptions( argc, argv );
 
   args.AddDirScheme( usr::ArgumentExtender::ArgPathScheme( "outputdir", "" ) );
-  args.AddNameScheme( usr::ArgumentExtender::ArgPathScheme( "commonpostfix"
-                                                          , "" ) );
+  args.AddNameScheme( usr::ArgumentExtender::ArgPathScheme( "commonpostfix",
+                                                            "" ) );
   SiPMLowLightFit* mgr = args.CheckArg( "configfile" ) ?
-                         new SiPMLowLightFit( args.Arg<std::string>( "configfile" ) ) :
+                         new SiPMLowLightFit( args.Arg<std::string>(
+                                                "configfile" ) ) :
                          new SiPMLowLightFit();
   mgr->UpdateSettings( args );
 

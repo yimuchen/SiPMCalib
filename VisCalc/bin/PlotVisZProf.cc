@@ -27,9 +27,9 @@ main( int argc, char const* argv[] )
     usr::plt::Simple1DCanvas c;
 
     auto& graph = c.PlotGraph( zprof.sharpness,
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText( "Camera readout" ),
-      usr::plt::TrackY( usr::plt::tracky::both ) );
+                               usr::plt::PlotType( usr::plt::scatter ),
+                               usr::plt::EntryText( "Camera readout" ),
+                               usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
     graph.SetMarkerSize( 0.2 );
@@ -45,14 +45,15 @@ main( int argc, char const* argv[] )
   }
   {// Drift plot
     usr::plt::Simple1DCanvas c;
+
     auto& xgraph = c.PlotGraph( zprof.recox,
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText( "FOV X" ),
-      usr::plt::TrackY( usr::plt::tracky::both ) );
+                                usr::plt::PlotType( usr::plt::scatter ),
+                                usr::plt::EntryText( "FOV X" ),
+                                usr::plt::TrackY( usr::plt::tracky::both ) );
     auto& ygraph = c.PlotGraph( zprof.recoy,
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText( "FOV Y" ),
-      usr::plt::TrackY( usr::plt::tracky::both ) );
+                                usr::plt::PlotType( usr::plt::scatter ),
+                                usr::plt::EntryText( "FOV Y" ),
+                                usr::plt::TrackY( usr::plt::tracky::both ) );
 
     xgraph.SetMarkerStyle( 20 );
     xgraph.SetMarkerSize( 0.2 );
@@ -80,14 +81,15 @@ main( int argc, char const* argv[] )
     zprof.recoarea->Fit( &func, "W N 0 R" );
 
     usr::plt::Ratio1DCanvas c;
+
     auto& graph = c.PlotGraph( zprof.recoarea,
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText( "Camera readout" ),
-      usr::plt::TrackY( usr::plt::tracky::both ) );
+                               usr::plt::PlotType( usr::plt::scatter ),
+                               usr::plt::EntryText( "Camera readout" ),
+                               usr::plt::TrackY( usr::plt::tracky::both ) );
     auto& fgraph = c.PlotFunc( func,
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::EntryText( "Fit (inv. sq.)" ),
-      usr::plt::TrackY( usr::plt::tracky::both ) );
+                               usr::plt::PlotType( usr::plt::simplefunc ),
+                               usr::plt::EntryText( "Fit (inv. sq.)" ),
+                               usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
     graph.SetMarkerSize( 0.2 );
@@ -116,14 +118,15 @@ main( int argc, char const* argv[] )
     zprof.recod->Fit( &func, "W N 0 R" );
 
     usr::plt::Ratio1DCanvas c;
+
     auto& graph = c.PlotGraph( zprof.recod,
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText( "Camera readout" ),
-      usr::plt::TrackY( usr::plt::tracky::both ) );
+                               usr::plt::PlotType( usr::plt::scatter ),
+                               usr::plt::EntryText( "Camera readout" ),
+                               usr::plt::TrackY( usr::plt::tracky::both ) );
     auto& fgraph = c.PlotFunc( func,
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::EntryText( "Fit (N/(z+z_{0}))" ),
-      usr::plt::TrackY( usr::plt::tracky::both ) );
+                               usr::plt::PlotType( usr::plt::simplefunc ),
+                               usr::plt::EntryText( "Fit (N/(z+z_{0}))" ),
+                               usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
     graph.SetMarkerSize( 0.2 );
@@ -152,7 +155,7 @@ ZprofileGraphs
 MakeProfileGraph( const std::string& file )
 {
   std::ifstream fin;
-  std::string line;
+  std::string   line;
   fin.open( file, std::ifstream::in );
 
   std::vector<double> zlist;
@@ -175,8 +178,8 @@ MakeProfileGraph( const std::string& file )
     slist.push_back( sharp );
     if( recox > 0 ){
       recozlist.push_back( z );
-      recoxlist.push_back( recox - 640 );
-      recoylist.push_back( recoy - 512 );
+      recoxlist.push_back( recox-640 );
+      recoylist.push_back( recoy-512 );
       recoalist.push_back( recoa );
       recodlist.push_back( recod );
     }

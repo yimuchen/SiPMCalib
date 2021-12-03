@@ -11,25 +11,24 @@ class CrossTalkPdf : public RooAbsPdf
 {
 public:
   // Full model constructor
-  CrossTalkPdf( const char*, const char*,
-           RooRealVar& x,
-           RooRealVar& x0,
-           RooRealVar& gain,
-           RooRealVar& s0,
-           RooRealVar& s1,
-           RooRealVar& prob
-           );
-
+  CrossTalkPdf( const char*,
+                const char*,
+                RooRealVar& x,
+                RooRealVar& x0,
+                RooRealVar& gain,
+                RooRealVar& s0,
+                RooRealVar& s1,
+                RooRealVar& prob );
   CrossTalkPdf( const CrossTalkPdf&, const char* name = 0 );
-
   virtual
   ~CrossTalkPdf();
 
   virtual TObject* clone( const char* name ) const;
 
   double gauss_k( const int k  ) const;
-  double cross_prob( const int k ) const ;
-  inline double Eval() const { return evaluate(); }
+  double cross_prob( const int k ) const;
+  inline double
+  Eval() const { return evaluate(); }
 
 protected:
   RooRealProxy x;

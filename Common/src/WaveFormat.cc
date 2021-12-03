@@ -16,10 +16,11 @@
 static inline int16_t
 hex_to_int( const char x )
 {
-  return x > 'a' ? 10 + x - 'a' :
-         x > 'A' ? 10 + x - 'A' :
-         x - '0';
+  return x > 'a' ? 10+x-'a' :
+         x > 'A' ? 10+x-'A' :
+         x-'0';
 }
+
 
 static inline int8_t
 bit4_to_bit2( const int16_t x )
@@ -27,29 +28,34 @@ bit4_to_bit2( const int16_t x )
   return x;
 }
 
+
 /**
  * @brief Construction of the waveform array form a given input file.
  *
- * The user can also specify where the waveform should be inverted or not (change
+ * The user can also specify where the waveform should be inverted or not
+ *(change
  * downward firing pulse to be upwards firing pulses).
  *
- * For the data collection of the DRS4, there are occasionally bad samples due to
+ * For the data collection of the DRS4, there are occasionally bad samples due
+ *to
  * bit flips in the ADC chip. Here we filter out these single bit flips by
  * checking the neighboring cells up to 2 samples away in either direction, and
  * check if the maximum variation in the sample value is more than 70 bits
  * (nothing in the system is expected to be this fast). If a sample readout is
- * determined to contain a bit flip, then the readout is replace with the average
+ * determined to contain a bit flip, then the readout is replace with the
+ *average
  * of the readout before and after the bad sample.
  */
 WaveFormat::WaveFormat( const std::string& file, const bool invert )
 {
   const unsigned factor = invert ? -1 : 1;
-  std::string line;
-  std::ifstream fin( file, std::ios::in );
+  std::string    line;
+  std::ifstream  fin( file, std::ios::in );
 
   if( !fin.is_open() ){
     usr::log::PrintLog( usr::log::FATAL,// Throws exception
-      usr::fstr( "Input file [%s] cannot be opened!", file ) );
+                        usr::fstr( "Input file [%s] cannot be opened!",
+                                   file ) );
   }
 
   // Getting first line
@@ -65,7 +71,7 @@ WaveFormat::WaveFormat( const std::string& file, const bool invert )
       int16_t value = 0;
 
       for( unsigned bit = 0; bit < nbits; ++bit ){
-        const int16_t bit_value = hex_to_int( line[nbits * index + bit] );
+        const int16_t bit_value = hex_to_int( line[nbits * index+bit] );
         value = value << 4 | bit_value;
       }
 
@@ -75,15 +81,15 @@ WaveFormat::WaveFormat( const std::string& file, const bool invert )
 
     auto is_peak_cell
       = [this]( const unsigned index )->bool {
-          const auto& w         = this->_waveforms.back();
-          const unsigned diffp1 = index > w.size() - 2 ? 0 :
-                                  abs( w.at( index ) - w.at( index+1 ) );
-          const unsigned diffp2 = index > w.size() -3 ? 0 :
-                                  abs( w.at( index ) - w.at( index+2 ) );
+          const auto&    w      = this->_waveforms.back();
+          const unsigned diffp1 = index > w.size()-2 ? 0 :
+                                  abs( w.at( index )-w.at( index+1 ) );
+          const unsigned diffp2 = index > w.size()-3 ? 0 :
+                                  abs( w.at( index )-w.at( index+2 ) );
           const unsigned diffm1 = index < 1 ? 0 :
-                                  abs( w.at( index ) - w.at( index-1 ) );
+                                  abs( w.at( index )-w.at( index-1 ) );
           const unsigned diffm2 = index < 2 ? 0 :
-                                  abs( w.at( index ) - w.at( index-2 ) );
+                                  abs( w.at( index )-w.at( index-2 ) );
 
           const unsigned diffp = std::max( diffp1, diffp2 );
           const unsigned diffm = std::max( diffm1, diffm2 );
@@ -95,7 +101,7 @@ WaveFormat::WaveFormat( const std::string& file, const bool invert )
     for( unsigned index = 0; index < _waveforms.back().size(); ++index ){
       if( is_peak_cell( index ) ){
         _waveforms.back()[index]
-          = ( _waveforms.back()[index+1] + _waveforms.back()[index-1] ) / 2;
+          = ( _waveforms.back()[index+1]+_waveforms.back()[index-1] ) / 2;
       }
     }
   }
@@ -115,11 +121,12 @@ WaveFormat::WaveformRaw( const unsigned index, const int16_t offset ) const
   std::vector<int16_t> ans;
 
   for( const auto val : _waveforms.at( index ) ){
-    ans.push_back( val - offset );
+    ans.push_back( val-offset );
   }
 
   return ans;
 }
+
 
 /**
  * @brief Returning the average voltage value of samples within the given
@@ -142,7 +149,7 @@ WaveFormat::PedValue( const unsigned index,
     ped_value += _waveforms.at( index ).at( i ) * ADC();
   }
 
-  return ped_value / (double)( pedstop - pedstart );
+  return ped_value / (double)( pedstop-pedstart );
 }
 
 
@@ -169,11 +176,13 @@ WaveFormat::PedRMS( const unsigned index,
   return usr::StdDev( list );
 }
 
+
 /**
  * @brief Getting a stored waveform after converting to readout values.
  *
  * If the pedestal start and stop index is specified, then the pedestal value is
- * subtracted the entire waveform values. See WaveFormat::PedValue to see how the
+ * subtracted the entire waveform values. See WaveFormat::PedValue to see how
+ *the
  * pedestal value is calculated.
  */
 std::vector<double>
@@ -182,14 +191,15 @@ WaveFormat::Waveform( const unsigned index,
                       const unsigned pedstop ) const
 {
   std::vector<double> ans;
-  const double ped_value = PedValue( index, pedstart, pedstop );
+  const double        ped_value = PedValue( index, pedstart, pedstop );
 
   for( unsigned i = 0; i < NSamples(); ++i ){
-    ans.push_back( _waveforms.at( index ).at( i ) * ADC() - ped_value );
+    ans.push_back( _waveforms.at( index ).at( i ) * ADC()-ped_value );
   }
 
   return ans;
 }
+
 
 /**
  * @brief Calculating the area of a waveform given some intergration window.
@@ -205,20 +215,21 @@ WaveFormat::WaveformSum( const unsigned index,
                          const unsigned pedstart,
                          const unsigned pedstop ) const
 {
-  double ans             = 0;
+  double       ans       = 0;
   const double ped_value = PedValue( index, pedstart, pedstop );
 
   const unsigned start = std::max( intstart, (unsigned)0 );
   const unsigned stop  = std::min( intstop, NSamples() );
 
   for( unsigned i = start; i < stop; ++i ){
-    ans += _waveforms.at( index ).at( i )*ADC()  - ped_value;
+    ans += _waveforms.at( index ).at( i ) * ADC()-ped_value;
   }
 
   ans *= Time();
 
   return ans;
 }
+
 
 /**
  * @brief Getting all waveform areas given the integration window and optional.

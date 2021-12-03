@@ -29,24 +29,50 @@ SiPMLowLightFit::set_all_defaults()
   // Fitting related options
   const double min = std::numeric_limits<double>::min();
 
-  _x      = std::make_unique<RooRealVar>( "Readout", "Readout", -1000,  200000, "mV-ns" );
-  _ped    = std::make_unique<RooRealVar>(     "ped",     "ped", -300,      300 );
-  _gain   = std::make_unique<RooRealVar>(    "gain",    "gain", 0,        1000 );
-  _s0     = std::make_unique<RooRealVar>(      "s0",      "s0", min,        15 );
-  _s1     = std::make_unique<RooRealVar>(      "s1",      "s1", 0,           5 );
-  _mean   = std::make_unique<RooRealVar>(    "mean",    "mean", min,        50 );
-  _lambda = std::make_unique<RooRealVar>(  "lambda",  "lambda", 0.0,       0.2 );
-  _alpha  = std::make_unique<RooRealVar>(   "alpha",   "alpha", 0,         0.2 );
-  _beta   = std::make_unique<RooRealVar>(    "beta",    "beta", 10,      20000 );
-  _dcfrac = std::make_unique<RooRealVar>(  "dcfrac",  "dcfrac", 0,         0.4 );
-  _eps    = std::make_unique<RooRealVar>(     "eps",     "eps", 1e-5,     1e-1 );
+  _x = std::make_unique<RooRealVar>( "Readout",
+                                     "Readout",
+                                     -1000,
+                                     200000,
+                                     "mV-ns" );
+  _ped =
+    std::make_unique<RooRealVar>(     "ped",     "ped", -300,      300 );
+  _gain =
+    std::make_unique<RooRealVar>(    "gain",    "gain", 0,        1000 );
+  _s0 =
+    std::make_unique<RooRealVar>(      "s0",      "s0", min,        15 );
+  _s1 =
+    std::make_unique<RooRealVar>(      "s1",      "s1", 0,           5 );
+  _mean =
+    std::make_unique<RooRealVar>(    "mean",    "mean", min,        50 );
+  _lambda =
+    std::make_unique<RooRealVar>(  "lambda",  "lambda", 0.0,       0.2 );
+  _alpha =
+    std::make_unique<RooRealVar>(   "alpha",   "alpha", 0,         0.2 );
+  _beta =
+    std::make_unique<RooRealVar>(    "beta",    "beta", 10,      20000 );
+  _dcfrac =
+    std::make_unique<RooRealVar>(  "dcfrac",  "dcfrac", 0,         0.4 );
+  _eps =
+    std::make_unique<RooRealVar>(     "eps",     "eps", 1e-5,     1e-1 );
 
-  _pdf = std::make_unique<SiPMPdf>( "pdf", "pdf", *_x
-                                  , *_ped, *_gain
-                                  , *_s0, *_s1
-                                  , *_mean, *_lambda
-                                  , *_alpha, *_beta
-                                  , *_dcfrac, *_eps );
+  _pdf = std::make_unique<SiPMPdf>( "pdf",
+                                    "pdf",
+                                    *_x
+                                    ,
+                                    *_ped,
+                                    *_gain
+                                    ,
+                                    *_s0,
+                                    *_s1
+                                    ,
+                                    *_mean,
+                                    *_lambda
+                                    ,
+                                    *_alpha,
+                                    *_beta
+                                    ,
+                                    *_dcfrac,
+                                    *_eps );
 
   // Estimation options
   ignore_ped_est     = false;
@@ -67,6 +93,7 @@ SiPMLowLightFit::set_all_defaults()
   _biasv     = "Generic nominal bias";
 }
 
+
 SiPMLowLightFit::SiPMLowLightFit()
 {
   set_all_defaults();
@@ -85,33 +112,43 @@ SiPMLowLightFit::SiPMLowLightFit( const std::string& config )
   UpdateSettings( args );
 }
 
+
 usr::po::options_description
 SiPMLowLightFit::DataArguments()
 {
   usr::po::options_description desc(
     "Options for parsing the data file for low-light SiPM spectrum model" );
   desc.add_options()
-    ( "input",     usr::po::reqvalue<std::string>(),
+    ( "input",
+    usr::po::reqvalue<std::string>(),
     "Input data file" )
-    ( "waveform",  usr::po::reqvalue<bool>(),
+    ( "waveform",
+    usr::po::reqvalue<bool>(),
     "Whether in input data is a raw waveform (True) are integrated (False)" )
-    ( "binwidth",  usr::po::value<double>(),
+    ( "binwidth",
+    usr::po::value<double>(),
     "The bin width to use for binned data" )
-    ( "maxarea",   usr::po::value<double>(),
+    ( "maxarea",
+    usr::po::value<double>(),
     "Maximum area for perform fit on" )
 
   /// Options unique to the waveform input format.
-    ( "intstart",  usr::po::value<unsigned>(),
+    ( "intstart",
+    usr::po::value<unsigned>(),
     "Time slice to start the integration window" )
-    ( "intstop",   usr::po::value<unsigned>(),
+    ( "intstop",
+    usr::po::value<unsigned>(),
     "Time slice to stop the integration window" )
-    ( "pedstart",  usr::po::value<unsigned>(),
+    ( "pedstart",
+    usr::po::value<unsigned>(),
     "Time slice to start the pedestal calculation, ignore to skip pedestal "
     "subtraction" )
-    ( "pedstop",   usr::po::value<unsigned>(),
+    ( "pedstop",
+    usr::po::value<unsigned>(),
     "Time slice to stop the pedestal calculation, ignore to skip pedestal "
     "subtraction" )
-    ( "pedrms",   usr::po::value<double>(),
+    ( "pedrms",
+    usr::po::value<double>(),
     "Maximum RMS of values within the pedestal window, event is discarded if "
     "this value is surpassed" )
   ;
@@ -119,6 +156,7 @@ SiPMLowLightFit::DataArguments()
 
   return desc;
 }
+
 
 usr::po::options_description
 SiPMLowLightFit::FitArguments()
@@ -140,13 +178,18 @@ SiPMLowLightFit::FitArguments()
     ( "mean",    usr::po::multivalue<double>(), "Mean number of p.es" )
     ( "lambda",  usr::po::multivalue<double>(), "Crosstalk proability" )
     ( "alpha",   usr::po::multivalue<double>(), "Afterpulsing probability" )
-    ( "beta",    usr::po::multivalue<double>(), "Afterpulting timescale factor" )
+    ( "beta",
+    usr::po::multivalue<double>(),
+    "Afterpulting timescale factor" )
     ( "dcfrac",  usr::po::multivalue<double>(), "Dark current probability" )
-    ( "epsilon", usr::po::multivalue<double>(), "Resolution factor to be used for the dark current curve" )
+    ( "epsilon",
+    usr::po::multivalue<double>(),
+    "Resolution factor to be used for the dark current curve" )
   ;
 
   return desc;
 }
+
 
 usr::po::options_description
 SiPMLowLightFit::OperationArguments()
@@ -156,34 +199,48 @@ SiPMLowLightFit::OperationArguments()
     "difficulty figuring out independently" );
 
   desc.add_options()
-    ( "intwindow", usr::po::value<double>(),
+    ( "intwindow",
+    usr::po::value<double>(),
     "The integration window required for waveform sums, this will overwrite "
     "intstart/intstop results used for waveform formats (units: ns)" )
-    ( "sipmtime", usr::po::value<double>(),
+    ( "sipmtime",
+    usr::po::value<double>(),
     "SiPM recovery time, this calculation routines would not include functions "
     "to calculated this. (units: ns)" )
-    ( "lumitype", usr::po::value<std::string>(),
+    ( "lumitype",
+    usr::po::value<std::string>(),
     "Luminosity type display on plots" )
-    ( "sipmtype", usr::po::value<std::string>(),
+    ( "sipmtype",
+    usr::po::value<std::string>(),
     "SiPM type to display on plots" )
-    ( "biasv",    usr::po::value<std::string>(),
+    ( "biasv",
+    usr::po::value<std::string>(),
     "String on plot used to indicated the bias condition" )
   ;
 
   return desc;
 }
 
+
 usr::po::options_description
 SiPMLowLightFit::EstArguments()
 {
-  usr::po::options_description desc( "Options related to setting the parameters used for parameter estimation process" );
+  usr::po::options_description desc(
+    "Options related to setting the parameters used for parameter estimation process" );
   desc.add_options()
-    ( "estminpeak", usr::po::value<double>(), "The minimum fraction a peak value in the histogram have relative to the maximum bin value that it can be considered a peak" )
-    ( "estgausswindow", usr::po::value<int>(), "Number of bins that that local guassian peak should follow" )
-    ( "estmaxgausswidth", usr::po::value<int>(), "Maximum number of bins that the gaussian width can be before it is discarded as a primary peak candidate" )
+    ( "estminpeak",
+    usr::po::value<double>(),
+    "The minimum fraction a peak value in the histogram have relative to the maximum bin value that it can be considered a peak" )
+    ( "estgausswindow",
+    usr::po::value<int>(),
+    "Number of bins that that local guassian peak should follow" )
+    ( "estmaxgausswidth",
+    usr::po::value<int>(),
+    "Maximum number of bins that the gaussian width can be before it is discarded as a primary peak candidate" )
   ;
   return desc;
 }
+
 
 void
 SiPMLowLightFit::UpdateSettings( const usr::ArgumentExtender& args )
@@ -237,7 +294,6 @@ SiPMLowLightFit::UpdateSettings( const usr::ArgumentExtender& args )
   update_arg( *_dcfrac, "dcfrac"  );
   update_arg( *_eps,    "epsilon" );
 
-
   // Option parsing for estimation related variables
   auto lock = [&args]( bool& ignore, const std::string& var ){
                 if( args.CheckArg( var ) ){
@@ -260,11 +316,14 @@ SiPMLowLightFit::UpdateSettings( const usr::ArgumentExtender& args )
   lock( ignore_lambda_est, "lambda" );
 
   _est_minpeak = args.ArgOpt<double>( "estminpeak"
-                                    , _est_minpeak       );
+                                      ,
+                                      _est_minpeak       );
   _est_gausswindow = args.ArgOpt<double>( "estgausswindow"
-                                        , _est_gausswindow   );
+                                          ,
+                                          _est_gausswindow   );
   _est_maxgausswidth = args.ArgOpt<double>( "estmaxgausswidth"
-                                          , _est_maxgausswidth );
+                                            ,
+                                            _est_maxgausswidth );
 
   // Operation parameters related variables
   _intwindow = args.ArgOpt<double>( "intwindow", _intwindow );
@@ -291,8 +350,9 @@ SiPMLowLightFit::MakeBinnedData()
   // Parsing for converting into data.
   const double xmin = usr::RoundDown( _arealist.front(), _binwidth );
   const double xmax = usr::RoundUp( std::min( _arealist.back(), _maxarea )
-                                  , _binwidth );
-  const double nbins = ( xmax - xmin ) / _binwidth;
+                                    ,
+                                    _binwidth );
+  const double nbins = ( xmax-xmin ) / _binwidth;
 
   x().setRange( xmin, xmax );
   x().setBins( nbins );
@@ -307,6 +367,7 @@ SiPMLowLightFit::MakeBinnedData()
   }
 }
 
+
 void
 SiPMLowLightFit::make_array_from_waveform()
 {
@@ -318,33 +379,42 @@ SiPMLowLightFit::make_array_from_waveform()
     if( wformat.PedRMS( i, _pedstart, _pedstop ) > _pedrms ){
       continue;
     }
-    const double a = wformat.WaveformSum( i, _intstart, _intstop
-                                        , _pedstart, _pedstop );
+    const double a = wformat.WaveformSum( i,
+                                          _intstart,
+                                          _intstop
+                                          ,
+                                          _pedstart,
+                                          _pedstop );
     _arealist.push_back( a );
   }
 
   // Additional parsing required for plotting
   const unsigned start = std::min( _intstart, wformat.NSamples() );
   const unsigned stop  = std::min( _intstop, wformat.NSamples() );
-  _intwindow = wformat.Time() * ( stop - start );
+  _intwindow = wformat.Time() * ( stop-start );
 
 }
+
 
 void
 SiPMLowLightFit::make_array_from_sum()
 {
   // Using the Common format class for get summed results
-  StdFormat sformat( _inputfile );
+  StdFormat  sformat( _inputfile );
   const auto results = sformat.DataAll();
   _arealist.insert( _arealist.begin(), results.begin(), results.end() );
 }
 
+
 void
 SiPMLowLightFit::RunFit()
 {
-  usr::ConvergeFitPDFToData( *_pdf, *_data,
-    usr::MaxFitIteration( 3 ) );// Limiting to 3 to save runtime.
+  usr::ConvergeFitPDFToData( *_pdf,
+                             *_data,
+                             usr::MaxFitIteration( 3 ) );
+  // Limiting to 3 to save runtime.
 }
+
 
 usr::Measurement
 SiPMLowLightFit::Pedestal() const
@@ -352,11 +422,13 @@ SiPMLowLightFit::Pedestal() const
   return usr::Measurement( ped().getVal(), ped().getError() );
 }
 
+
 usr::Measurement
 SiPMLowLightFit::Gain() const
 {
   return usr::Measurement( gain().getVal(), gain().getError() );
 }
+
 
 usr::Measurement
 SiPMLowLightFit::CommonNoise() const
@@ -364,11 +436,13 @@ SiPMLowLightFit::CommonNoise() const
   return usr::Measurement( s0().getVal(), s0().getError() );
 }
 
+
 usr::Measurement
 SiPMLowLightFit::PixelNoise() const
 {
   return usr::Measurement( s1().getVal(), s1().getError() );
 }
+
 
 usr::Measurement
 SiPMLowLightFit::MeanPhotons() const
@@ -376,42 +450,47 @@ SiPMLowLightFit::MeanPhotons() const
   return usr::Measurement( mean().getVal(), mean().getError() );
 }
 
+
 usr::Measurement
 SiPMLowLightFit::MeanPhotonsFromFrac() const
 {
   // Getting the mean photon using the fractional method:
   const double den = _arealist.size();
-  const double num = std::count_if( _arealist.begin(), _arealist.end(),
-    [this] ( double x )->bool {
-    return x < ( this->ped().getVal() + this->gain().getVal() /2 );
+  const double num = std::count_if( _arealist.begin(),
+                                    _arealist.end(),
+                                    [this]( double x )->bool {
+    return x < ( this->ped().getVal()+this->gain().getVal() / 2 );
   } );
 
-  const double frac = num/den;
-  const double err  = TMath::Sqrt( frac*( 1-frac )/den );
+  const double frac = num / den;
+  const double err  = TMath::Sqrt( frac * ( 1-frac ) / den );
 
   const double cen = -TMath::Log( frac );
-  const double unc = fabs( -TMath::Log( frac ) + TMath::Log( frac+err ) );
+  const double unc = fabs( -TMath::Log( frac )+TMath::Log( frac+err ) );
 
   return usr::Measurement( cen, unc );
 }
+
 
 usr::Measurement
 SiPMLowLightFit::ProbCrosstalk() const
 {
   const double lval      = lambda().getVal();
   const double lerr      = lambda().getError();
-  const double xtalk_cen = 1 - TMath::Exp( -lval  );
-  const double xtalk_hi  = 1 - TMath::Exp( -( lval + lerr ) );
-  const double xtalk_lo  = 1 - TMath::Exp( -( lval - lerr ) );
-  const double xtalk_err = ( xtalk_hi - xtalk_lo )/2;
+  const double xtalk_cen = 1-TMath::Exp( -lval  );
+  const double xtalk_hi  = 1-TMath::Exp( -( lval+lerr ) );
+  const double xtalk_lo  = 1-TMath::Exp( -( lval-lerr ) );
+  const double xtalk_err = ( xtalk_hi-xtalk_lo ) / 2;
   return usr::Measurement( xtalk_cen, xtalk_err );
 }
+
 
 usr::Measurement
 SiPMLowLightFit::ProbAfterpulse() const
 {
   return usr::Measurement( alpha().getVal(), alpha().getError() );
 }
+
 
 usr::Measurement
 SiPMLowLightFit::AfterpulseTimeNS() const
@@ -420,6 +499,7 @@ SiPMLowLightFit::AfterpulseTimeNS() const
   return _sipmtime * mb / Gain();
 }
 
+
 usr::Measurement
 SiPMLowLightFit::DarkcurrentTimeNS() const
 {
@@ -427,11 +507,12 @@ SiPMLowLightFit::DarkcurrentTimeNS() const
   return _intwindow / prob;
 }
 
+
 usr::Measurement
 SiPMLowLightFit::ExcessNoiseFactor( const usr::Measurement& n ) const
 {
   const double stddev = usr::StdDev( _arealist );
-  const double mean   = usr::Mean( _arealist ) - ped().getVal();
-  const double enf    = n * ( stddev / mean ) * ( stddev /mean );
-  return usr::Measurement( enf, enf*n.RelAvgError() );
+  const double mean   = usr::Mean( _arealist )-ped().getVal();
+  const double enf    = n * ( stddev / mean ) * ( stddev / mean );
+  return usr::Measurement( enf, enf * n.RelAvgError() );
 }

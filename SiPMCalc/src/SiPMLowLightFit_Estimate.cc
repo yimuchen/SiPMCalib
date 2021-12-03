@@ -32,23 +32,24 @@ SiPMLowLightFit::RunPDFEstimation()
   _spectrum->Search( _est_hist.get(), 1, "nobackground" );
 
   for( int i = 0; i < _spectrum->GetNPeaks(); ++i ){
-    const double x = _spectrum->GetPositionX()[i];
-    TF1* fit       = good_local_peak_fit( x );
+    const double x   = _spectrum->GetPositionX()[i];
+    TF1*         fit = good_local_peak_fit( x );
     if( fit ){
       _peakfits.emplace_back( fit );
     }
   }
 
-  std::sort( _peakfits.begin(), _peakfits.end(), []( auto& left, auto& right ){
+  std::sort( _peakfits.begin(),
+             _peakfits.end(), []( auto& left, auto& right ){
     return left->GetParameter( 1 ) < right->GetParameter( 1 );
   } );
 
   // Early exit if peak finding failed to more than 1 peak.
   if( _peakfits.size() < 2 ){
     usr::log::PrintLog( usr::log::WARNING,
-      "Peak finder found less than two peaks! Results from the estimations "
-      "routine will not be used. Check to see if data is behaving properly "
-      "running as expected" );
+                        "Peak finder found less than two peaks! Results from the estimations "
+                        "routine will not be used. Check to see if data is behaving properly "
+                        "running as expected" );
     return;
   }
 
@@ -57,18 +58,22 @@ SiPMLowLightFit::RunPDFEstimation()
   run_height_est();
 }
 
+
 TF1*
 SiPMLowLightFit::good_local_peak_fit( const double x )
 {
-  const int bin         = _est_hist->FindBin( x );
+  const int    bin      = _est_hist->FindBin( x );
   const double binwidth = _est_hist->GetBinWidth( bin );
-  const int maxbin      = _est_hist->GetMaximumBin();
+  const int    maxbin   = _est_hist->GetMaximumBin();
   const double max      = _est_hist->GetBinContent( maxbin );
 
-  TF1* fit = new TF1( usr::RandomString( 6 ).c_str(), "gaus"
-                    , x - 2*binwidth, x + 2*binwidth );
+  TF1* fit = new TF1( usr::RandomString( 6 ).c_str(),
+                      "gaus"
+                      ,
+                      x-2 * binwidth,
+                      x+2 * binwidth );
   fit->SetParameter( 1, x );
-  fit->SetParameter( 2, 2*binwidth );
+  fit->SetParameter( 2, 2 * binwidth );
   _est_hist->Fit( fit, "QN0LR" );
 
   // Checking if the peak is "good"
@@ -78,11 +83,13 @@ SiPMLowLightFit::good_local_peak_fit( const double x )
   if( _est_hist->GetBinContent( bin ) < ( max / 20. ) ){ is_good = false; }
 
   // Skipping peaks that have maxmia outside of fit rage (not really a peak)
-  if( std::fabs( x - fit->GetParameter( 1 ) ) > 2*binwidth ){ is_good = false;  }
+  if( std::fabs( x-fit->GetParameter( 1 ) ) > 2 * binwidth ){
+    is_good = false;
+  }
 
   // Skipping peaks that are too wide (typically intermidiate structure
   // misidentified as primary peaks)
-  if( std::fabs( fit->GetParameter( 2 ) ) > 6*binwidth ){ is_good = false; }
+  if( std::fabs( fit->GetParameter( 2 ) ) > 6 * binwidth ){ is_good = false; }
 
   if( is_good ){
     return fit;
@@ -92,6 +99,7 @@ SiPMLowLightFit::good_local_peak_fit( const double x )
   }
 }
 
+
 void
 SiPMLowLightFit::run_gain_est()
 {
@@ -99,7 +107,7 @@ SiPMLowLightFit::run_gain_est()
              const double x = xx[0];
              const double a = par[0];
              const double b = par[1];
-             return x*a + b;
+             return x * a+b;
            };
 
   const unsigned np = _peakfits.size();
@@ -116,7 +124,7 @@ SiPMLowLightFit::run_gain_est()
     _gain_graph->SetPointError( i, x_err, y_err );
   }
 
-  _gain_fit->SetParameter( 0, _gain_graph->GetY()[1]- _gain_graph->GetY()[0] );
+  _gain_fit->SetParameter( 0, _gain_graph->GetY()[1]-_gain_graph->GetY()[0] );
   _gain_fit->SetParameter( 1, _gain_graph->GetY()[0] );
   _gain_graph->Fit( _gain_fit.get(), "QRN0 EX0" );
 
@@ -128,7 +136,6 @@ SiPMLowLightFit::run_gain_est()
       gain() = _gain_fit->GetParameter( 0 );
     }
   }
-
 }
 
 
@@ -139,7 +146,7 @@ SiPMLowLightFit::run_width_est()
              const double x  = xx[0];
              const double s0 = par[0];
              const double s1 = par[1];
-             return sqrt( s0*s0 + x * s1*s1 );
+             return sqrt( s0 * s0+x * s1 * s1 );
            };
   const unsigned np = _peakfits.size();
   _width_fit.reset( new TF1( usr::RandomString( 6 ).c_str(), f, 0, np, 2 ) );
@@ -169,16 +176,17 @@ SiPMLowLightFit::run_width_est()
   }
 }
 
+
 void
 SiPMLowLightFit::run_height_est()
 {
   auto f = []( const double* xx, const double* par ){
-             const double x  = xx[0];
-             const double N  = par[0];
-             const double mu = par[1];
-             const double l  = par[2];
-             const double y  = ( mu + x * l );
-             double prod     = 1;
+             const double x    = xx[0];
+             const double N    = par[0];
+             const double mu   = par[1];
+             const double l    = par[2];
+             const double y    = ( mu+x * l );
+             double       prod = 1;
 
              for( int i = 1; i <= x; ++i ){
                prod *= y;
@@ -203,13 +211,11 @@ SiPMLowLightFit::run_height_est()
     _height_graph->SetPointError( i, x_err, y_err );
   }
 
-
   _height_fit->SetParameter( 0, _height_graph->Integral() );
   _height_fit->SetParameter( 1, 1 );
   _height_fit->SetParameter( 2, 0.01 );
 
   _height_graph->Fit( _height_fit.get(), "QRN0 EX0" );
-
 
   if( _height_fit ){
     if( !ignore_mean_est ){
@@ -219,5 +225,4 @@ SiPMLowLightFit::run_height_est()
       lambda() = _height_fit->GetParameter( 2 );
     }
   }
-
 }

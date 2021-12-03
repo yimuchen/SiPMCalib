@@ -15,11 +15,11 @@
  *  - The number of bits in the samples a single sample [N]
  *  - The conversion factor of a 1 bit to mV.
  *
- * All other lines are expected to strings of MxN hexidecimal digits representing
- * the waveformat. This calls will effectively store the format as a matrix of
- * LxM integers, representing the L waveforms extracted for the M samples in a
- * single waveform. Additional functions are provided to the common data
- * processing routines.
+ * All other lines are expected to strings of MxN hexidecimal digits
+ * representing the waveformat. This calls will effectively store the format as
+ * a matrix of LxM integers, representing the L waveforms extracted for the M
+ * samples in a single waveform. Additional functions are provided to the
+ * common data processing routines.
  */
 class WaveFormat
 {
@@ -84,9 +84,9 @@ public:
                  const unsigned pedstop ) const;
 
 private:
-  double time;
-  unsigned nbits;
-  double adc;
+  double                             time;
+  unsigned                           nbits;
+  double                             adc;
   std::vector<std::vector<int16_t> > _waveforms;
 };
 
