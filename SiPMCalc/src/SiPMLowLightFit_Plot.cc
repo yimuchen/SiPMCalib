@@ -9,7 +9,8 @@ SiPMLowLightFit::PlotPeakFind( const std::string& output )
   usr::plt::Simple1DCanvas c;
 
   c.PlotHist( _est_hist.get(),
-              usr::plt::PlotType( usr::plt::hist ),
+              usr::plt::PlotType(
+                usr::plt::hist ),
               usr::plt::EntryText( "Readout" ),
               usr::plt::LineColor( usr::plt::col::black ) );
 
@@ -17,8 +18,8 @@ SiPMLowLightFit::PlotPeakFind( const std::string& output )
     c.PlotFunc( f.get(),
                 usr::plt::PlotType( usr::plt::simplefunc ),
                 usr::plt::LineColor( usr::plt::col::red ),
-                f ==
-                _peakfits.front() ? usr::plt::EntryText(
+                f == _peakfits.front() ?
+                usr::plt::EntryText(
                   "Local Gaussian fit" ) :
                 RooCmdArg::none() );
   }
@@ -46,13 +47,17 @@ SiPMLowLightFit::PlotGainFit( const std::string& output )
   usr::plt::Simple1DCanvas c;
 
   c.PlotGraph( _gain_graph.get(),
-               usr::plt::PlotType( usr::plt::scatter ),
-               usr::plt::TrackY( usr::plt::tracky::both ),
-               usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+               usr::plt::PlotType(
+                 usr::plt::scatter ),
+               usr::plt::TrackY(
+                 usr::plt::tracky::both ),
+               usr::plt::MarkerStyle(
+                 usr::plt::sty::mkrcircle ),
                usr::plt::MarkerSize( 0.5 ) );
 
   c.PlotFunc( _gain_fit.get(),
-              usr::plt::PlotType( usr::plt::simplefunc ),
+              usr::plt::PlotType(
+                usr::plt::simplefunc ),
               usr::plt::LineColor( usr::plt::col::red ) );
 
   c.Xaxis().SetTitle( "Discharge peak" );
@@ -75,12 +80,16 @@ SiPMLowLightFit::PlotWidthFit( const std::string& output )
   usr::plt::Simple1DCanvas c;
 
   c.PlotGraph( _width_graph.get(),
-               usr::plt::PlotType( usr::plt::scatter ),
-               usr::plt::TrackY( usr::plt::tracky::both ),
-               usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+               usr::plt::PlotType(
+                 usr::plt::scatter ),
+               usr::plt::TrackY(
+                 usr::plt::tracky::both ),
+               usr::plt::MarkerStyle(
+                 usr::plt::sty::mkrcircle ),
                usr::plt::MarkerSize( 0.5 ) );
   c.PlotFunc( _width_fit.get(),
-              usr::plt::PlotType( usr::plt::simplefunc ),
+              usr::plt::PlotType(
+                usr::plt::simplefunc ),
               usr::plt::LineColor( usr::plt::col::red ) );
 
   c.Xaxis().SetTitle( "Discharge peak" );
@@ -102,8 +111,8 @@ SiPMLowLightFit::PlotPoissonFit( const std::string& output )
 {
   usr::plt::Simple1DCanvas c;
 
-  TH1D hist( usr::RandomString( 5 ).c_str(), "",
-             _height_graph->GetN(), -0.5, _height_graph->GetN()-0.5 );
+  TH1D hist( usr::RandomString( 5 ).c_str(), "", _height_graph->GetN(), -0.5,
+             _height_graph->GetN()-0.5 );
 
   for( int i = 0; i < _height_graph->GetN(); ++i ){
     hist.Fill( i, _height_fit->Eval( i ) );
@@ -112,13 +121,18 @@ SiPMLowLightFit::PlotPoissonFit( const std::string& output )
   c.PlotHist( hist,
               usr::plt::PlotType( usr::plt::hist ),
               usr::plt::LineColor( usr::plt::col::red ),
-              usr::plt::EntryText( "Poisson fit" ) );
+              usr::plt::EntryText(
+                "Poisson fit" ) );
 
   c.PlotGraph( _height_graph.get(),
-               usr::plt::PlotType( usr::plt::scatter ),
-               usr::plt::EntryText( "Local gaussian norm" ),
-               usr::plt::TrackY( usr::plt::tracky::both ),
-               usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+               usr::plt::PlotType(
+                 usr::plt::scatter ),
+               usr::plt::EntryText(
+                 "Local gaussian norm" ),
+               usr::plt::TrackY(
+                 usr::plt::tracky::both ),
+               usr::plt::MarkerStyle(
+                 usr::plt::sty::mkrcircle ),
                usr::plt::MarkerSize( 1 ) );
 
   c.Xaxis().SetTitle( "Discharge peak" );
@@ -140,25 +154,29 @@ SiPMLowLightFit::PlotSpectrumFit( const std::string& output )
 {
   usr::plt::Ratio1DCanvas c( x() );
 
-  auto& fitgraph = c.PlotPdf( _pdf.get(),
-                              RooFit::Normalization( _data->sumEntries(),
-                                                     RooAbsReal::NumEvent ),
-                              usr::plt::EntryText( "Fit" ),
-                              usr::plt::PlotType( usr::plt::simplefunc ),
-                              usr::plt::LineColor( usr::plt::col::blue ) );
+  auto& fitgraph =
+    c.PlotPdf( _pdf.get(),
+               RooFit::Normalization(
+                 _data->sumEntries(),
+                 RooAbsReal::NumEvent ),
+               usr::plt::EntryText(
+                 "Fit" ),
+               usr::plt::PlotType( usr::plt::simplefunc ),
+               usr::plt::LineColor( usr::plt::col::blue ) );
 
   auto& datgraph = c.PlotData( _data.get(),
-                               usr::plt::EntryText( "Data" ),
+                               usr::plt::EntryText(
+                                 "Data" ),
                                usr::plt::PlotType( usr::plt::scatter ),
-                               usr::plt::MarkerSize( 0.2 ) );
+                               usr::plt::MarkerSize(
+                                 0.2 ) );
 
-  c.PlotScale( fitgraph,
-               fitgraph,
-               usr::plt::PlotType( usr::plt::simplefunc ) );
+  c.PlotScale( fitgraph, fitgraph, usr::plt::PlotType( usr::plt::simplefunc ) );
 
   c.PlotScale( datgraph,
                fitgraph,
-               usr::plt::PlotType( usr::plt::scatter ),
+               usr::plt::PlotType(
+                 usr::plt::scatter ),
                usr::plt::MarkerSize( 0.2 ) );
 
   c.TopPad().DrawLuminosity( _lumitype );
@@ -188,15 +206,19 @@ SiPMLowLightFit::PrintRaw( std::ostream& sout ) const
 
   auto make_rooline =
     [&rawfmt]( const std::string& name, const RooRealVar& x )->std::string {
-      return usr::fstr( rawfmt, name, x.getVal(), x.getError() );
+      return usr::fstr( rawfmt,
+                        name,
+                        x.getVal(),
+                        x.getError() );
     };
-  auto make_usrline = [&rawfmt]( const std::string& name,
-                                 const usr::Measurement& x )->std::string {
-                        return usr::fstr( rawfmt,
-                                          name,
-                                          x.CentralValue(),
-                                          x.AbsAvgError() );
-                      };
+  auto make_usrline =
+    [&rawfmt]( const std::string& name,
+               const usr::Measurement& x )->std::string {
+      return usr::fstr( rawfmt,
+                        name,
+                        x.CentralValue(),
+                        x.AbsAvgError() );
+    };
 
   sout << "Raw Fit parameter results\n";
   sout << make_rooline( "ped",     ped() );
@@ -229,10 +251,8 @@ SiPMLowLightFit::PrintTable( std::ostream& sout ) const
   static const std::string mtitle = "\\left\\langle N_{\\gamma}\\right\\rangle";
 
   auto mkstr = []( const usr::Measurement& x ){
-                 return usr::fstr( "%.2lf \\pm %.3lf"
-                                   ,
-                                   x.CentralValue()
-                                   ,
+                 return usr::fstr( "%.2lf \\pm %.3lf",
+                                   x.CentralValue(),
                                    x.AbsAvgError() );
                };
 
@@ -252,7 +272,8 @@ SiPMLowLightFit::PrintTable( std::ostream& sout ) const
   usr::fout( fmt, "\\tau_\\text{ap}", mkstr(  AfterpulseTimeNS() ), "ns"      );
   usr::fout( fmt,
              "\\tau_\\text{dc}",
-             mkstr( DarkcurrentTimeNS() / 1000.0 ),
+             mkstr(
+               DarkcurrentTimeNS() / 1000.0 ),
              "\\mus"   );
   usr::fout( fmt,
              "ENF",

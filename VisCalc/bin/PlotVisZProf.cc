@@ -9,27 +9,30 @@
 
 struct ZprofileGraphs
 {
-  TGraph* sharpness;
-  TGraph* recox;
-  TGraph* recoy;
-  TGraph* recoarea;
-  TGraph* recod;
+  TGraph*sharpness;
+  TGraph*recox;
+  TGraph*recoy;
+  TGraph*recoarea;
+  TGraph*recod;
 };
 
 ZprofileGraphs MakeProfileGraph( const std::string& );
 
 int
-main( int argc, char const* argv[] )
+main( int argc, char const*argv[] )
 {
   auto zprof = MakeProfileGraph( argv[1] );
 
   {// Sharpness graphs
     usr::plt::Simple1DCanvas c;
 
-    auto& graph = c.PlotGraph( zprof.sharpness,
-                               usr::plt::PlotType( usr::plt::scatter ),
-                               usr::plt::EntryText( "Camera readout" ),
-                               usr::plt::TrackY( usr::plt::tracky::both ) );
+    auto& graph =
+      c.PlotGraph( zprof.sharpness,
+                   usr::plt::PlotType(
+                     usr::plt::scatter ),
+                   usr::plt::EntryText(
+                     "Camera readout" ),
+                   usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
     graph.SetMarkerSize( 0.2 );
@@ -46,14 +49,18 @@ main( int argc, char const* argv[] )
   {// Drift plot
     usr::plt::Simple1DCanvas c;
 
-    auto& xgraph = c.PlotGraph( zprof.recox,
-                                usr::plt::PlotType( usr::plt::scatter ),
-                                usr::plt::EntryText( "FOV X" ),
-                                usr::plt::TrackY( usr::plt::tracky::both ) );
-    auto& ygraph = c.PlotGraph( zprof.recoy,
-                                usr::plt::PlotType( usr::plt::scatter ),
-                                usr::plt::EntryText( "FOV Y" ),
-                                usr::plt::TrackY( usr::plt::tracky::both ) );
+    auto& xgraph =
+      c.PlotGraph( zprof.recox,
+                   usr::plt::PlotType(
+                     usr::plt::scatter ),
+                   usr::plt::EntryText( "FOV X" ),
+                   usr::plt::TrackY( usr::plt::tracky::both ) );
+    auto& ygraph =
+      c.PlotGraph( zprof.recoy,
+                   usr::plt::PlotType(
+                     usr::plt::scatter ),
+                   usr::plt::EntryText( "FOV Y" ),
+                   usr::plt::TrackY( usr::plt::tracky::both ) );
 
     xgraph.SetMarkerStyle( 20 );
     xgraph.SetMarkerSize( 0.2 );
@@ -74,21 +81,25 @@ main( int argc, char const* argv[] )
     c.SaveAsPDF( "zscan_xydrift.pdf" );
   }
   {// Reconstructed plot
-    TF1 func( "func", "[0]/((x-[1])*(x-[1]))",
-              usr::plt::GetXmin( zprof.recoarea ),
-              usr::plt::GetXmax( zprof.recoarea ) );
+    TF1 func( "func", "[0]/((x-[1])*(x-[1]))", usr::plt::GetXmin(
+                zprof.recoarea ), usr::plt::GetXmax( zprof.recoarea ) );
     func.SetParameters( usr::plt::GetYmax( zprof.recoarea ), 10 );
     zprof.recoarea->Fit( &func, "W N 0 R" );
 
     usr::plt::Ratio1DCanvas c;
 
-    auto& graph = c.PlotGraph( zprof.recoarea,
-                               usr::plt::PlotType( usr::plt::scatter ),
-                               usr::plt::EntryText( "Camera readout" ),
-                               usr::plt::TrackY( usr::plt::tracky::both ) );
+    auto& graph =
+      c.PlotGraph( zprof.recoarea,
+                   usr::plt::PlotType(
+                     usr::plt::scatter ),
+                   usr::plt::EntryText(
+                     "Camera readout" ),
+                   usr::plt::TrackY( usr::plt::tracky::both ) );
     auto& fgraph = c.PlotFunc( func,
-                               usr::plt::PlotType( usr::plt::simplefunc ),
-                               usr::plt::EntryText( "Fit (inv. sq.)" ),
+                               usr::plt::PlotType(
+                                 usr::plt::simplefunc ),
+                               usr::plt::EntryText(
+                                 "Fit (inv. sq.)" ),
                                usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
@@ -108,24 +119,27 @@ main( int argc, char const* argv[] )
     c.BottomPad().Xaxis().SetTitle( "Gantry Z [mm]" );
     c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
     c.SaveAsPDF( "zscan_area.pdf" );
-
   }
   {// Max measure plot
-    TF1 func( "func2", "[0]/((x-[1]))",
-              usr::plt::GetXmin( zprof.recoarea ),
+    TF1 func( "func2", "[0]/((x-[1]))", usr::plt::GetXmin( zprof.recoarea ),
               usr::plt::GetXmax( zprof.recoarea ) );
     func.SetParameters( usr::plt::GetYmax( zprof.recod ), 10 );
     zprof.recod->Fit( &func, "W N 0 R" );
 
     usr::plt::Ratio1DCanvas c;
 
-    auto& graph = c.PlotGraph( zprof.recod,
-                               usr::plt::PlotType( usr::plt::scatter ),
-                               usr::plt::EntryText( "Camera readout" ),
-                               usr::plt::TrackY( usr::plt::tracky::both ) );
+    auto& graph =
+      c.PlotGraph( zprof.recod,
+                   usr::plt::PlotType(
+                     usr::plt::scatter ),
+                   usr::plt::EntryText(
+                     "Camera readout" ),
+                   usr::plt::TrackY( usr::plt::tracky::both ) );
     auto& fgraph = c.PlotFunc( func,
-                               usr::plt::PlotType( usr::plt::simplefunc ),
-                               usr::plt::EntryText( "Fit (N/(z+z_{0}))" ),
+                               usr::plt::PlotType(
+                                 usr::plt::simplefunc ),
+                               usr::plt::EntryText(
+                                 "Fit (N/(z+z_{0}))" ),
                                usr::plt::TrackY( usr::plt::tracky::both ) );
 
     graph.SetMarkerStyle( 20 );
@@ -186,10 +200,18 @@ MakeProfileGraph( const std::string& file )
   }
 
   return ZprofileGraphs {
-    new TGraph( zlist.size(), zlist.data(), slist.data() ),
-    new TGraph( recozlist.size(), recozlist.data(), recoxlist.data() ),
-    new TGraph( recozlist.size(), recozlist.data(), recoylist.data() ),
-    new TGraph( recozlist.size(), recozlist.data(), recoalist.data() ),
-    new TGraph( recozlist.size(), recozlist.data(), recodlist.data() )
+    new TGraph( zlist.size(), zlist.data(), slist.data() ), new TGraph(
+      recozlist.size(),
+      recozlist.data(),
+      recoxlist.data() ), new TGraph(
+      recozlist.size(),
+      recozlist.data(),
+      recoylist.data() ), new TGraph(
+      recozlist.size(),
+      recozlist.data(),
+      recoalist.data() ), new TGraph(
+      recozlist.size(),
+      recozlist.data(),
+      recodlist.data() )
   };
 }

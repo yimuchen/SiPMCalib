@@ -5,23 +5,18 @@
 #include "UserUtils/PlotUtils/interface/Flat2DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 
-static void MakeRawWaveform( const WaveFormat&,
-                             const usr::ArgumentExtender& );
+static void MakeRawWaveform( const WaveFormat&, const usr::ArgumentExtender& );
 
-static void MakeWaveform( const WaveFormat&,
-                          const usr::ArgumentExtender& );
+static void MakeWaveform( const WaveFormat&, const usr::ArgumentExtender& );
 
-static void MakeIntegrated( const WaveFormat&,
-                            const usr::ArgumentExtender& );
+static void MakeIntegrated( const WaveFormat&, const usr::ArgumentExtender& );
 
-static void MakePedestalPlot( const WaveFormat&,
-                              const usr::ArgumentExtender& );
+static void MakePedestalPlot( const WaveFormat&, const usr::ArgumentExtender& );
 
-static void MakeOnePlot( const WaveFormat&,
-                         const usr::ArgumentExtender& );
+static void MakeOnePlot( const WaveFormat&, const usr::ArgumentExtender& );
 
 int
-main( int argc, char* argv[] )
+main( int argc, char*argv[] )
 {
   usr::po::options_description desc(
     "Options for plotting a SiPM waveform from our hexadecimal data format" );
@@ -69,7 +64,6 @@ main( int argc, char* argv[] )
     ( "oneidx",
     usr::po::defvalue<unsigned>( 0 ),
     "Index of the single waveform output" );
-  ;
 
   usr::ArgumentExtender args;
   args.AddOptions( desc );
@@ -99,20 +93,16 @@ main( int argc, char* argv[] )
     MakeOnePlot( wformat, args );
   }
   return 0;
-
 }
 
 
 void
-MakeRawWaveform( const WaveFormat&            wformat,
-                 const usr::ArgumentExtender& args )
+MakeRawWaveform( const WaveFormat& wformat, const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
-  const unsigned start = std::min( args.Arg<unsigned>( "start" )
-                                   ,
+  const unsigned start = std::min( args.Arg<unsigned>( "start" ),
                                    wformat.NSamples() );
-  const unsigned stop = std::min( args.Arg<unsigned>( "stop" )
-                                  ,
+  const unsigned stop = std::min( args.Arg<unsigned>( "stop" ),
                                   wformat.NSamples() );
   const std::string output = args.Arg<std::string>( "rawout" );
 
@@ -134,9 +124,7 @@ MakeRawWaveform( const WaveFormat&            wformat,
   const unsigned ybins    = ( ymax-ymin ) / 2;
 
   // Making the histogram
-  TH2D hist( "hist", "hist",
-             timebins, start, stop,
-             ybins, ymin, ymax );
+  TH2D hist( "hist", "hist", timebins, start, stop, ybins, ymin, ymax );
 
   // Filling in the histogram
   for( unsigned i = 0; i < wformat.NWaveforms(); ++i ){
@@ -156,8 +144,7 @@ MakeRawWaveform( const WaveFormat&            wformat,
 
   // Plotting this histogram;
   usr::plt::Flat2DCanvas c;
-  c.PlotHist( hist,
-              usr::plt::Plot2DF( usr::plt::heat ) );
+  c.PlotHist( hist, usr::plt::Plot2DF( usr::plt::heat ) );
 
   c.DrawCMSLabel( "Preliminary", "HGCal" );
   c.DrawLuminosity( "Pulser Setup" );
@@ -175,15 +162,12 @@ MakeRawWaveform( const WaveFormat&            wformat,
 
 
 void
-MakeWaveform( const WaveFormat&            wformat,
-              const usr::ArgumentExtender& args )
+MakeWaveform( const WaveFormat& wformat, const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
-  const unsigned start = std::min( args.Arg<unsigned>( "start" )
-                                   ,
+  const unsigned start = std::min( args.Arg<unsigned>( "start" ),
                                    wformat.NSamples() );
-  const unsigned stop = std::min( args.Arg<unsigned>( "stop" )
-                                  ,
+  const unsigned stop = std::min( args.Arg<unsigned>( "stop" ),
                                   wformat.NSamples() );
   const unsigned    pedstart = args.Arg<unsigned>( "pedstart" );
   const unsigned    pedstop  = args.Arg<unsigned>( "pedstop" );
@@ -210,9 +194,7 @@ MakeWaveform( const WaveFormat&            wformat,
   const unsigned ybins    = ( ymax-ymin ) / wformat.ADC() / 2.0;
 
   // Making the histogram
-  TH2D hist( "hist", "hist",
-             timebins, start, stop,
-             ybins, ymin, ymax );
+  TH2D hist( "hist", "hist", timebins, start, stop, ybins, ymin, ymax );
 
   // Filling in the histogram
   for( unsigned i = 0; i < wformat.NWaveforms(); ++i ){
@@ -239,8 +221,7 @@ MakeWaveform( const WaveFormat&            wformat,
 
   // Plotting this histogram;
   usr::plt::Flat2DCanvas c;
-  c.PlotHist( hist,
-              usr::plt::Plot2DF( usr::plt::heat ) );
+  c.PlotHist( hist, usr::plt::Plot2DF( usr::plt::heat ) );
 
   c.DrawCMSLabel( "Preliminary", "HGCal" );
   c.DrawLuminosity( "Pulser Setup" );
@@ -259,17 +240,19 @@ MakeWaveform( const WaveFormat&            wformat,
 
 
 static void
-MakeOnePlot( const WaveFormat&            wformat,
-             const usr::ArgumentExtender& args )
+MakeOnePlot( const WaveFormat& wformat, const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
-  const unsigned start = std::min( args.Arg<unsigned>( "start" ),
+  const unsigned start = std::min( args.Arg<unsigned>(
+                                     "start" ),
                                    wformat.NSamples() );
-  const unsigned stop = std::min( args.Arg<unsigned>( "stop" ),
+  const unsigned stop = std::min( args.Arg<unsigned>(
+                                    "stop" ),
                                   wformat.NSamples() );
   const unsigned pedstart = args.Arg<unsigned>( "pedstart" );
   const unsigned pedstop  = args.Arg<unsigned>( "pedstop" );
   const unsigned idx      = args.Arg<unsigned>( "oneidx" );
+
   // const unsigned intstart  = args.Arg<unsigned>( "intstart" );
   // const unsigned intstop   = args.Arg<unsigned>( "intstop" );
   const std::string output = args.Arg<std::string>( "oneout" );
@@ -281,15 +264,12 @@ MakeOnePlot( const WaveFormat&            wformat,
   const auto waveform = wformat.Waveform( idx, pedstart, pedstop );
 
   for( unsigned j = start; j < stop; ++j ){
-    graph.SetPoint( j,
-                    j * wformat.Time(),
-                    waveform[j] );
+    graph.SetPoint( j, j * wformat.Time(), waveform[j] );
   }
 
   // Plotting this histogram;
   usr::plt::Simple1DCanvas c;
-  c.PlotGraph( graph,
-               usr::plt::PlotType( usr::plt::simplefunc ) );
+  c.PlotGraph( graph, usr::plt::PlotType( usr::plt::simplefunc ) );
 
   c.DrawCMSLabel( "Preliminary", "HGCal" );
   c.DrawLuminosity( "Laser setup" );
@@ -302,8 +282,7 @@ MakeOnePlot( const WaveFormat&            wformat,
 
 
 static void
-MakeIntegrated( const WaveFormat&            wformat,
-                const usr::ArgumentExtender& args )
+MakeIntegrated( const WaveFormat& wformat, const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
   const unsigned    pedstart = args.Arg<unsigned>( "pedstart" );
@@ -327,8 +306,7 @@ MakeIntegrated( const WaveFormat&            wformat,
 
     vals.push_back( wformat.WaveformSum( i,
                                          intstart,
-                                         intstop
-                                         ,
+                                         intstop,
                                          pedstart,
                                          pedstop ) );
     min = std::min( vals.back(), min );
@@ -362,8 +340,7 @@ MakeIntegrated( const WaveFormat&            wformat,
 
 
 static void
-MakePedestalPlot( const WaveFormat&            wformat,
-                  const usr::ArgumentExtender& args )
+MakePedestalPlot( const WaveFormat& wformat, const usr::ArgumentExtender& args )
 {
   // Adding the additional parsing arguments
   const unsigned    pedstart = args.Arg<unsigned>( "pedstart" );

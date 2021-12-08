@@ -20,34 +20,20 @@ SiPMPdf::SiPMPdf( const char* name,
                   RooAbsReal& _alpha,
                   RooAbsReal& _beta,
                   RooAbsReal& _dcfrac,
-                  RooAbsReal& _epsilon ) : RooAbsPdf( name, title ),
-  x                                                 (          "x",      "obs",
-                                                               this, _x ),
-  ped                                               (        "ped",
-                                                             "pedestal",
-                                                             this, _ped ),
-  gain                                              (       "gain",   "gain",
-                                                            this, _gain ),
-  s0                                                (         "s0",
-                                                              "comnoise",
-                                                              this, _s0 ),
-  s1                                                (         "s1",
-                                                              "pixnoise",
-                                                              this, _s1 ),
-  mean                                              (       "mean",   "mean",
-                                                            this, _mean ),
-  lambda                                            (     "lambda", "crosstalk",
-                                                          this, _lambda ),
-  alpha                                             (      "alpha",  "alpha",
-                                                           this, _alpha ),
-  beta                                              (       "beta",   "beta",
-                                                            this, _beta ),
-  dcfraction                                        ( "dcfrac", "darkfraction",
-                                                      this, _dcfrac ),
-  epsilon                                           (    "eps",    "epsilon",
-                                                         this, _epsilon ),
-  mdistro                                           ( ped, ped+gain, epsilon, sqrt(
-                                                        s0 * s0+s1 * s1 ) )
+                  RooAbsReal& _epsilon ) :
+  RooAbsPdf  ( name, title ),
+  x          (          "x",      "obs", this, _x ),
+  ped        (        "ped", "pedestal", this, _ped ),
+  gain       (       "gain",   "gain", this, _gain ),
+  s0         (         "s0", "comnoise", this, _s0 ),
+  s1         (         "s1", "pixnoise", this, _s1 ),
+  mean       (       "mean",   "mean", this, _mean ),
+  lambda     (     "lambda", "crosstalk", this, _lambda ),
+  alpha      (      "alpha",  "alpha", this, _alpha ),
+  beta       (       "beta",   "beta", this, _beta ),
+  dcfraction ( "dcfrac", "darkfraction", this, _dcfrac ),
+  epsilon    (    "eps",    "epsilon", this, _epsilon ),
+  mdistro    ( ped, ped+gain, epsilon, sqrt( s0 * s0+s1 * s1 ) )
 {}
 
 
@@ -62,33 +48,20 @@ SiPMPdf::SiPMPdf( const char* name,
                   RooAbsReal& _mean,
                   RooAbsReal& _lambda,
                   RooAbsReal& _alpha,
-                  RooAbsReal& _beta ) : RooAbsPdf( name, title ),
-  x                                              (          "x",      "obs",
-                                                            this, _x ),
-  ped                                            (        "ped",    "pedestal",
-                                                          this, _ped ),
-  gain                                           (       "gain",   "gain",
-                                                         this, _gain ),
-  s0                                             (         "s0",     "comnoise",
-                                                           this, _s0 ),
-  s1                                             (         "s1",     "pixnoise",
-                                                           this, _s1 ),
-  mean                                           (       "mean",   "mean",
-                                                         this, _mean ),
-  lambda                                         (     "lambda", "crosstalk",
-                                                       this, _lambda ),
-  alpha                                          (      "alpha",  "alpha",
-                                                        this, _alpha ),
-  beta                                           (       "beta",   "beta",
-                                                         this, _beta ),
-  dcfraction                                     ( "dcfrac", "darkfraction",
-                                                   this,
-                                                   RooFit::RooConst( 0 ) ),
-  epsilon                                        (    "eps",    "epsilon",
-                                                      this,
-                                                      RooFit::RooConst( 0.01 ) ),
-  mdistro                                        ( ped, ped+gain, epsilon,
-                                                   sqrt( s0 * s0+s1 * s1 ) )
+                  RooAbsReal& _beta ) :
+  RooAbsPdf  ( name, title ),
+  x          (          "x",      "obs", this, _x ),
+  ped        (        "ped",    "pedestal", this, _ped ),
+  gain       (       "gain",   "gain", this, _gain ),
+  s0         (         "s0",     "comnoise", this, _s0 ),
+  s1         (         "s1",     "pixnoise", this, _s1 ),
+  mean       (       "mean",   "mean", this, _mean ),
+  lambda     (     "lambda", "crosstalk", this, _lambda ),
+  alpha      (      "alpha",  "alpha", this, _alpha ),
+  beta       (       "beta",   "beta", this, _beta ),
+  dcfraction ( "dcfrac", "darkfraction", this, RooFit::RooConst( 0 ) ),
+  epsilon    (    "eps",    "epsilon", this, RooFit::RooConst( 0.01 ) ),
+  mdistro    ( ped, ped+gain, epsilon, sqrt( s0 * s0+s1 * s1 ) )
 {}
 
 SiPMPdf::SiPMPdf( const char* name,
@@ -99,86 +72,43 @@ SiPMPdf::SiPMPdf( const char* name,
                   RooAbsReal& _s0,
                   RooAbsReal& _s1,
                   RooAbsReal& _mean,
-                  RooAbsReal& _lambda ) : RooAbsPdf( name, title ),
-  x                                                (          "x",      "obs",
-                                                              this, _x ),
-  ped                                              (        "ped",
-                                                            "pedestal",   this,
-                                                            _ped ),
-  gain                                             (       "gain",   "gain",
-                                                           this, _gain ),
-  s0                                               (         "s0",
-                                                             "comnoise",   this,
-                                                             _s0 ),
-  s1                                               (         "s1",
-                                                             "pixnoise",   this,
-                                                             _s1 ),
-  mean                                             (       "mean",   "mean",
-                                                           this, _mean ),
-  lambda                                           (     "lambda", "crosstalk",
-                                                         this, _lambda ),
-  alpha                                            (      "alpha",  "alpha",
-                                                          this, RooFit::RooConst(
-                                                            0 ) ),
-  beta                                             (       "beta",   "beta",
-                                                           this, RooFit::RooConst(
-                                                             1000 ) ),
-  dcfraction                                       ( "dcfrac", "dcfraction",
-                                                     this,
-                                                     RooFit::RooConst( 0 ) ),
-  epsilon                                          (    "eps",    "epsilon",
-                                                        this,
-                                                        RooFit::RooConst( 0.01 ) ),
-  mdistro                                          ( ped, ped+gain, epsilon, sqrt(
-                                                       s0 * s0+s1 * s1 ) )
+                  RooAbsReal& _lambda ) :
+  RooAbsPdf  ( name, title ),
+  x          (          "x",      "obs", this, _x ),
+  ped        (        "ped", "pedestal",   this, _ped ),
+  gain       (       "gain",   "gain", this, _gain ),
+  s0         (         "s0", "comnoise",   this, _s0 ),
+  s1         (         "s1", "pixnoise",   this, _s1 ),
+  mean       (       "mean",   "mean", this, _mean ),
+  lambda     (     "lambda", "crosstalk", this, _lambda ),
+  alpha      (      "alpha",  "alpha", this, RooFit::RooConst( 0 ) ),
+  beta       (       "beta",   "beta", this, RooFit::RooConst( 1000 ) ),
+  dcfraction ( "dcfrac", "dcfraction", this, RooFit::RooConst( 0 ) ),
+  epsilon    (    "eps",    "epsilon", this, RooFit::RooConst( 0.01 ) ),
+  mdistro    ( ped, ped+gain, epsilon, sqrt( s0 * s0+s1 * s1 ) )
 {}
 
 
-SiPMPdf::SiPMPdf( const SiPMPdf& other, const char* name ) : RooAbsPdf( other,
-                                                                        name ),
-  x                                                                   ( "x",
-                                                                        this,
-                                                                        other.x ),
-  ped                                                                 ( "ped",
-                                                                        this,
-                                                                        other.ped ),
-  gain                                                                ( "gain",
-                                                                        this,
-                                                                        other.gain ),
-  s0                                                                  ( "s0",
-                                                                        this,
-                                                                        other.s0 ),
-  s1                                                                  ( "s1",
-                                                                        this,
-                                                                        other.s1 ),
-  mean                                                                ( "mean",
-                                                                        this,
-                                                                        other.mean ),
-  lambda                                                              (
-    "lambda", this, other.lambda ),
-  alpha                                                               ( "alpha",
-                                                                        this,
-                                                                        other.alpha ),
-  beta                                                                ( "beta",
-                                                                        this,
-                                                                        other.beta ),
-  dcfraction                                                          (
-    "dcfrac", this, other.dcfraction ),
-  epsilon                                                             ( "eps",
-                                                                        this,
-                                                                        other.epsilon ),
-  mdistro                                                             ( ped,
-                                                                        ped+gain, epsilon, sqrt(
-                                                                          s0
-                                                                          * s0
-                                                                          +s1
-                                                                          * s1 ) )
+SiPMPdf::SiPMPdf( const SiPMPdf& other, const char*name ) :
+  RooAbsPdf  ( other, name ),
+  x          ( "x", this, other.x ),
+  ped        ( "ped", this, other.ped ),
+  gain       ( "gain", this, other.gain ),
+  s0         ( "s0", this, other.s0 ),
+  s1         ( "s1", this, other.s1 ),
+  mean       ( "mean", this, other.mean ),
+  lambda     ( "lambda", this, other.lambda ),
+  alpha      ( "alpha", this, other.alpha ),
+  beta       ( "beta", this, other.beta ),
+  dcfraction ( "dcfrac", this, other.dcfraction ),
+  epsilon    ( "eps", this, other.epsilon ),
+  mdistro    ( ped, ped+gain, epsilon, sqrt( s0 * s0+s1 * s1 ) )
 {}
 
 SiPMPdf::~SiPMPdf(){}
 
 TObject*
-SiPMPdf::clone( const char* name ) const
+SiPMPdf::clone( const char*name ) const
 {
   return new SiPMPdf( *this, name );
 }
@@ -207,8 +137,7 @@ SiPMPdf::GeneralPoissonProb( const int    x,
   return TMath::Exp(
     TMath::Log( mean )
     +( x-1 ) * TMath::Log( mean+x * lambda )
-    -( mean+x * lambda )
-    -TMath::LnGamma( x+1 ));
+    -( mean+x * lambda )-TMath::LnGamma( x+1 ));
 }
 
 
@@ -229,6 +158,7 @@ SiPMPdf::evaluate() const
 
   if( prob <= 0 ){
     prob = std::numeric_limits<double>::min();
+
     // Forcing non-zero to avoid fit crashing.
   }
 
@@ -255,8 +185,7 @@ SiPMPdf::ap_eff( const int k, const int i ) const
 
     // Moving to LnGamma method for evaluating factorials
     return TMath::Exp( ( i-1 ) * TMath::Log( y )
-                       -y / beta
-                       -i * TMath::Log( beta )
+                       -y / beta-i * TMath::Log( beta )
                        -TMath::LnGamma( i ));
   } else {
     const double ap    = TMath::Exp( -y / beta ) / beta;
@@ -290,7 +219,9 @@ SiPMPdf::binomial_prob( const int k, const int i ) const
     return TMath::BinomialI( alpha, k, i )
            -TMath::BinomialI( alpha, k, i+1 );
   } else {
-    return i == 0 ? 1 : 0;
+    return i == 0 ?
+           1 :
+           0;
   }
 }
 
@@ -299,9 +230,9 @@ SiPMPdf::binomial_prob( const int k, const int i ) const
 
 
 int
-SiPMPdf::getAnalyticalIntegral( RooArgSet&  allvars,
-                                RooArgSet&  runvars,
-                                const char* rangeName ) const
+SiPMPdf::getAnalyticalIntegral( RooArgSet& allvars,
+                                RooArgSet& runvars,
+                                const char*rangeName ) const
 {
   if( matchArgs( allvars, runvars, x ) ){ return 1; }
   return 0;
@@ -309,7 +240,7 @@ SiPMPdf::getAnalyticalIntegral( RooArgSet&  allvars,
 
 
 double
-SiPMPdf::analyticalIntegral( const int code, const char* range ) const
+SiPMPdf::analyticalIntegral( const int code, const char*range ) const
 {
   assert( code == 1 );
   const double xmin = x.min( range );
@@ -372,10 +303,13 @@ SiPMPdf::erf_ap_eff( const double xx, const int k, const int i ) const
   } else {
     static const double sqrt2 = TMath::Sqrt( 2 );
     const double        norm  = TMath::Exp( sk * sk / ( 2 * beta * beta ) );
-    const double        cdf1
-      = 0.5 * ( TMath::Erf( sk / ( sqrt2 * beta )+y / ( sqrt2 * sk ) )+1 );
-    const double ans2
-      = norm * cdf1-TMath::Exp( -y / beta ) * GaussCDF( y, sk );
+    const double        cdf1  = 0.5
+                                * ( TMath::Erf( sk / ( sqrt2 * beta )+y
+                                                / ( sqrt2 * sk ) )+1 );
+    const double ans2 = norm * cdf1-TMath::Exp( -y / beta ) * GaussCDF(
+      y,
+      sk );
+
     // assert( ans2 >= 0 );
     return ans2;
   }

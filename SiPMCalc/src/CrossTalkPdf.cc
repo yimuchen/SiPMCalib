@@ -21,7 +21,7 @@ CrossTalkPdf::CrossTalkPdf( const char* name,
 {}
 
 
-CrossTalkPdf::CrossTalkPdf( const CrossTalkPdf& other, const char* name ) :
+CrossTalkPdf::CrossTalkPdf( const CrossTalkPdf& other, const char*name ) :
   RooAbsPdf( other, name ),
   x        (       "x",       this, other.x    ),
   x0       (      "x0",      this, other.x0  ),
@@ -35,7 +35,7 @@ CrossTalkPdf::CrossTalkPdf( const CrossTalkPdf& other, const char* name ) :
 CrossTalkPdf::~CrossTalkPdf(){}
 
 TObject*
-CrossTalkPdf::clone( const char* name ) const
+CrossTalkPdf::clone( const char*name ) const
 {
   return new CrossTalkPdf( *this, name );
 }

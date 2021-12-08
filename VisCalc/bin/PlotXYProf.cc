@@ -13,7 +13,7 @@ TH2D* MakeVisXGraph( const std::string& );
 TH2D* MakeVisYGraph( const std::string& );
 
 double
-Func( const double* xy, const double* param )
+Func( const double*xy, const double*param )
 {
   const double x = xy[0];
   const double y = xy[1];
@@ -26,25 +26,25 @@ Func( const double* xy, const double* param )
 
 
 int
-main( int argc, char const* argv[] )
+main( int argc, char const*argv[] )
 {
   {
     auto xprof = MakeVisXGraph( argv[1] );
 
-    TF2 func( "func", Func,
-              xprof->GetXaxis()->GetXmin(),
-              xprof->GetXaxis()->GetXmax(),
-              xprof->GetYaxis()->GetXmin(),
+    TF2 func( "func", Func, xprof->GetXaxis()->GetXmin(),
+              xprof->GetXaxis()->GetXmax(), xprof->GetYaxis()->GetXmin(),
               xprof->GetYaxis()->GetXmax(), 3 );
     auto fit = xprof->Fit( &func, "EX0 N 0 S" );
 
     usr::plt::Flat2DCanvas c;
 
     auto& xgraph = c.PlotHist( xprof,
-                               usr::plt::Plot2DF( usr::plt::heat ),
+                               usr::plt::Plot2DF(
+                                 usr::plt::heat ),
                                usr::plt::EntryText( "Camera readout" ) );
     auto& fgraph = c.PlotFunc( func,
-                               usr::plt::Plot2DF( usr::plt::cont ),
+                               usr::plt::Plot2DF(
+                                 usr::plt::cont ),
                                usr::plt::EntryText( "Linear fit" ) );
 
     xgraph.SetLineColor( kBlack );
@@ -74,18 +74,20 @@ main( int argc, char const* argv[] )
   {
     auto xprof = MakeVisYGraph( argv[1] );
 
-    TF2 func( "func", Func,
-              xprof->GetXaxis()->GetXmin(), xprof->GetXaxis()->GetXmax(),
-              xprof->GetYaxis()->GetXmin(), xprof->GetYaxis()->GetXmax(), 3 );
+    TF2 func( "func", Func, xprof->GetXaxis()->GetXmin(),
+              xprof->GetXaxis()->GetXmax(), xprof->GetYaxis()->GetXmin(),
+              xprof->GetYaxis()->GetXmax(), 3 );
     auto fit = xprof->Fit( &func, "EX0 N 0 S" );
 
     usr::plt::Flat2DCanvas c;
 
     auto& xgraph = c.PlotHist( xprof,
-                               usr::plt::Plot2DF( usr::plt::heat ),
+                               usr::plt::Plot2DF(
+                                 usr::plt::heat ),
                                usr::plt::EntryText( "Camera readout" ) );
     auto& fgraph = c.PlotFunc( func,
-                               usr::plt::Plot2DF( usr::plt::cont ),
+                               usr::plt::Plot2DF(
+                                 usr::plt::cont ),
                                usr::plt::EntryText( "Linear fit" ) );
 
     xgraph.SetLineColor( kBlack );
@@ -95,20 +97,14 @@ main( int argc, char const* argv[] )
     c.DrawLuminosity( "Open light" );
     c.Pad().SetTextCursor( 0.015, 0.6, usr::plt::font::top_left )
     .WriteLine( "Cam Y = a x + b y + C" )
-    .WriteLine( usr::fstr( "a = %.1lf_{#pm%.2lf} [pix/mm]"
-                           ,
-                           func.GetParameter( 0 )
-                           ,
+    .WriteLine( usr::fstr( "a = %.1lf_{#pm%.2lf} [pix/mm]",
+                           func.GetParameter( 0 ),
                            func.GetParError( 0 ) ) )
-    .WriteLine( usr::fstr( "b = %.1lf_{#pm%.2lf} [pix/mm]"
-                           ,
-                           func.GetParameter( 1 )
-                           ,
+    .WriteLine( usr::fstr( "b = %.1lf_{#pm%.2lf} [pix/mm]",
+                           func.GetParameter( 1 ),
                            func.GetParError( 1 ) ) )
-    .WriteLine( usr::fstr( "C = %.1lf_{#pm%.2lf} [pix]"
-                           ,
-                           func.GetParameter( 2 )
-                           ,
+    .WriteLine( usr::fstr( "C = %.1lf_{#pm%.2lf} [pix]",
+                           func.GetParameter( 2 ),
                            func.GetParError( 2 )  ) )
     .WriteLine( usr::fstr( "#chi^{2}/DoF = %.3lf", fit->Chi2() / fit->Ndf() ) );
 
@@ -155,14 +151,16 @@ MakeVisXGraph( const std::string& file )
   const double ymin = *std::min_element( ylist.begin(), ylist.end() );
   const double ymax = *std::max_element( ylist.begin(), ylist.end() );
 
-  TH2D* ans = new TH2D( ( "hist"+usr::RandomString( 6 ) ).c_str(),
-                        "",
-                        ( xmax-xmin ) / diff+1,
-                        xmin-0.5 * diff,
-                        xmax+0.5 * diff,
-                        ( ymax-ymin ) / diff+1,
-                        ymin-0.5 * diff,
-                        ymax+0.5 * diff );
+  TH2D*ans =
+    new TH2D( ( "hist"+usr::RandomString(
+                  6 ) ).c_str(),
+              "",
+              ( xmax-xmin ) / diff+1,
+              xmin-0.5 * diff,
+              xmax+0.5 * diff,
+              ( ymax-ymin ) / diff+1,
+              ymin-0.5 * diff,
+              ymax+0.5 * diff );
 
   for( unsigned i = 0; i < xlist.size(); ++i ){
     const int binidx = ans->FindBin( xlist.at( i ), ylist.at( i ) );
@@ -209,14 +207,16 @@ MakeVisYGraph( const std::string& file )
   const double ymin = *std::min_element( ylist.begin(), ylist.end() );
   const double ymax = *std::max_element( ylist.begin(), ylist.end() );
 
-  TH2D* ans = new TH2D( ( "hist"+usr::RandomString( 6 ) ).c_str(),
-                        "",
-                        ( xmax-xmin ) / diff+1,
-                        xmin-0.5 * diff,
-                        xmax+0.5 * diff,
-                        ( ymax-ymin ) / diff+1,
-                        ymin-0.5 * diff,
-                        ymax+0.5 * diff );
+  TH2D*ans =
+    new TH2D( ( "hist"+usr::RandomString(
+                  6 ) ).c_str(),
+              "",
+              ( xmax-xmin ) / diff+1,
+              xmin-0.5 * diff,
+              xmax+0.5 * diff,
+              ( ymax-ymin ) / diff+1,
+              ymin-0.5 * diff,
+              ymax+0.5 * diff );
 
   for( unsigned i = 0; i < xlist.size(); ++i ){
     const int binidx = ans->FindBin( xlist.at( i ), ylist.at( i ) );

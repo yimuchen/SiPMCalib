@@ -32,7 +32,7 @@ std::vector<usr::Measurement> CalcAP( const std::string&, const std::string& );
 
 
 int
-main( int argc, char* argv[] )
+main( int argc, char*argv[] )
 {
   const usr::Measurement crosstalk = CalcCrossTalk( argv[1], argv[2] );
   const usr::Measurement decaytime = CalcDecayTime( argv[1], argv[2] );
@@ -41,43 +41,31 @@ main( int argc, char* argv[] )
   const usr::Measurement tdc       = vap[1];
   const usr::Measurement approb    = vap[2];
 
-  std::cout << "\n\n\n\n"
-            << usr::separator( '-', 80 )
+  std::cout << "\n\n\n\n" << usr::separator( '-', 80 )
             << std::endl;
   boost::format printfmt( "%30s | %20s" );
   usr::fout( "%30s | %20s\n",
-             "Cross talk prob. [%]"
-             ,
+             "Cross talk prob. [%]",
              usr::fmt::decimal( 100.0 * crosstalk, 3 ) );
-  usr::fout( "%30s | %20s\n"
-             ,
-             "Discharge time [ns]"
-             ,
+  usr::fout( "%30s | %20s\n",
+             "Discharge time [ns]",
              usr::fmt::decimal( decaytime, 3 ) );
-  usr::fout( "%30s | %20s\n"
-             ,
-             "Dark discharge rate [Hz]"
-             ,
+  usr::fout( "%30s | %20s\n",
+             "Dark discharge rate [Hz]",
              usr::fmt::decimal( 1. / ( tdc * 1e-9 ), 3 ) );
-  usr::fout( "%30s | %20s\n"
-             ,
-             "After pulsing time [ns]"
-             ,
+  usr::fout( "%30s | %20s\n",
+             "After pulsing time [ns]",
              usr::fmt::decimal( tap, 3 ) );
-  usr::fout( "%30s | %20s\n"
-             ,
-             "After pulsing prob. [%]"
-             ,
+  usr::fout( "%30s | %20s\n",
+             "After pulsing prob. [%]",
              usr::fmt::decimal( 100.0 * approb, 3 ) );
-  ;
 
   return 0;
 }
 
 
 std::vector<usr::Measurement>
-CalcAP( const std::string& input,
-        const std::string& output )
+CalcAP( const std::string& input, const std::string& output )
 {
   WaveFormat   wformat( input );
   const double tmin = wformat.Time();
@@ -98,10 +86,8 @@ CalcAP( const std::string& input,
       if( firstpeak == nopeak && cv1 <= cv0 && cv1 <= cv2 && cv1 < -1 ){
         firstpeak = i;
       }
-      if( firstpeak != nopeak
-          && firstpeak < i
-          && cv1 < cv0-2 && cv1 < cv2
-          && cv1 < -1// Adding a minimal threshold
+      if( firstpeak != nopeak && firstpeak < i && cv1 < cv0-2 && cv1 < cv2 &&
+          cv1 < -1   // Adding a minimal threshold
           ){
         x = ( i-firstpeak ) * wformat.Time();
         data.add( RooArgSet( x ) );
@@ -120,9 +106,7 @@ CalcAP( const std::string& input,
   RooExponential pdc( "pdc", "", x, dcf );
   RooExponential pap( "pap", "", x, apf );
 
-  RooAddPdf p( "p", "",
-               RooArgList( pdc, pap ),
-               RooArgList( ndc, nap ) );
+  RooAddPdf p( "p", "", RooArgList( pdc, pap ), RooArgList( ndc, nap ) );
 
   dcf = -1e-6;
   apf = -1e-2;
@@ -149,27 +133,27 @@ CalcAP( const std::string& input,
   std::cout << "T_{ap}=" << usr::fmt::decimal( tap ) << " [ns]" << std::endl;
   std::cout << "T_{dc}=" << usr::fmt::decimal( tdc ) << " [ns]" << std::endl;
   std::cout << "N_{ap}=" << usr::fmt::decimal( Nap ) << " [events]" <<
-    std::endl;
+  std::endl;
   std::cout << "N_{ap,int}=" << usr::fmt::decimal( Nap_int )
             << " [events]" << std::endl;
   std::cout << "N_{dc}=" << usr::fmt::decimal( Ndc ) << " [events]" <<
-    std::endl;
+  std::endl;
   std::cout << "N_{dc,int}=" << usr::fmt::decimal( Ndc_int )
             << " [events]" << std::endl;
   std::cout << "P_ap  =" << usr::fmt::decimal( prob ) << std::endl;
 
   usr::plt::Ratio1DCanvas c( x );
 
-  auto& dg = c.PlotData( data,
-                         usr::plt::EntryText( "SiPM readout" ) );
-  auto& dcg = c.PlotPdf( p,
-                         RooFit::Components( pdc ),
-                         usr::plt::EntryText( "Dark current" ) );
-  auto& apg = c.PlotPdf( p,
-                         RooFit::Components( pap ),
-                         usr::plt::EntryText( "After pulse" ) );
-  auto& pg = c.PlotPdf( p,
-                        usr::plt::EntryText( "Fit" ) );
+  auto& dg  = c.PlotData( data, usr::plt::EntryText( "SiPM readout" ) );
+  auto& dcg =
+    c.PlotPdf( p,
+               RooFit::Components( pdc ),
+               usr::plt::EntryText( "Dark current" ) );
+  auto& apg =
+    c.PlotPdf( p,
+               RooFit::Components( pap ),
+               usr::plt::EntryText( "After pulse" ) );
+  auto& pg = c.PlotPdf( p, usr::plt::EntryText( "Fit" ) );
 
   dg.SetMarkerSize( 0.2 );
   dcg.SetLineColor( kGreen );
@@ -177,9 +161,7 @@ CalcAP( const std::string& input,
   pg.SetLineColor( kBlue );
 
   c.PlotScale( pg, pg );
-  c.PlotScale( dg,
-               pg,
-               usr::plt::PlotType( usr::plt::scatter ) );
+  c.PlotScale( dg, pg, usr::plt::PlotType( usr::plt::scatter ) );
 
   c.DrawLuminosity( "Dark current trigger" );
   c.DrawCMSLabel( "", "Noise Parameters" );
@@ -207,8 +189,7 @@ CalcAP( const std::string& input,
 
 
 usr::Measurement
-CalcDecayTime( const std::string& input,
-               const std::string& output )
+CalcDecayTime( const std::string& input, const std::string& output )
 {
   static const unsigned start = 3;
   static const unsigned end   = 50;
@@ -222,8 +203,7 @@ CalcDecayTime( const std::string& input,
   RooRealVar  s1( "s1", "s1", 0.01, 50 );
   RooRealVar  dcfrac( "dcfrac", "dcfrac", 0, 0.2 );
   RooRealVar  epsilon( "epslion", "epsilon", 1e-5, 1e-1 );
-  SiPMDarkPdf pdf( "dark", "dark",
-                   x, ped, gain, s0, s1, dcfrac, epsilon );
+  SiPMDarkPdf pdf( "dark", "dark", x, ped, gain, s0, s1, dcfrac, epsilon );
 
   // Making the data sets from the waveform data
   const auto list = wformat.SumList( start, end );
@@ -235,8 +215,7 @@ CalcDecayTime( const std::string& input,
   const double   xmin  = 0;
   const double   xmax  = wformat.Time() * nbins;
 
-  TProfile p( usr::RandomString( 6 ).c_str(), "",
-              nbins, xmin, xmax );
+  TProfile p( usr::RandomString( 6 ).c_str(), "", nbins, xmin, xmax );
   p.SetErrorOption( "s" );
   p.SetStats( 0 );
 
@@ -261,8 +240,8 @@ CalcDecayTime( const std::string& input,
 
     const double area = wformat.WaveformSum( i, start, end );
 
-    if( ped.getVal()-0.2 * gain.getVal()  < area
-        && area < ped.getVal()+0.2 * gain.getVal() ){
+    if( ped.getVal()-0.2 * gain.getVal()  < area &&
+        area < ped.getVal()+0.2 * gain.getVal() ){
       for( unsigned j = localpeak; j < localpeak+nbins; ++j ){
         const double x = wformat.Time() * (double)( j-localpeak );
         const double y = wformat.Waveform( i )[j];
@@ -271,8 +250,8 @@ CalcDecayTime( const std::string& input,
     }
   }
 
-  TF1 f( usr::RandomString( 6 ).c_str(), "[0]*TMath::Exp(-x/[1]) + [2]",
-         xmin, xmax * 0.8 );
+  TF1 f( usr::RandomString( 6 ).c_str(), "[0]*TMath::Exp(-x/[1]) + [2]", xmin,
+         xmax * 0.8 );
   f.SetParameter( 0, p.GetBinContent( 0 ) );
   f.SetParameter( 1, 1 );
   p.Fit( &f, "QN0R" );// Chi squared fit
@@ -280,19 +259,23 @@ CalcDecayTime( const std::string& input,
   usr::plt::Ratio1DCanvas c;
 
   auto& g = c.PlotFunc( f,
-                        usr::plt::TrackY( usr::plt::tracky::both ),
-                        usr::plt::EntryText( "Fit exp." ),
+                        usr::plt::TrackY(
+                          usr::plt::tracky::both ),
+                        usr::plt::EntryText(
+                          "Fit exp." ),
                         usr::plt::LineColor( usr::plt::col::red ) );
   auto& gp = c.PlotHist( p,
-                         usr::plt::PlotType( usr::plt::scatter ),
-                         usr::plt::EntryText( "1 Geiger Readout" ),
-                         usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                         usr::plt::PlotType(
+                           usr::plt::scatter ),
+                         usr::plt::EntryText(
+                           "1 Geiger Readout" ),
+                         usr::plt::MarkerStyle(
+                           usr::plt::sty::mkrcircle ),
                          usr::plt::MarkerSize( 0.2 ),
-                         usr::plt::LineColor( usr::plt::col::darkgray ) );
+                         usr::plt::LineColor(
+                           usr::plt::col::darkgray ) );
 
-  c.PlotScale( gp,
-               g,
-               usr::plt::PlotType( usr::plt::scatter ) );
+  c.PlotScale( gp, g, usr::plt::PlotType( usr::plt::scatter ) );
 
   c.TopPad().DrawLuminosity( "Dark current trigger" );
   c.TopPad().DrawCMSLabel( "", "Noise Parameter" );
@@ -308,9 +291,9 @@ CalcDecayTime( const std::string& input,
 
   c.SaveAsPDF( output+"_decay_tracefit.pdf" );
 
-  std::cout << f.GetParameter( 0 ) << " " << f.GetParError( 0 ) << std::endl
-            << f.GetParameter( 1 ) << " " << f.GetParError( 1 ) << std::endl
-            << f.GetParameter( 2 ) << " " << f.GetParError( 2 ) << std::endl;
+  std::cout << f.GetParameter( 0 ) << " " << f.GetParError( 0 ) << std::endl <<
+  f.GetParameter( 1 ) << " " << f.GetParError( 1 ) << std::endl <<
+  f.GetParameter( 2 ) << " " << f.GetParError( 2 ) << std::endl;
 
   return usr::Measurement(
     f.GetParameter( 1 ),
@@ -321,8 +304,7 @@ CalcDecayTime( const std::string& input,
 
 
 usr::Measurement
-CalcCrossTalk( const std::string& input,
-               const std::string& output )
+CalcCrossTalk( const std::string& input, const std::string& output )
 {
   static const unsigned start = 3;
   static const unsigned end   = 6;
@@ -336,8 +318,7 @@ CalcCrossTalk( const std::string& input,
   RooRealVar  s1( "s1", "s1", 0.01, 5 );
   RooRealVar  dcfrac( "dcfrac", "dcfrac", 0, 0.2 );
   RooRealVar  epsilon( "epslion", "epsilon", 1e-5, 1e-1 );
-  SiPMDarkPdf pdf( "dark", "dark",
-                   x, ped, gain, s0, s1, dcfrac, epsilon );
+  SiPMDarkPdf pdf( "dark", "dark", x, ped, gain, s0, s1, dcfrac, epsilon );
 
   const auto list = wformat.SumList( start, end );
   SetRange( x, 2, -1, list );
@@ -347,6 +328,7 @@ CalcCrossTalk( const std::string& input,
 
   std::vector<double> uniquearea = usr::RemoveDuplicate( list );
   TGraph              threshold( uniquearea.size()+1  );
+
   // Adding first point for aesthetic reasons.
   threshold.SetPoint( 0, list.front() / 2, list.size()+1 );
 
@@ -424,8 +406,7 @@ CalcCrossTalk( const std::string& input,
 
   usr::plt::Simple1DCanvas c;
 
-  c.PlotGraph( threshold,
-               usr::plt::PlotType( usr::plt::simplefunc ) );
+  c.PlotGraph( threshold, usr::plt::PlotType( usr::plt::simplefunc ) );
 
   c.Pad().SetTextAlign( usr::plt::font::bottom_right );
 
@@ -441,20 +422,19 @@ CalcCrossTalk( const std::string& input,
       usr::fstr( "%.1f Threshold", i+0.5 ) );
   }
 
-  const usr::Measurement p0515 = derivmin.size() >= 2 ? usr::Efficiency::Minos(
+  const usr::Measurement p0515 = derivmin.size() >= 2 ?
+                                 usr::Efficiency::Minos(
     threshold.Eval( derivmin.at( 1 ) ),
-    threshold.Eval( derivmin.at( 0 ) ) ) : usr::Measurement( 0, 0, 0 );
+    threshold.Eval( derivmin.at( 0 ) ) ) :
+                                 usr::Measurement( 0, 0, 0 );
 
   c.DrawLuminosity( "Dark current trigger" );
   c.DrawCMSLabel( "", "Noise Parameter" );
   c.Pad()
-  .WriteLine( usr::fstr( "Int. Window: %d[ns]"
-                         ,
+  .WriteLine( usr::fstr( "Int. Window: %d[ns]",
                          ( end-start ) * wformat.Time() ) )
-  .WriteLine( usr::fstr( "Cross-talk_{1.5/0.5} = %.2lf_{#pm%.3lf}%%"
-                         ,
-                         100 * p0515.CentralValue()
-                         ,
+  .WriteLine( usr::fstr( "Cross-talk_{1.5/0.5} = %.2lf_{#pm%.3lf}%%",
+                         100 * p0515.CentralValue(),
                          100 * p0515.AbsAvgError() ) );
 
   c.Xaxis().SetTitle( "Area threshold [ADC #times ns]" );

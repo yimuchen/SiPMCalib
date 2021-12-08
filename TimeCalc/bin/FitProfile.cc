@@ -24,38 +24,38 @@ double pulse_max;
 double sipm_min;
 double sipm_max;
 
-double model( double bias, double pulse, double sipm, double* param );
-void   model_fcn( int& nparam, double* gin, double & f, double* param, int flag );
+double model( double bias, double pulse, double sipm, double*param );
+void   model_fcn( int& nparam, double*gin, double & f, double*param, int flag );
 
 TGraph* MakeBiasProfile( const double pulse_center, const double sipm_center );
-TGraph* MakeBiasFit( const double pulse_center, const double sipm_center
-                   , double* param );
+TGraph* MakeBiasFit( const double pulse_center,
+                     const double sipm_center,
+                     double*      param );
 
 TGraph* MakePulseProfile( const double bias_center, const double sipm_center );
-TGraph* MakePulseFit( const double bias_center, const double sipm_center
-                     , double* param );
+TGraph* MakePulseFit( const double bias_center,
+                      const double sipm_center,
+                      double*      param );
 
 TGraph* MakeSiPMProfile( const double bias_center, const double sipm_center );
-TGraph* MakeSiPMFit( const double bias_center, const double sipm_center
-                    , double* param );
+TGraph* MakeSiPMFit( const double bias_center,
+                     const double sipm_center,
+                     double*      param );
 
 int
-main( int argc, char* argv[] )
+main( int argc, char*argv[] )
 {
   std::ifstream infile( argv[1] );
-  std::string line;
+  std::string   line;
 
   double time, chipid,  x, y, z, bias, pulse, sipm, readout, unc;
 
-
   while( std::getline( infile, line ) ){
     std::istringstream linestream( line );
-    linestream >> time >> chipid
-    >>  x >> y >> z
-    >> bias >> pulse  >> sipm
-    >> readout >> unc;
+    linestream >> time >> chipid >>  x >> y >> z >> bias >> pulse  >> sipm >>
+    readout >> unc;
 
-    bias_data.push_back( bias/1000 );
+    bias_data.push_back( bias / 1000 );
     pulse_data.push_back( pulse );
     sipm_data.push_back( sipm );
     readout_data.push_back( -readout );
@@ -76,11 +76,11 @@ main( int argc, char* argv[] )
     sipm_data[i]  -= sipm_min;
   }
 
-
   TMinuit minimizer( 8 );
   minimizer.SetFCN( model_fcn );
   double arglist[10];
-  int ierflg = 0;
+  int    ierflg = 0;
+
   // minimizer.mnexcm( "SET ERR", arglist, 1, ierflg );
   minimizer.mnparm( 0, "c0", 0.1, 0.1, -1e6, 1e6, ierflg );
   minimizer.mnparm( 1, "p1", 0.1, 0.1, -1e6, 1e6, ierflg );
@@ -117,11 +117,10 @@ main( int argc, char* argv[] )
   std::cout << parameter[6] << std::endl;
   std::cout << parameter[7] << std::endl;
 
-
-
   Double_t amin, edm, errdef;
-  Int_t nvpar, nparx, icstat;
+  Int_t    nvpar, nparx, icstat;
   minimizer.mnstat( amin, edm, errdef, nvpar, nparx, icstat );
+
   // gMinuit->mnprin(3,amin);
 
   // Shifting back the data for plotting
@@ -131,163 +130,213 @@ main( int argc, char* argv[] )
     sipm_data[i]  += sipm_min;
   }
 
-
   {
-    TGraph* bg_p1 = MakeBiasProfile( 21.25, 24 );
-    TGraph* bg_p2 = MakeBiasProfile( 23.5, 24 );
-    TGraph* bg_p3 = MakeBiasProfile( 26.125, 24 );
-    TGraph* m_p1  = MakeBiasFit( 21.25, 24, parameter );
-    TGraph* m_p2  = MakeBiasFit( 23.5, 24, parameter );
-    TGraph* m_p3  = MakeBiasFit( 26.125, 24, parameter );
-
+    TGraph*bg_p1 = MakeBiasProfile( 21.25, 24 );
+    TGraph*bg_p2 = MakeBiasProfile( 23.5, 24 );
+    TGraph*bg_p3 = MakeBiasProfile( 26.125, 24 );
+    TGraph*m_p1  = MakeBiasFit( 21.25, 24, parameter );
+    TGraph*m_p2  = MakeBiasFit( 23.5, 24, parameter );
+    TGraph*m_p3  = MakeBiasFit( 26.125, 24, parameter );
 
     usr::plt::Simple1DCanvas c;
 
     c.PlotGraph( m_p1,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::cyan ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::cyan ) );
 
     c.PlotGraph( bg_p1,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("T_{LED}=21.25#circ C, T_{SiPM}=24#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::blue ),
-      usr::plt::LineColor( usr::plt::col::blue ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "T_{LED}=21.25#circ C, T_{SiPM}=24#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::blue ),
+                 usr::plt::LineColor( usr::plt::col::blue ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
     c.PlotGraph( m_p2,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::pink ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::pink ) );
     c.PlotGraph( bg_p2,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("T_{LED}=23.5#circ C, T_{SiPM}=24#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::red ),
-      usr::plt::LineColor( usr::plt::col::red ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "T_{LED}=23.5#circ C, T_{SiPM}=24#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::red ),
+                 usr::plt::LineColor( usr::plt::col::red ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
     c.PlotGraph( m_p3,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::limegreen ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::limegreen ) );
     c.PlotGraph( bg_p3,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("T_{LED}=26.13#circ C, T_{SiPM}=24#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::green ),
-      usr::plt::LineColor( usr::plt::col::green ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
-    c.Pad().Xaxis().SetTitle("Bias voltage [V]");
-    c.Pad().Yaxis().SetTitle("Readout [V-nS]");
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "T_{LED}=26.13#circ C, T_{SiPM}=24#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::green ),
+                 usr::plt::LineColor( usr::plt::col::green ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
+    c.Pad().Xaxis().SetTitle( "Bias voltage [V]" );
+    c.Pad().Yaxis().SetTitle( "Readout [V-nS]" );
 
     c.SaveAsPDF( "Readout_v_Bias.pdf" );
   }
   {
-    TGraph* bg_p1 = MakePulseProfile( 1.85, 24 );
-    TGraph* bg_p2 = MakePulseProfile( 1.88, 24 );
-    TGraph* bg_p3 = MakePulseProfile( 1.96, 24 );
-    TGraph* m_p1  = MakePulseFit( 1.85, 24, parameter );
-    TGraph* m_p2  = MakePulseFit( 1.88, 24, parameter );
-    TGraph* m_p3  = MakePulseFit( 1.96, 24, parameter );
-
+    TGraph*bg_p1 = MakePulseProfile( 1.85, 24 );
+    TGraph*bg_p2 = MakePulseProfile( 1.88, 24 );
+    TGraph*bg_p3 = MakePulseProfile( 1.96, 24 );
+    TGraph*m_p1  = MakePulseFit( 1.85, 24, parameter );
+    TGraph*m_p2  = MakePulseFit( 1.88, 24, parameter );
+    TGraph*m_p3  = MakePulseFit( 1.96, 24, parameter );
 
     usr::plt::Simple1DCanvas c;
 
     c.PlotGraph( m_p1,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::cyan ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::cyan ) );
 
     c.PlotGraph( bg_p1,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("Bias=1.85V, T_{SiPM}=24#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::blue ),
-      usr::plt::LineColor( usr::plt::col::blue ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "Bias=1.85V, T_{SiPM}=24#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::blue ),
+                 usr::plt::LineColor( usr::plt::col::blue ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
     c.PlotGraph( m_p2,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::pink ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::pink ) );
     c.PlotGraph( bg_p2,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("Bias=1.88V, T_{SiPM}=24#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::red ),
-      usr::plt::LineColor( usr::plt::col::red ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "Bias=1.88V, T_{SiPM}=24#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::red ),
+                 usr::plt::LineColor( usr::plt::col::red ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
     c.PlotGraph( m_p3,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::limegreen ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::limegreen ) );
     c.PlotGraph( bg_p3,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("Bias=1.96V, T_{SiPM}=24#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::green ),
-      usr::plt::LineColor( usr::plt::col::green ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
-    c.Pad().Xaxis().SetTitle("LED Temperature [#circ C]");
-    c.Pad().Yaxis().SetTitle("Readout [V-nS]");
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "Bias=1.96V, T_{SiPM}=24#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::green ),
+                 usr::plt::LineColor( usr::plt::col::green ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
+    c.Pad().Xaxis().SetTitle( "LED Temperature [#circ C]" );
+    c.Pad().Yaxis().SetTitle( "Readout [V-nS]" );
 
     c.SaveAsPDF( "Readout_v_Pulse.pdf" );
   }
   {
-    TGraph* bg_p1 = MakeSiPMProfile( 1.85, 21.5 );
-    TGraph* bg_p2 = MakeSiPMProfile( 1.88, 21.5 );
-    TGraph* bg_p3 = MakeSiPMProfile( 1.96, 21.5 );
-    TGraph* m_p1  = MakeSiPMFit( 1.85, 21.5, parameter );
-    TGraph* m_p2  = MakeSiPMFit( 1.88, 21.5, parameter );
-    TGraph* m_p3  = MakeSiPMFit( 1.96, 21.5, parameter );
-
+    TGraph*bg_p1 = MakeSiPMProfile( 1.85, 21.5 );
+    TGraph*bg_p2 = MakeSiPMProfile( 1.88, 21.5 );
+    TGraph*bg_p3 = MakeSiPMProfile( 1.96, 21.5 );
+    TGraph*m_p1  = MakeSiPMFit( 1.85, 21.5, parameter );
+    TGraph*m_p2  = MakeSiPMFit( 1.88, 21.5, parameter );
+    TGraph*m_p3  = MakeSiPMFit( 1.96, 21.5, parameter );
 
     usr::plt::Simple1DCanvas c;
 
     c.PlotGraph( m_p1,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::cyan ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::cyan ) );
 
     c.PlotGraph( bg_p1,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("Bias=1.85V, T_{LED}=21.5#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::blue ),
-      usr::plt::LineColor( usr::plt::col::blue ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "Bias=1.85V, T_{LED}=21.5#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::blue ),
+                 usr::plt::LineColor( usr::plt::col::blue ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
     c.PlotGraph( m_p2,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::pink ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::pink ) );
     c.PlotGraph( bg_p2,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("Bias=1.88V, T_{LED}=21.5#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::red ),
-      usr::plt::LineColor( usr::plt::col::red ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "Bias=1.88V, T_{LED}=21.5#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::red ),
+                 usr::plt::LineColor( usr::plt::col::red ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
     c.PlotGraph( m_p3,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::simplefunc ),
-      usr::plt::LineColor( usr::plt::col::limegreen ) );
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::simplefunc ),
+                 usr::plt::LineColor( usr::plt::col::limegreen ) );
     c.PlotGraph( bg_p3,
-      usr::plt::TrackY( usr::plt::tracky::max ),
-      usr::plt::PlotType( usr::plt::scatter ),
-      usr::plt::EntryText("Bias=1.96V, T_{LED}=21.5#circ C"),
-      usr::plt::MarkerColor( usr::plt::col::green ),
-      usr::plt::LineColor( usr::plt::col::green ),
-      usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-      usr::plt::MarkerSize( 0.2 ) );
-    c.Pad().Xaxis().SetTitle("SiPM Temperature [#circ C]");
-    c.Pad().Yaxis().SetTitle("Readout [V-nS]");
+                 usr::plt::TrackY(
+                   usr::plt::tracky::max ),
+                 usr::plt::PlotType(
+                   usr::plt::scatter ),
+                 usr::plt::EntryText(
+                   "Bias=1.96V, T_{LED}=21.5#circ C" ),
+                 usr::plt::MarkerColor( usr::plt::col::green ),
+                 usr::plt::LineColor( usr::plt::col::green ),
+                 usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+                 usr::plt::MarkerSize(
+                   0.2 ) );
+    c.Pad().Xaxis().SetTitle( "SiPM Temperature [#circ C]" );
+    c.Pad().Yaxis().SetTitle( "Readout [V-nS]" );
 
     c.SaveAsPDF( "Readout_v_SiPM.pdf" );
   }
@@ -296,34 +345,34 @@ main( int argc, char* argv[] )
 
 
 double
-model( double x, double y, double z, double* param )
+model( double x, double y, double z, double*param )
 {
-  return ( param[0] +
-           param[1] * y +
-           param[2] * z
-           ) *
-         (  param[3] +
-            param[4]*x +
-            param[5]*x*x +
-            param[6]*x*x*x +
-            param[7]*x*x*x*x
-         );
+  return ( param[0]+param[1] * y+param[2] * z )
+         * (  param[3]+param[4] * x+param[5] * x * x+param[6] * x * x * x
+              +param[7]
+              * x * x * x * x );
 }
 
+
 void
-model_fcn( int& nparam, double* gin, double & f, double* param, int flag )
+model_fcn( int& nparam, double*gin, double & f, double*param, int flag )
 {
   double chi_sq = 0;
   double delta;
 
   for( unsigned i = 0; i < bias_data.size(); ++i ){
-    delta = ( readout_data[i] - model( bias_data[i], pulse_data[i], sipm_data[i], param ) )
-            / uncertainty_data[i];
+    delta =
+      ( readout_data[i]
+        -model( bias_data[i],
+                pulse_data[i],
+                sipm_data[i],
+                param ) ) / uncertainty_data[i];
     chi_sq += delta * delta;
   }
 
   f = chi_sq;
 }
+
 
 TGraph*
 MakeBiasProfile( const double pulse_center, const double sipm_center )
@@ -335,10 +384,9 @@ MakeBiasProfile( const double pulse_center, const double sipm_center )
   std::vector<double> z;
 
   for( unsigned i = 0; i < bias_data.size(); ++i  ){
-    if( pulse_data[i] < pulse_center + 0.25 &&
-        pulse_data[i] > pulse_center - 0.25 &&
-        sipm_data[i] < sipm_center + 0.25 &&
-        sipm_data[i] > sipm_center - 0.25 ){
+    if( pulse_data[i] < pulse_center+0.25 &&
+        pulse_data[i] > pulse_center-0.25 && sipm_data[i] < sipm_center+0.25 &&
+        sipm_data[i] > sipm_center-0.25 ){
       x.push_back( bias_data[i] );
       y.push_back( readout_data[i] );
       ey.push_back( uncertainty_data[i] );
@@ -349,10 +397,9 @@ MakeBiasProfile( const double pulse_center, const double sipm_center )
   return new TGraphErrors( x.size(), x.data(), y.data(), z.data(), ey.data() );
 }
 
+
 TGraph*
-MakeBiasFit( const double pulse_center,
-             const double sipm_center,
-             double*      param )
+MakeBiasFit( const double pulse_center, const double sipm_center, double*param )
 {
   double bias_g_max = usr::RoundUp( usr::GetMaximum( bias_data ), 0.005 );
   double bias_g_min = usr::RoundDown( usr::GetMinimum( bias_data ), 0.005 );
@@ -362,15 +409,15 @@ MakeBiasFit( const double pulse_center,
 
   for( double bias = bias_g_min; bias < bias_g_max; bias += 0.001 ){
     x.push_back( bias );
-    y.push_back( model( bias-bias_min
-                      , pulse_center-pulse_min
-                      , sipm_center-sipm_min
-                      , param ) );
+    y.push_back( model( bias-bias_min,
+                        pulse_center-pulse_min,
+                        sipm_center-sipm_min,
+                        param ) );
   }
 
   return new TGraph( x.size(), x.data(), y.data() );
-
 }
+
 
 TGraph*
 MakePulseProfile( const double bias_center, const double sipm_center )
@@ -382,10 +429,8 @@ MakePulseProfile( const double bias_center, const double sipm_center )
   std::vector<double> z;
 
   for( unsigned i = 0; i < bias_data.size(); ++i  ){
-    if( bias_data[i] < bias_center + 0.005 &&
-        bias_data[i] > bias_center - 0.005 &&
-        sipm_data[i] < sipm_center + 0.125 &&
-        sipm_data[i] > sipm_center - 0.125 ){
+    if( bias_data[i] < bias_center+0.005 && bias_data[i] > bias_center-0.005 &&
+        sipm_data[i] < sipm_center+0.125 && sipm_data[i] > sipm_center-0.125 ){
       x.push_back( pulse_data[i] );
       y.push_back( readout_data[i] );
       ey.push_back( uncertainty_data[i] );
@@ -396,10 +441,9 @@ MakePulseProfile( const double bias_center, const double sipm_center )
   return new TGraphErrors( x.size(), x.data(), y.data(), z.data(), ey.data() );
 }
 
+
 TGraph*
-MakePulseFit( const double bias_center,
-              const double sipm_center,
-              double*      param )
+MakePulseFit( const double bias_center, const double sipm_center, double*param )
 {
   double pulse_g_max = usr::RoundUp( usr::GetMaximum( pulse_data ), 0.01 );
   double pulse_g_min = usr::RoundDown( usr::GetMinimum( pulse_data ), 0.01 );
@@ -409,15 +453,15 @@ MakePulseFit( const double bias_center,
 
   for( double pulse = pulse_g_min; pulse < pulse_g_max; pulse += 0.01 ){
     x.push_back( pulse );
-    y.push_back( model( bias_center-bias_min
-                      , pulse-pulse_min
-                      , sipm_center-sipm_min
-                      , param ) );
+    y.push_back( model( bias_center-bias_min,
+                        pulse-pulse_min,
+                        sipm_center-sipm_min,
+                        param ) );
   }
 
   return new TGraph( x.size(), x.data(), y.data() );
-
 }
+
 
 TGraph*
 MakeSiPMProfile( const double bias_center, const double pulse_center )
@@ -429,10 +473,9 @@ MakeSiPMProfile( const double bias_center, const double pulse_center )
   std::vector<double> z;
 
   for( unsigned i = 0; i < bias_data.size(); ++i  ){
-    if( bias_data[i] < bias_center + 0.005 &&
-        bias_data[i] > bias_center - 0.005 &&
-        pulse_data[i] < pulse_center + 0.125 &&
-        pulse_data[i] > pulse_center - 0.125 ){
+    if( bias_data[i] < bias_center+0.005 && bias_data[i] > bias_center-0.005 &&
+        pulse_data[i] < pulse_center+0.125 &&
+        pulse_data[i] > pulse_center-0.125 ){
       x.push_back( sipm_data[i] );
       y.push_back( readout_data[i] );
       ey.push_back( uncertainty_data[i] );
@@ -443,10 +486,9 @@ MakeSiPMProfile( const double bias_center, const double pulse_center )
   return new TGraphErrors( x.size(), x.data(), y.data(), z.data(), ey.data() );
 }
 
+
 TGraph*
-MakeSiPMFit( const double bias_center,
-              const double pulse_center,
-              double*      param )
+MakeSiPMFit( const double bias_center, const double pulse_center, double*param )
 {
   double sipm_g_max = usr::RoundUp( usr::GetMaximum( sipm_data ), 0.01 );
   double sipm_g_min = usr::RoundDown( usr::GetMinimum( sipm_data ), 0.01 );
@@ -456,13 +498,11 @@ MakeSiPMFit( const double bias_center,
 
   for( double sipm = sipm_g_min; sipm < sipm_g_max; sipm += 0.01 ){
     x.push_back( sipm );
-    y.push_back( model( bias_center-bias_min
-                      , pulse_center-pulse_min
-                      , sipm-sipm_min
-                      , param ) );
+    y.push_back( model( bias_center-bias_min,
+                        pulse_center-pulse_min,
+                        sipm-sipm_min,
+                        param ) );
   }
 
   return new TGraph( x.size(), x.data(), y.data() );
-
 }
-

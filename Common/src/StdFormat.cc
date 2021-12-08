@@ -29,9 +29,8 @@ StdFormat::StdFormat( const std::string& filename )
     std::istringstream linestream( line );
     RowFormat          r;
     double             data = 0;
-    linestream >> r.time >> r.id
-    >> r.x >> r.y >> r.z
-    >> r.bias >> r.ledtemp  >> r.sipmtemp;
+    linestream >> r.time >> r.id >> r.x >> r.y >> r.z >> r.bias >> r.ledtemp  >>
+    r.sipmtemp;
 
     while( linestream >> data ){
       r.data.push_back( data );
@@ -78,10 +77,10 @@ COLUMN( SiPMTemp, double, sipmtemp );
  *
  * Depending on which data collection process was invoked to collect the data,
  * different columns typically mean different data variation. This method
- *extract
+ * extract
  * exactly 1 data column into the a single vector container. Notice that the
  * column starts from the 0 for the 0th data column (9th column in the data
- *file.)
+ * file.)
  */
 std::vector<double>
 StdFormat::DataCol( unsigned col, RowSelect selector ) const
@@ -104,7 +103,7 @@ StdFormat::DataCol( unsigned col, RowSelect selector ) const
  *
  * In the case of the low-light data collection, all waveform data are placed
  * into the latter columns. This method aggregates all data columns into a
- *single
+ * single
  * vector, effectively removing all column and row structure (what is needed for
  * low-light analysis.) The user can still be specify which rows are used for
  * extraction of the data vector.
@@ -128,7 +127,7 @@ StdFormat::DataAll( RowSelect selector ) const
  * @brief Making a reduced version of the data set based on some row selection.
  *
  * This is handy if the same selection is performed over and over again over
- *many
+ * many
  * routines, or you require a new data file that require some none-trivial
  * selection.
  */
@@ -165,15 +164,12 @@ StdFormat::WriteToFile( const std::string& filename ) const
   }
 
   for( const auto& row : _rows ){
-    outfile << usr::fstr( "%.2f %d %.1f %.1f %.1f %.1f %.1f %.1f"
-                          ,
+    outfile << usr::fstr( "%.2f %d %.1f %.1f %.1f %.1f %.1f %.1f",
                           row.time,
-                          row.id
-                          ,
+                          row.id,
                           row.x,
                           row.y,
-                          row.z
-                          ,
+                          row.z,
                           row.bias,
                           row.ledtemp,
                           row.sipmtemp );
