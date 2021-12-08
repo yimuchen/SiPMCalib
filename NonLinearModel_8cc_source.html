@@ -83,11 +83,11 @@ $(function() {
   <div class="headertitle"><div class="title">NonLinearModel.cc</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;UserUtils/MathUtils/interface/Measurement/Measurement.hpp&quot;</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;TMath.h&quot;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;UserUtils/MathUtils/interface/Measurement/Measurement.hpp&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keywordtype">double</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>LinearModel( <span class="keyword">const</span> <span class="keywordtype">double</span>* xx, <span class="keyword">const</span> <span class="keywordtype">double</span>* par )</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>LinearModel( <span class="keyword">const</span> <span class="keywordtype">double</span>*xx, <span class="keyword">const</span> <span class="keywordtype">double</span>*par )</div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>{</div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> x      = xx[0];</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> gain   = par[0];</div>
@@ -98,7 +98,7 @@ $(function() {
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keywordtype">double</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>LOModel( <span class="keyword">const</span> <span class="keywordtype">double</span>* xx, <span class="keyword">const</span> <span class="keywordtype">double</span>* par )</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>LOModel( <span class="keyword">const</span> <span class="keywordtype">double</span>*xx, <span class="keyword">const</span> <span class="keywordtype">double</span>*par )</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> x      = xx[0];</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> gain   = par[0];</div>
@@ -110,7 +110,7 @@ $(function() {
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keywordtype">double</span></div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>NLOModel( <span class="keyword">const</span> <span class="keywordtype">double</span>* xx, <span class="keyword">const</span> <span class="keywordtype">double</span>* par )</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>NLOModel( <span class="keyword">const</span> <span class="keywordtype">double</span>*xx, <span class="keyword">const</span> <span class="keywordtype">double</span>*par )</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>{</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> x      = xx[0];</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> gain   = par[0];</div>
@@ -125,79 +125,50 @@ $(function() {
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> Nfired_LO = LOModel( xx, LOpar );</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="comment">// Simple linear correction</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> NLOLinear = ( 1-alpha ) * Nfired_LO</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>                           +alpha * pde * x * N;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> nlo_frac   = pde * x * N / Nfired_LO;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> NonLinCorr = ( beta+1 ) / ( beta+nlo_frac );</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  <span class="keywordflow">return</span> gain * NLOLinear * NonLinCorr+offset;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>}</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> NLOLinear = ( 1-alpha ) * Nfired_LO+alpha * pde * x * N;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> nlo_frac   = pde * x * N / Nfired_LO;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> NonLinCorr = ( beta+1 ) / ( beta+nlo_frac );</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordflow">return</span> gain * NLOLinear * NonLinCorr+offset;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">// From collected data.</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>usr::Measurement</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>A( <span class="keyword">const</span> <span class="keywordtype">unsigned</span> idx )</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>{</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> Araw_lo[7] = {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    0.7081,</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    1668.4,</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    2508.0,</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    2977.1,</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    4195.3,</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    5273.5,</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    6578.1</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  };</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">// From collected data.</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>usr::Measurement</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>A( <span class="keyword">const</span> <span class="keywordtype">unsigned</span> idx )</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>{</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> Araw_lo[7] = {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    0.7081, 1668.4, 2508.0, 2977.1, 4195.3, 5273.5, 6578.1};</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> Araw_hi[7] = {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    0.7015, 1670.6, 2511.8, 2983.0, 4200.5, 5286.7, 6604.4};</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordflow">if</span>( idx &lt; 1 || idx &gt; 6 ){ <span class="keywordflow">return</span> usr::Measurement( 0, 0, 0 ); }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordflow">if</span>( idx == 6 ){ <span class="keywordflow">return</span> usr::Measurement( 1, 0, 0 ); }</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> lo   = ( Araw_lo[idx]-Araw_hi[0] ) / ( Araw_hi[6]-Araw_lo[0] );</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> hi   = ( Araw_hi[idx]-Araw_lo[0] ) / ( Araw_lo[6]-Araw_hi[0] );</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> diff = fabs( hi-lo );</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> Araw_hi[7] = {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    0.7015,</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    1670.6,</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    2511.8,</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    2983.0,</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    4200.5,</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    5286.7,</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    6604.4</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  };</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordflow">if</span>( idx &lt; 1 || idx &gt; 6 ){ <span class="keywordflow">return</span> usr::Measurement( 0, 0, 0 ); }</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordflow">if</span>( idx == 6 ){ <span class="keywordflow">return</span> usr::Measurement( 1, 0, 0 ); }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> lo   = ( Araw_lo[idx]-Araw_hi[0] ) / ( Araw_hi[6]-Araw_lo[0] );</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> hi   = ( Araw_hi[idx]-Araw_lo[0] ) / ( Araw_lo[6]-Araw_hi[0] );</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> diff = fabs( hi-lo );</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keywordflow">return</span> usr::Measurement( ( lo+hi ) / 2, diff, diff );</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>}</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keywordflow">return</span> usr::Measurement( ( lo+hi ) / 2, diff, diff );</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>usr::Measurement</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>B( <span class="keyword">const</span> <span class="keywordtype">unsigned</span> idx )</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>{</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> Braw_lo[7] = {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    0.696, 31069, 8633.1, 2480.4, 701.10, 97.002, 20.379};</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> Braw_hi[7] = {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    0.700, 31328, 8691.0, 2497.4, 704.95, 97.330, 20.470};</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keywordflow">if</span>( idx &lt; 1 || idx &gt; 6 ){ <span class="keywordflow">return</span> usr::Measurement( 0, 0, 0 ); }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordflow">if</span>( idx == 1 ){ <span class="keywordflow">return</span> usr::Measurement( 1, 0, 0 ); }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> lo   = ( Braw_lo[idx]-Braw_hi[0] ) / ( Braw_hi[1]-Braw_lo[0] );</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> hi   = ( Braw_hi[idx]-Braw_lo[0] ) / ( Braw_lo[1]-Braw_hi[0] );</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> diff = fabs( hi-lo ) / 2;</div>
 <div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>usr::Measurement</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>B( <span class="keyword">const</span> <span class="keywordtype">unsigned</span> idx )</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>{</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> Braw_lo[7] = {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    0.696,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    31069,</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    8633.1,</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    2480.4,</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    701.10,</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    97.002,</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    20.379</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  };</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">double</span> Braw_hi[7] = {</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    0.700,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    31328,</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    8691.0,</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    2497.4,</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    704.95,</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    97.330,</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    20.470</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  };</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keywordflow">if</span>( idx &lt; 1 || idx &gt; 6 ){ <span class="keywordflow">return</span> usr::Measurement( 0, 0, 0 ); }</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keywordflow">if</span>( idx == 1 ){ <span class="keywordflow">return</span> usr::Measurement( 1, 0, 0 ); }</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> lo   = ( Braw_lo[idx]-Braw_hi[0] ) / ( Braw_hi[1]-Braw_lo[0] );</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> hi   = ( Braw_hi[idx]-Braw_lo[0] ) / ( Braw_lo[1]-Braw_hi[0] );</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keyword">const</span> <span class="keywordtype">double</span> diff = fabs( hi-lo ) / 2;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keywordflow">return</span> usr::Measurement( ( lo+hi ) / 2, diff, diff );</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>}</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordflow">return</span> usr::Measurement( ( lo+hi ) / 2, diff, diff );</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>}</div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.14-->
 <!-- start footer part -->
