@@ -56,6 +56,7 @@ private:
 
 public:
   typedef std::function<bool ( const RowFormat& )> RowSelect;
+
   /**< Data selection short hand, function should return true for the rows that
    * should be extracted*/
 
@@ -73,6 +74,7 @@ public:
   std::vector<double> Bias( RowSelect     = NoSelect ) const;
   std::vector<double> LedTemp( RowSelect  = NoSelect ) const;
   std::vector<double> SiPMTemp( RowSelect = NoSelect ) const;
+
   /** @} */
 
   std::vector<double> DataAll( RowSelect               = NoSelect ) const;

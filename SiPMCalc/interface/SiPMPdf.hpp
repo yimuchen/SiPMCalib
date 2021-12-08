@@ -48,10 +48,10 @@ public:
            RooAbsReal& s1,
            RooAbsReal& mean,
            RooAbsReal& lambda );
-  SiPMPdf( const SiPMPdf&, const char* name = 0 );
+  SiPMPdf( const SiPMPdf&, const char*name = 0 );
   virtual ~SiPMPdf();
 
-  virtual TObject* clone( const char* name ) const;
+  virtual TObject* clone( const char*name ) const;
 
   inline double
   Eval() const { return evaluate(); }
@@ -60,17 +60,18 @@ public:
   double gauss_k( const int k  ) const;
   double binomial_prob( const int k, const int i ) const;
 
-  int getAnalyticalIntegral( RooArgSet&  allVars,
-                             RooArgSet&  analVars,
-                             const char* rangeName = 0 ) const override;
-  double analyticalIntegral( int         code,
-                             const char* rangeName = 0 ) const override;
+  int getAnalyticalIntegral( RooArgSet& allVars,
+                             RooArgSet& analVars,
+                             const char*rangeName = 0 ) const override;
+  double analyticalIntegral( int        code,
+                             const char*rangeName = 0 )
+  const override;
 
   double analyticalIntegral( double x ) const;
   double erf_ap_eff( const double x, const int k, const int i ) const;
   double erf_k( const double x, const int k ) const;
 
-  inline MDistro& darkdistro(){ return mdistro; };
+  inline MDistro& darkdistro(){ return mdistro; }
 
   // Bunch of statistical functions used for the analysis
   // Moving to a static method for individual testing

@@ -5,12 +5,12 @@
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 
+#include "RooAbsData.h"
+#include "RooRealVar.h"
 #include "TF1.h"
 #include "TGraphErrors.h"
 #include "TH1D.h"
 #include "TSpectrum.h"
-#include "RooRealVar.h"
-#include "RooAbsData.h"
 
 #include <iostream>
 #include <memory>
@@ -172,7 +172,6 @@ private:
   std::string _sipmtype;
   std::string _lumitype;
   std::string _biasv;
-
 };
 
 #endif

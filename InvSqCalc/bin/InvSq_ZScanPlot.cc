@@ -52,7 +52,7 @@
  * should only ever be set as a constant.
  */
 double
-ZProf( const double* vz, const double* param )
+ZProf( const double*vz, const double*param )
 {
   const double z  = vz[0];
   const double z0 = param[0];
@@ -62,6 +62,7 @@ ZProf( const double* vz, const double* param )
   const double N0 = param[4];
 
   const double D2 = o * o+( z-z0 ) * ( z-z0 );
+
   // return N/D2 + P;
   return ( N * N0 * ( z-z0 ) ) / ( D2 * sqrt( D2 ) )+P;
 }
@@ -79,7 +80,7 @@ TFitResult FitAndShiftData( TGraph& data,
  * detailed documentation.
  */
 int
-main( int argc, char** argv )
+main( int argc, char**argv )
 {
   usr::po::options_description desc( "Options for plot making" );
   desc.add_options()
@@ -108,29 +109,32 @@ main( int argc, char** argv )
 
   usr::plt::Ratio1DCanvas c;
 
-  auto& fitg = c.PlotFunc( func,
-                           usr::plt::PlotType( usr::plt::
-                                               fittedfunc ),
-                           usr::plt::EntryText( "Fitted Data" ),
-                           usr::plt::VisualizeError( fit ),
-                           usr::plt::FillColor( usr::plt::col::cyan ),
-                           usr::plt::TrackY( usr::plt::tracky::max ),
-                           usr::plt::LineColor( usr::plt::col::blue ));
-  auto& datag = c.PlotGraph( dataz,
-                             usr::plt::PlotType( usr::plt::scatter ),
-                             usr::plt::EntryText( "Readout" ),
-                             usr::plt::MarkerColor( usr::plt::col::black ),
-                             usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
-                             usr::plt::MarkerSize( 0.2 ),
-                             usr::plt::LineColor( usr::plt::col::gray, 1.0 ) );
-  c.PlotScale( fitg,
-               fitg,
-               usr::plt::PlotType( usr::plt::fittedfunc ),
-               usr::plt::FillColor( usr::plt::col::cyan ) );
-  c.PlotScale( datag,
-               fitg,
-               usr::plt::PlotType( usr::plt::scatter ),
-               usr::plt::MarkerSize( 0.2 ) );
+  auto& fitg = c.PlotFunc(
+    func,
+    usr::plt::PlotType( usr::plt::fittedfunc ),
+    usr::plt::EntryText(  "Fitted Data" ),
+    usr::plt::VisualizeError( fit ),
+    usr::plt::FillColor( usr::plt::col::cyan ),
+    usr::plt::TrackY( usr::plt::tracky::max ),
+    usr::plt::LineColor( usr::plt::col::blue ));
+  auto& datag = c.PlotGraph(
+    dataz,
+    usr::plt::PlotType( usr::plt::scatter ),
+    usr::plt::EntryText( "Readout" ),
+    usr::plt::MarkerColor(  usr::plt::col::black ),
+    usr::plt::MarkerStyle(  usr::plt::sty::mkrcircle ),
+    usr::plt::MarkerSize( 0.2 ),
+    usr::plt::LineColor( usr::plt::col::gray, 1.0 ) );
+  c.PlotScale(
+    fitg,
+    fitg,
+    usr::plt::PlotType( usr::plt::fittedfunc ),
+    usr::plt::FillColor( usr::plt::col::cyan ) );
+  c.PlotScale(
+    datag,
+    fitg,
+    usr::plt::PlotType( usr::plt::scatter ),
+    usr::plt::MarkerSize( 0.2 ) );
 
   c.TopPad().Yaxis().SetTitle( "Luminosity - Ped. [mV-ns]" );
   c.BottomPad().Xaxis().SetTitle( "Gantry z + z_{0} [mm]" );
@@ -180,8 +184,7 @@ MakeZScanGraph( const StdFormat& sformat, const double uncscale )
 
   std::transform( lumierr.begin(),
                   lumierr.end(),
-                  lerr_scaled.begin(),
-                  [uncscale]( double x ){
+                  lerr_scaled.begin(), [uncscale]( double x ){
     return x * uncscale;
   } );
 
@@ -233,8 +236,7 @@ FitAndShiftData( TGraph& data, TF1& func, double& ped, double& zoffset )
   func.FixParameter( 4, 1 / scale  );
   func.SetParameter( 2, func.GetParameter( 2 ) *  scale );
 
-  usr::log::PrintLog( usr::log::INFO,
-                      "Shifting the data for better plotting" );
+  usr::log::PrintLog( usr::log::INFO, "Shifting the data for better plotting" );
 
   for( int j = 0; j < data.GetN(); ++j ){
     data.GetX()[j] -= zoffset;
@@ -248,14 +250,12 @@ FitAndShiftData( TGraph& data, TF1& func, double& ped, double& zoffset )
 
   usr::log::PrintLog( usr::log::INFO,
                       "Refitting to get a correct result container" );
-  TFitResult* ans = data.Fit( &func, "Q EX0 M E N 0 S" ).Get();
+  TFitResult*ans = data.Fit( &func, "Q EX0 M E N 0 S" ).Get();
+
+  usr::log::PrintLog( usr::log::INFO, "Complete fitting routine" );
 
   usr::log::PrintLog( usr::log::INFO,
-                      "Complete fitting routine" );
-
-  usr::log::PrintLog( usr::log::INFO,
-                      usr::fstr( "Fitted z0: %.2lf +- %.2lf",
-                                 zoffset,
+                      usr::fstr( "Fitted z0: %.2lf +- %.2lf", zoffset,
                                  func.GetParError( 0 ) ) );
   usr::log::PrintLog( usr::log::INFO,
                       usr::fstr( "Fitted x0: %.2lf +- %.2lf",
@@ -266,11 +266,8 @@ FitAndShiftData( TGraph& data, TF1& func, double& ped, double& zoffset )
                                  func.GetParameter( 2 ),
                                  func.GetParError( 2 ) ) );
   usr::log::PrintLog( usr::log::INFO,
-                      usr::fstr( "Fitted ped: %.2lf +- %.2lf",
-                                 ped,
+                      usr::fstr( "Fitted ped: %.2lf +- %.2lf", ped,
                                  func.GetParError( 3 ) ) );
-
-  ans->Print();
 
   return *ans;
 }

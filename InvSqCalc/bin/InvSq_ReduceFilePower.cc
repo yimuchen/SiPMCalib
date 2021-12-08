@@ -8,7 +8,7 @@
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 
 int
-main( int argc, char** argv )
+main( int argc, char**argv )
 {
   usr::po::options_description desc(
     "Options for reducing the file via power output" );

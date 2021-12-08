@@ -47,8 +47,7 @@ SiPMLowLightFit::RunPDFEstimation()
   // Early exit if peak finding failed to more than 1 peak.
   if( _peakfits.size() < 2 ){
     usr::log::PrintLog( usr::log::WARNING,
-                        "Peak finder found less than two peaks! Results from the estimations "
-                        "routine will not be used. Check to see if data is behaving properly "
+                        "Peak finder found less than two peaks! Results from the estimations " "routine will not be used. Check to see if data is behaving properly "
                         "running as expected" );
     return;
   }
@@ -67,11 +66,11 @@ SiPMLowLightFit::good_local_peak_fit( const double x )
   const int    maxbin   = _est_hist->GetMaximumBin();
   const double max      = _est_hist->GetBinContent( maxbin );
 
-  TF1* fit = new TF1( usr::RandomString( 6 ).c_str(),
-                      "gaus"
-                      ,
-                      x-2 * binwidth,
-                      x+2 * binwidth );
+  TF1*fit = new TF1( usr::RandomString(
+                       6 ).c_str(),
+                     "gaus",
+                     x-2 * binwidth,
+                     x+2 * binwidth );
   fit->SetParameter( 1, x );
   fit->SetParameter( 2, 2 * binwidth );
   _est_hist->Fit( fit, "QN0LR" );
@@ -103,7 +102,7 @@ SiPMLowLightFit::good_local_peak_fit( const double x )
 void
 SiPMLowLightFit::run_gain_est()
 {
-  auto f = []( const double* xx, const double* par ){
+  auto f = []( const double*xx, const double*par ){
              const double x = xx[0];
              const double a = par[0];
              const double b = par[1];
@@ -142,7 +141,7 @@ SiPMLowLightFit::run_gain_est()
 void
 SiPMLowLightFit::run_width_est()
 {
-  auto f = []( const double* xx, const double* par ){
+  auto f = []( const double*xx, const double*par ){
              const double x  = xx[0];
              const double s0 = par[0];
              const double s1 = par[1];
@@ -180,7 +179,7 @@ SiPMLowLightFit::run_width_est()
 void
 SiPMLowLightFit::run_height_est()
 {
-  auto f = []( const double* xx, const double* par ){
+  auto f = []( const double*xx, const double*par ){
              const double x    = xx[0];
              const double N    = par[0];
              const double mu   = par[1];

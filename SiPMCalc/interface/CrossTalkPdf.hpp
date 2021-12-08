@@ -19,11 +19,10 @@ public:
                 RooRealVar& s0,
                 RooRealVar& s1,
                 RooRealVar& prob );
-  CrossTalkPdf( const CrossTalkPdf&, const char* name = 0 );
-  virtual
-  ~CrossTalkPdf();
+  CrossTalkPdf( const CrossTalkPdf&, const char*name = 0 );
+  virtual ~CrossTalkPdf();
 
-  virtual TObject* clone( const char* name ) const;
+  virtual TObject* clone( const char*name ) const;
 
   double gauss_k( const int k  ) const;
   double cross_prob( const int k ) const;

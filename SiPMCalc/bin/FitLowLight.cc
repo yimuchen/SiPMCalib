@@ -5,7 +5,7 @@
 #include <fstream>
 
 int
-main( int argc, char* argv[] )
+main( int argc, char*argv[] )
 {
   usr::po::options_description desc(
     "Single run fit options for default low light fit" );
@@ -64,10 +64,10 @@ main( int argc, char* argv[] )
   args.AddDirScheme( usr::ArgumentExtender::ArgPathScheme( "outputdir", "" ) );
   args.AddNameScheme( usr::ArgumentExtender::ArgPathScheme( "commonpostfix",
                                                             "" ) );
-  SiPMLowLightFit* mgr = args.CheckArg( "configfile" ) ?
-                         new SiPMLowLightFit( args.Arg<std::string>(
-                                                "configfile" ) ) :
-                         new SiPMLowLightFit();
+  SiPMLowLightFit*mgr = args.CheckArg( "configfile" ) ?
+                        new SiPMLowLightFit( args.Arg<std::string>(
+                                               "configfile" ) ) :
+                        new SiPMLowLightFit();
   mgr->UpdateSettings( args );
 
   // Parsing the data
@@ -115,13 +115,12 @@ main( int argc, char* argv[] )
       args.MakePDFFile( args.Arg<std::string>( "savefit" ) ) );
   }
   if( args.CheckArg( "savelatex" ) ){
-    std::ofstream table(
-      args.MakeTEXFile( args.Arg<std::string>( "savelatex" ) ) );
+    std::ofstream table( args.MakeTEXFile( args.Arg<std::string>(
+                                             "savelatex" ) ) );
     mgr->PrintTable( table );
   }
   if( args.CheckArg( "savetxt" ) ){
-    std::ofstream raw(
-      args.MakeTXTFile( args.Arg<std::string>( "savetxt" ) ) );
+    std::ofstream raw( args.MakeTXTFile( args.Arg<std::string>( "savetxt" ) ) );
     mgr->PrintRaw( raw );
   }
 

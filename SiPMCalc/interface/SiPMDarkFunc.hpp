@@ -40,6 +40,7 @@ private:
   std::vector<double> xArray;
   std::vector<double> convArray;
   std::vector<double> accArray;
+
   // Delaring here, as we are going to reserve for faster allocation
   std::vector<double> convTempArray;
   std::vector<double> mfuncArray;

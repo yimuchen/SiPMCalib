@@ -57,20 +57,15 @@ SiPMLowLightFit::set_all_defaults()
 
   _pdf = std::make_unique<SiPMPdf>( "pdf",
                                     "pdf",
-                                    *_x
-                                    ,
+                                    *_x,
                                     *_ped,
-                                    *_gain
-                                    ,
+                                    *_gain,
                                     *_s0,
-                                    *_s1
-                                    ,
+                                    *_s1,
                                     *_mean,
-                                    *_lambda
-                                    ,
+                                    *_lambda,
                                     *_alpha,
-                                    *_beta
-                                    ,
+                                    *_beta,
                                     *_dcfrac,
                                     *_eps );
 
@@ -119,18 +114,14 @@ SiPMLowLightFit::DataArguments()
   usr::po::options_description desc(
     "Options for parsing the data file for low-light SiPM spectrum model" );
   desc.add_options()
-    ( "input",
-    usr::po::reqvalue<std::string>(),
-    "Input data file" )
+    ( "input", usr::po::reqvalue<std::string>(), "Input data file" )
     ( "waveform",
     usr::po::reqvalue<bool>(),
     "Whether in input data is a raw waveform (True) are integrated (False)" )
     ( "binwidth",
     usr::po::value<double>(),
     "The bin width to use for binned data" )
-    ( "maxarea",
-    usr::po::value<double>(),
-    "Maximum area for perform fit on" )
+    ( "maxarea", usr::po::value<double>(), "Maximum area for perform fit on" )
 
   /// Options unique to the waveform input format.
     ( "intstart",
@@ -151,7 +142,6 @@ SiPMLowLightFit::DataArguments()
     usr::po::value<double>(),
     "Maximum RMS of values within the pedestal window, event is discarded if "
     "this value is surpassed" )
-  ;
   ;
 
   return desc;
@@ -178,9 +168,7 @@ SiPMLowLightFit::FitArguments()
     ( "mean",    usr::po::multivalue<double>(), "Mean number of p.es" )
     ( "lambda",  usr::po::multivalue<double>(), "Crosstalk proability" )
     ( "alpha",   usr::po::multivalue<double>(), "Afterpulsing probability" )
-    ( "beta",
-    usr::po::multivalue<double>(),
-    "Afterpulting timescale factor" )
+    ( "beta", usr::po::multivalue<double>(), "Afterpulting timescale factor" )
     ( "dcfrac",  usr::po::multivalue<double>(), "Dark current probability" )
     ( "epsilon",
     usr::po::multivalue<double>(),
@@ -269,19 +257,19 @@ SiPMLowLightFit::UpdateSettings( const usr::ArgumentExtender& args )
               x.setRange( min, max );
               x.setConstant( false );
             };
-  auto update_arg = [&args, &f1, &f2, &f3]( RooRealVar& x,
-                                            const std::string& var ){
-                      if( args.CheckArg( var ) ){
-                        const auto vec = args.ArgList<double>( var );
-                        if( vec.size() == 1 ){
-                          f1( x, vec[0] );
-                        } else if( vec.size() == 2 ){
-                          f2( x, vec[0], vec[1] );
-                        } else if( vec.size() == 3 ){
-                          f3( x, vec[0], vec[1], vec[2] );
-                        }
-                      }
-                    };
+  auto update_arg =
+    [&args, &f1, &f2, &f3]( RooRealVar& x, const std::string& var ){
+      if( args.CheckArg( var ) ){
+        const auto vec = args.ArgList<double>( var );
+        if( vec.size() == 1 ){
+          f1( x, vec[0] );
+        } else if( vec.size() == 2 ){
+          f2( x, vec[0], vec[1] );
+        } else if( vec.size() == 3 ){
+          f3( x, vec[0], vec[1], vec[2] );
+        }
+      }
+    };
 
   update_arg( *_ped,    "ped"     );
   update_arg( *_gain,   "gain"    );
@@ -315,14 +303,10 @@ SiPMLowLightFit::UpdateSettings( const usr::ArgumentExtender& args )
   lock( ignore_mean_est,   "mean"   );
   lock( ignore_lambda_est, "lambda" );
 
-  _est_minpeak = args.ArgOpt<double>( "estminpeak"
-                                      ,
-                                      _est_minpeak       );
-  _est_gausswindow = args.ArgOpt<double>( "estgausswindow"
-                                          ,
-                                          _est_gausswindow   );
-  _est_maxgausswidth = args.ArgOpt<double>( "estmaxgausswidth"
-                                            ,
+  _est_minpeak     = args.ArgOpt<double>( "estminpeak", _est_minpeak       );
+  _est_gausswindow =
+    args.ArgOpt<double>( "estgausswindow", _est_gausswindow   );
+  _est_maxgausswidth = args.ArgOpt<double>( "estmaxgausswidth",
                                             _est_maxgausswidth );
 
   // Operation parameters related variables
@@ -349,8 +333,7 @@ SiPMLowLightFit::MakeBinnedData()
 
   // Parsing for converting into data.
   const double xmin = usr::RoundDown( _arealist.front(), _binwidth );
-  const double xmax = usr::RoundUp( std::min( _arealist.back(), _maxarea )
-                                    ,
+  const double xmax = usr::RoundUp( std::min( _arealist.back(), _maxarea ),
                                     _binwidth );
   const double nbins = ( xmax-xmin ) / _binwidth;
 
@@ -381,8 +364,7 @@ SiPMLowLightFit::make_array_from_waveform()
     }
     const double a = wformat.WaveformSum( i,
                                           _intstart,
-                                          _intstop
-                                          ,
+                                          _intstop,
                                           _pedstart,
                                           _pedstop );
     _arealist.push_back( a );
@@ -392,7 +374,6 @@ SiPMLowLightFit::make_array_from_waveform()
   const unsigned start = std::min( _intstart, wformat.NSamples() );
   const unsigned stop  = std::min( _intstop, wformat.NSamples() );
   _intwindow = wformat.Time() * ( stop-start );
-
 }
 
 
@@ -409,9 +390,8 @@ SiPMLowLightFit::make_array_from_sum()
 void
 SiPMLowLightFit::RunFit()
 {
-  usr::ConvergeFitPDFToData( *_pdf,
-                             *_data,
-                             usr::MaxFitIteration( 3 ) );
+  usr::ConvergeFitPDFToData( *_pdf, *_data, usr::MaxFitIteration( 3 ) );
+
   // Limiting to 3 to save runtime.
 }
 
@@ -457,8 +437,7 @@ SiPMLowLightFit::MeanPhotonsFromFrac() const
   // Getting the mean photon using the fractional method:
   const double den = _arealist.size();
   const double num = std::count_if( _arealist.begin(),
-                                    _arealist.end(),
-                                    [this]( double x )->bool {
+                                    _arealist.end(), [this]( double x )->bool {
     return x < ( this->ped().getVal()+this->gain().getVal() / 2 );
   } );
 

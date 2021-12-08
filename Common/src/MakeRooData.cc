@@ -7,7 +7,7 @@
  * @brief Setting a RooRealVar range based on a series of data points.
  *
  * Given a bin width, a maximum area, and a series of data values, this
- *functions
+ * functions
  * automatically setups up the RooRealVar var such that:
  * - The range of variable lands on a bin edge that are integer multiples of the
  *   specified bin with.
@@ -23,7 +23,9 @@ SetRange( RooRealVar&                var,
   // Getting the maximum elements.
   const double dmax = usr::GetMaximum( datapoints );
   const double dmin = usr::GetMinimum( datapoints );
-  const double m    = maxarea < 0 ? dmax : maxarea;
+  const double m    = maxarea < 0 ?
+                      dmax :
+                      maxarea;
 
   // Additional parsing to be done of the
   const double xmin  = usr::RoundDown( dmin, binwidth );
@@ -33,7 +35,6 @@ SetRange( RooRealVar&                var,
   // Setting the range
   var.setRange( xmin, xmax );
   var.setBins( nbins );
-
 }
 
 
@@ -47,7 +48,7 @@ MakeData( RooRealVar&                var,
           const std::vector<double>& data,
           const double               maxarea )
 {
-  RooDataHist* ans = new RooDataHist( "data", "data", RooArgList( var ) );
+  RooDataHist*ans = new RooDataHist( "data", "data", RooArgList( var ) );
 
   for( const auto x : data ){
     if( maxarea < 0 || x < maxarea ){

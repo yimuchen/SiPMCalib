@@ -22,7 +22,7 @@ SiPMDarkPdf::SiPMDarkPdf( const char* name,
 {}
 
 
-SiPMDarkPdf::SiPMDarkPdf( const SiPMDarkPdf& other, const char* name ) :
+SiPMDarkPdf::SiPMDarkPdf( const SiPMDarkPdf& other, const char*name ) :
   RooAbsPdf( other, name ),
   x        (       "x",        this, other.x    ),
   ped      (     "ped",      this, other.ped  ),
@@ -36,7 +36,7 @@ SiPMDarkPdf::SiPMDarkPdf( const SiPMDarkPdf& other, const char* name ) :
 
 
 TObject*
-SiPMDarkPdf::clone( const char* name ) const
+SiPMDarkPdf::clone( const char*name ) const
 {
   return new SiPMDarkPdf( *this, name );
 }
@@ -64,8 +64,9 @@ SiPMDarkPdf::evaluate() const
 void
 SiPMDarkPdf::RunEstimate( const RooAbsData& data, const std::string& plot )
 {
-  TH1* h = data.createHistogram( usr::RandomString( 6 ).c_str(),
-                                 dynamic_cast<const RooAbsRealLValue&>( x.arg() ) );
+  TH1*h = data.createHistogram( usr::RandomString(
+                                  6 ).c_str(),
+                                dynamic_cast<const RooAbsRealLValue&>( x.arg() ) );
   TSpectrum spec( 5 );// 5 peaks should be plenty
 
   spec.Search( h, 1, "nobackground" );
@@ -97,10 +98,8 @@ SiPMDarkPdf::RunEstimate( const RooAbsData& data, const std::string& plot )
   dcfrac = g1.GetParameter( 0 ) / g0.GetParameter( 0 );
 
   if( plot != "" ){
-    TH1D hist( usr::RandomString( 6 ).c_str(), "",
-               h->GetNbinsX(),
-               h->GetXaxis()->GetXmin(),
-               h->GetXaxis()->GetXmax() );
+    TH1D hist( usr::RandomString( 6 ).c_str(), "", h->GetNbinsX(),
+               h->GetXaxis()->GetXmin(), h->GetXaxis()->GetXmax() );
 
     for( int i = 1; i <= h->GetNcells(); ++i ){
       hist.SetBinContent( i, h->GetBinContent( i ) );
@@ -111,10 +110,12 @@ SiPMDarkPdf::RunEstimate( const RooAbsData& data, const std::string& plot )
                 usr::plt::EntryText( "All data" ),
                 usr::plt::LineColor( usr::plt::col::black ) );
     c.PlotFunc( g0,
-                usr::plt::EntryText( "Pedestal peak fit" ),
+                usr::plt::EntryText(
+                  "Pedestal peak fit" ),
                 usr::plt::LineColor( usr::plt::col::red ) );
     c.PlotFunc( g1,
-                usr::plt::EntryText( "1Geiger peak fit" ),
+                usr::plt::EntryText(
+                  "1Geiger peak fit" ),
                 usr::plt::LineColor( usr::plt::col::green ) );
 
     c.Pad().Xaxis().SetTitle( "Readout" );

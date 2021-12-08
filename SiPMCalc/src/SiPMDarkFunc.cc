@@ -71,8 +71,8 @@ MDistro::SetParam( const double lo,
 void
 MDistro::ParamHash()
 {
-  const uint64_t hashval = usr::OrderedHash64( {loEdge, hiEdge,
-                                                epsilon, width} );
+  const uint64_t hashval =
+    usr::OrderedHash64( {loEdge, hiEdge, epsilon, width} );
   if( hashval != paramHash ){
     // Saving Hash, recalculating FFT arrays.
     paramHash = hashval;
@@ -84,10 +84,8 @@ MDistro::ParamHash()
 void
 MDistro::MakeFFTArray()
 {
-  const unsigned nbins = usr::RoundUpToP2( std::max( {
-    std::ceil( ( xMax()-xMin() ) / epsilon )+1,
-    2048.
-  } ) );
+  const unsigned nbins   = usr::RoundUpToP2( std::max( {
+    std::ceil( ( xMax()-xMin() ) / epsilon )+1, 2048.} ) );
   const double opepsilon = ( xMax()-xMin() ) / ( (double)( nbins-1 ) );
   const double xcen      = ( xMax()+xMin() ) / 2;
 

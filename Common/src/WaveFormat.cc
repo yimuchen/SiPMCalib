@@ -16,8 +16,10 @@
 static inline int16_t
 hex_to_int( const char x )
 {
-  return x > 'a' ? 10+x-'a' :
-         x > 'A' ? 10+x-'A' :
+  return x > 'a' ?
+         10+x-'a' :
+         x > 'A' ?
+         10+x-'A' :
          x-'0';
 }
 
@@ -37,20 +39,22 @@ bit4_to_bit2( const int16_t x )
  * downward firing pulse to be upwards firing pulses).
  *
  * For the data collection of the DRS4, there are occasionally bad samples due
- *to
+ * to
  * bit flips in the ADC chip. Here we filter out these single bit flips by
  * checking the neighboring cells up to 2 samples away in either direction, and
  * check if the maximum variation in the sample value is more than 70 bits
  * (nothing in the system is expected to be this fast). If a sample readout is
  * determined to contain a bit flip, then the readout is replace with the
- *average
+ * average
  * of the readout before and after the bad sample.
  */
 WaveFormat::WaveFormat( const std::string& file, const bool invert )
 {
-  const unsigned factor = invert ? -1 : 1;
-  std::string    line;
-  std::ifstream  fin( file, std::ios::in );
+  const unsigned factor = invert ?
+                          -1 :
+                          1;
+  std::string   line;
+  std::ifstream fin( file, std::ios::in );
 
   if( !fin.is_open() ){
     usr::log::PrintLog( usr::log::FATAL,// Throws exception
@@ -75,33 +79,41 @@ WaveFormat::WaveFormat( const std::string& file, const bool invert )
         value = value << 4 | bit_value;
       }
 
-      _waveforms.back()[index] = nbits == 4 ? factor * value :
+      _waveforms.back()[index] = nbits == 4 ?
+                                 factor * value :
                                  bit4_to_bit2( value * factor );
     }
 
-    auto is_peak_cell
-      = [this]( const unsigned index )->bool {
-          const auto&    w      = this->_waveforms.back();
-          const unsigned diffp1 = index > w.size()-2 ? 0 :
-                                  abs( w.at( index )-w.at( index+1 ) );
-          const unsigned diffp2 = index > w.size()-3 ? 0 :
-                                  abs( w.at( index )-w.at( index+2 ) );
-          const unsigned diffm1 = index < 1 ? 0 :
-                                  abs( w.at( index )-w.at( index-1 ) );
-          const unsigned diffm2 = index < 2 ? 0 :
-                                  abs( w.at( index )-w.at( index-2 ) );
+    auto is_peak_cell = [this]( const unsigned index )->bool {
+                          const auto&    w      = this->_waveforms.back();
+                          const unsigned diffp1 = index > w.size()-2 ?
+                                                  0 :
+                                                  abs( w.at( index )
+                                                       -w.at( index+1 ) );
+                          const unsigned diffp2 = index > w.size()-3 ?
+                                                  0 :
+                                                  abs( w.at( index )
+                                                       -w.at( index+2 ) );
+                          const unsigned diffm1 = index < 1 ?
+                                                  0 :
+                                                  abs( w.at( index )
+                                                       -w.at( index-1 ) );
+                          const unsigned diffm2 = index < 2 ?
+                                                  0 :
+                                                  abs( w.at( index )
+                                                       -w.at( index-2 ) );
 
-          const unsigned diffp = std::max( diffp1, diffp2 );
-          const unsigned diffm = std::max( diffm1, diffm2 );
+                          const unsigned diffp = std::max( diffp1, diffp2 );
+                          const unsigned diffm = std::max( diffm1, diffm2 );
 
-          return ( diffp > 70 ) && ( diffm > 70 );
-        };
+                          return ( diffp > 70 ) && ( diffm > 70 );
+                        };
 
 
     for( unsigned index = 0; index < _waveforms.back().size(); ++index ){
       if( is_peak_cell( index ) ){
-        _waveforms.back()[index]
-          = ( _waveforms.back()[index+1]+_waveforms.back()[index-1] ) / 2;
+        _waveforms.back()[index] =
+          ( _waveforms.back()[index+1]+_waveforms.back()[index-1] ) / 2;
       }
     }
   }
@@ -182,7 +194,7 @@ WaveFormat::PedRMS( const unsigned index,
  *
  * If the pedestal start and stop index is specified, then the pedestal value is
  * subtracted the entire waveform values. See WaveFormat::PedValue to see how
- *the
+ * the
  * pedestal value is calculated.
  */
 std::vector<double>

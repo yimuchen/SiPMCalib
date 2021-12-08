@@ -19,7 +19,7 @@
 #include <fstream>
 
 int
-main( int argc, char* argv[] )
+main( int argc, char*argv[] )
 {
   usr::po::options_description desc(
     "Options for fitting data to lower light SiPM spectrum model" );
@@ -63,8 +63,7 @@ main( int argc, char* argv[] )
   RooRealVar  s1( "s1", "s1", 0.01, 50 );
   RooRealVar  dcfrac( "dcfrac", "dcfrac", 0, 0.2 );
   RooRealVar  epsilon( "epslion", "epsilon", 1e-5, 1e-1 );
-  SiPMDarkPdf pdf( "dark", "dark",
-                   x, ped, gain, s0, s1, dcfrac, epsilon );
+  SiPMDarkPdf pdf( "dark", "dark", x, ped, gain, s0, s1, dcfrac, epsilon );
 
   const auto list = wformat.SumList( start, end );
 
@@ -89,12 +88,16 @@ main( int argc, char* argv[] )
   usr::plt::Ratio1DCanvas c( x );
 
   auto& fitgraph = c.PlotPdf( pdf,
-                              RooFit::Normalization( data->sumEntries() ),
-                              usr::plt::LineColor( usr::plt::col::blue ),
-                              usr::plt::FillColor( usr::plt::col::cyan ),
+                              RooFit::Normalization(
+                                data->sumEntries() ),
+                              usr::plt::LineColor(
+                                usr::plt::col::blue ),
+                              usr::plt::FillColor(
+                                usr::plt::col::cyan ),
                               usr::plt::EntryText( "Model Fit" ) );
   auto& datgraph = c.PlotData( *data,
-                               usr::plt::EntryText( "SiPM readout" ),
+                               usr::plt::EntryText(
+                                 "SiPM readout" ),
                                usr::plt::MarkerSize( 0.2 ) );
 
   c.PlotScale( fitgraph, fitgraph, usr::plt::PlotType( usr::plt::scatter ) );
@@ -102,8 +105,8 @@ main( int argc, char* argv[] )
 
   // More information from fit parameters values
   const double           window = ( end-start ) * wformat.Time();
-  const usr::Measurement pdc( dcfrac.getVal(),
-                              dcfrac.getError(), dcfrac.getError() );
+  const usr::Measurement pdc( dcfrac.getVal(), dcfrac.getError(),
+                              dcfrac.getError() );
   const usr::Measurement tdc = window / 1000. / pdc;
 
   c.DrawLuminosity( "Random trigger" );
