@@ -60,6 +60,7 @@ public:
   /**< Data selection short hand, function should return true for the rows that
    * should be extracted*/
 
+
   /**
    * @{
    * @brief Extracting some column into a std::vector container.
@@ -83,17 +84,23 @@ public:
   StdFormat MakeReduced( RowSelect ) const;
   void      WriteToFile( const std::string& filename ) const;
 
-private:
   /**
    * @brief Default row selection that does no explicit selection.
    */
-  static bool
-  NoSelect( const RowFormat& )
-  {
-    return true;
-  }
+  static bool NoSelect( const RowFormat& ){  return true; }
 
+  /**
+   * @{
+   * @brief old school interface for looping over rows
+   */
+  inline std::vector<RowFormat>::const_iterator
+  begin() const { return _rows.begin(); }
+  inline std::vector<RowFormat>::const_iterator
+  end() const { return _rows.end(); }
 
+  /** @} */
+
+private:
   StdFormat(); // Bare construction for reduced
 };
 
