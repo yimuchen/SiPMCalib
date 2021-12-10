@@ -152,7 +152,7 @@ usr::po::options_description
 SiPMLowLightFit::FitArguments()
 {
   usr::po::options_description desc(
-    "Options for fitting parameters adjustments. "
+    "Options for fitting parameters adjustments."
     "For the options corresponding to the fit parameter names, the argument "
     "takes either 1, 2 or 3 doubles:\n"
     " - 1 means that the variable should be fixed at the specified values\n"
@@ -333,7 +333,9 @@ SiPMLowLightFit::MakeBinnedData()
 
   // Parsing for converting into data.
   const double xmin = usr::RoundDown( _arealist.front(), _binwidth );
-  const double xmax = usr::RoundUp( std::min( _arealist.back(), _maxarea ),
+  const double xmax = usr::RoundUp( std::min(
+                                      _arealist.back(),
+                                      _maxarea ),
                                     _binwidth );
   const double nbins = ( xmax-xmin ) / _binwidth;
 
