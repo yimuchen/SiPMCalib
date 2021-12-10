@@ -34,6 +34,7 @@
  * explicitly spelt out in the axis labels.
  */
 #include "SiPMCalib/Common/interface/StdFormat.hpp"
+#include "SiPMCalib/InvSqCalc/interface/InvSqFunc.hpp"
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
@@ -42,30 +43,6 @@
 
 #include "TFitResult.h"
 #include "TGraphErrors.h"
-
-/**
- * @brief The inverse square law formula with just the z coordinate as the
- * variable.
- *
- * Notice the value of N0 is used to scale the fit function by some constant
- * amount. As this parameter has perfect correlation with N, this parameter
- * should only ever be set as a constant.
- */
-double
-ZProf( const double*vz, const double*param )
-{
-  const double z  = vz[0];
-  const double z0 = param[0];
-  const double o  = param[1];
-  const double N  = param[2];
-  const double P  = param[3];
-  const double N0 = param[4];
-
-  const double D2 = o * o+( z-z0 ) * ( z-z0 );
-
-  // return N/D2 + P;
-  return ( N * N0 * ( z-z0 ) ) / ( D2 * sqrt( D2 ) )+P;
-}
 
 
 TGraphErrors MakeZScanGraph( const StdFormat&, double uncscale );
@@ -104,7 +81,7 @@ main( int argc, char**argv )
   const double xmin  = usr::plt::GetXmin( dataz );
   const double xmax  = usr::plt::GetXmax( dataz );
 
-  TF1              func( "func", ZProf, xmin, xmax, 5 );
+  TF1              func( "func", InvSq_Z, xmin, xmax, 5 );
   const TFitResult fit = FitAndShiftData( dataz, func, pedestal, zoffset );
 
   usr::plt::Ratio1DCanvas c;
@@ -113,7 +90,7 @@ main( int argc, char**argv )
     func,
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::EntryText(  "Fitted Data" ),
-    usr::plt::VisualizeError( fit ),
+    usr::plt::VisualizeError( fit, 1, false ),
     usr::plt::FillColor( usr::plt::col::cyan ),
     usr::plt::TrackY( usr::plt::tracky::max ),
     usr::plt::LineColor( usr::plt::col::blue ));
