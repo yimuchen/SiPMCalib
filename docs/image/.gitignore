@@ -1,0 +1,6 @@
+*
+!.gitignore
+!sipmcalc_nonlinear_nl_plot.png
+!sipmcalc_nonlinear_lin_plot.png
+!sipmcalc_nonlinear_morph_plot.png
+!sipmcalc_nonlinear_orig_plot.png

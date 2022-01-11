@@ -15,8 +15,10 @@
 #include <iostream>
 #include <memory>
 
-// Standardized Class for handling Lowlight fit requests, including batch
-// fitting with a similar configuration files, testing estimation formats
+/**
+ * @brief Class for handling LowLight fit requestion, including batch fitting
+ * for data with similar configurations, and estimation of formats.
+ */
 class SiPMLowLightFit
 {
 public:
@@ -32,26 +34,41 @@ public:
 
   void UpdateSettings( const usr::ArgumentExtender& );
 
-  // Procedues to perform a low light fit. Sementing to pseudo-interactively.
+  /**
+   * @{
+   * @brief main control flow functions.
+   */
   void MakeBinnedData();
   void RunPDFEstimation();
   void RunFit();
+  /** @} */
 
-  // Plotting functions
+  /**
+   * @{
+   * @brief Plotting results for the SiPM analysis
+   */
   void PlotPeakFind( const std::string& );
   void PlotGainFit( const std::string& );
   void PlotWidthFit( const std::string& );
   void PlotPoissonFit( const std::string& );
   void PlotSpectrumFit( const std::string& );
 
-  // Printing process
+  /** @} */
+
+  /**
+   * @{
+   * @brief Stream output for fit results
+   */
   void PrintRaw( std::ostream& sout   = std::cout ) const;
   void PrintTable( std::ostream& sout = std::cout ) const;
-
-  // Printing results
   void PrintFitResults();
 
-  // Object access
+  /** @} */
+
+  /**
+   * @{
+   * @brief  Access to fitting variables
+   */
   RooRealVar& x()     { return *_x;      }
   RooRealVar& ped()   { return *_ped;    }
   RooRealVar& gain()  { return *_gain;   }
@@ -87,7 +104,13 @@ public:
   const RooRealVar&
   eps()    const { return *_eps;    }
 
-  // Returning parameters as independent measurement objects
+  /** @} */
+
+  /**
+   * @{
+   * @brief Returing physically interpreted fit paramters in measurement
+   * containers
+   **/
   usr::Measurement Pedestal() const;
   usr::Measurement Gain() const;
   usr::Measurement CommonNoise() const;
@@ -99,6 +122,8 @@ public:
   usr::Measurement AfterpulseTimeNS() const;
   usr::Measurement DarkcurrentTimeNS() const;
   usr::Measurement ExcessNoiseFactor( const usr::Measurement& ) const;
+
+  /** @} */
 
 private:
   // Since RooFit object declaration after additional parsing to get the
@@ -121,17 +146,6 @@ private:
   std::unique_ptr<RooAbsData> _data;
   std::unique_ptr<RooRealVar> _x;
 
-  // Options for reading data formats.
-  std::string _inputfile;
-  bool        _waveform;
-  double      _binwidth;
-  unsigned    _timeint;
-  unsigned    _intstart;
-  unsigned    _intstop;
-  unsigned    _pedstart;
-  unsigned    _pedstop;
-  double      _pedrms;
-  double      _maxarea;
 
   // Default setting options
   void set_all_defaults();
@@ -140,7 +154,10 @@ private:
   void make_array_from_waveform();
   void make_array_from_sum();
 
-  // Fit function estimation related objects and methods
+  /**
+   * @{
+   * @brief  Objects used for fit function estimations.
+   */
   std::vector<std::unique_ptr<TF1> > _peakfits;
   std::unique_ptr<TSpectrum>         _spectrum;
   std::unique_ptr<TH1D>              _est_hist;
@@ -156,15 +173,33 @@ private:
   bool                               ignore_s1_est;
   bool                               ignore_mean_est;
   bool                               ignore_lambda_est;
+  double                             _est_minpeak;
+  int                                _est_gausswindow;
+  int                                _est_maxgausswidth;
 
-  double _est_minpeak;
-  int    _est_gausswindow;
-  int    _est_maxgausswidth;
+  /** @} */
 
+  /**
+   * @{
+   * @brief helper functions for estimation routines
+   */
   TF1* good_local_peak_fit( double x );
   void run_gain_est();
   void run_width_est();
   void run_height_est();
+  /** @} */
+
+  // Options for reading data formats.
+  std::string _inputfile;
+  bool        _waveform;
+  double      _binwidth;
+  unsigned    _timeint;
+  unsigned    _intstart;
+  unsigned    _intstop;
+  unsigned    _pedstart;
+  unsigned    _pedstop;
+  double      _pedrms;
+  double      _maxarea;
 
   // operation parameters
   double      _intwindow;

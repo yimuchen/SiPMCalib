@@ -30,12 +30,8 @@ git clone https://github.com/yimuchen/SiPMCalib.git
 scram b
 ```
 
-## Subpackages
 
-- [Common](@ref Common): Common data parsing routines
-- [SiPMCalc](@ref SiPMCalc): Routines for the SiPM low light analysis.
-- [InvSqCalc](@ref InvSqCalc): The standard plotting routine for inverse
-  square-law related calculation routines.
 
-[sipmcalibcontrol]: https://github.com/yimuchen/SiPMCalibControl
+
+[sipmcalibcontrol]: https://github.com/umdcms/SiPMCalibControl
 [userutils]: https://github.com/yimuchen/UserUtils

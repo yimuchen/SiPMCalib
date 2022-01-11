@@ -8,7 +8,9 @@
 
 <flags CXXFLAGS="-g"/>
 
-<bin file="FitLowLight.cc"      name="SiPM_FitLowLight"     />
-<bin file="FitDark.cc"          name="SiPM_FitDark"         />
-<bin file="DisplayWaveform.cc"  name="SiPM_DisplayWaveform" />
-<bin file="DarkTrigger.cc"      name="SiPM_DarkTrigger"     />
+<bin file="MakeBiasCorrector.cc"  name="SiPM_MakeBiasCorrector" />
+<bin file="FitLowLight.cc"        name="SiPM_FitLowLight"       />
+<bin file="FitNonLinear.cc"       name="SiPM_FitNonLinear"      />
+<bin file="FitDark.cc"            name="SiPM_FitDark"           />
+<bin file="DisplayWaveform.cc"    name="SiPM_DisplayWaveform"   />
+<bin file="DarkTrigger.cc"        name="SiPM_DarkTrigger"       />

@@ -5,6 +5,8 @@
 extern double LinearModel( const double*, const double* );
 extern double LOModel( const double*, const double* );
 extern double NLOModel( const double*, const double* );
+extern double BiasModel( const double*, const double * );
+
 
 // Filter wheel filtering values.
 extern usr::Measurement A( const unsigned idx );

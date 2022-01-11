@@ -17,8 +17,8 @@ cmsrel CMSSW_10_3_1_patch1
 cd CMSSW_10_3_1_patch1/src
 cmsenv
 
-git clone --recurse-submodules https://github.com/yimuchen/UserUtils.git
-git clone https://github.com/yimuchen/SiPMCalib.git
+git clone --recurse-submodules https://github.com/UMDCMS/SiPMCalib.git
+ln SiPMCalib/UserUtils UserUtils
 
 scram b
 ```
