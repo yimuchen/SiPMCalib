@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SiPMCalibAnalyze: /github/workspace/InvSqCalc/bin/InvSq_ZScanPlot.cc File Reference</title>
+<title>SiPM Calibration Analyze Scripts: /github/workspace/InvSqCalc/bin/InvSq_ZScanPlot.cc File Reference</title>
 <!-- Overriding the tabs css with our own -->
 <!--link href="tabs.css" rel="stylesheet" type="text/css"/-->
 <script type="text/javascript" src="jquery.js"></script>
@@ -35,7 +35,7 @@ MathJax.Hub.Config({
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SiPMCalibAnalyze
+   <div id="projectname">SiPM Calibration Analyze Scripts
    </div>
   </td>
  </tr>
@@ -103,9 +103,6 @@ $(function() {
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Helper subroutines and functions</h2></td></tr>
-<tr class="memitem:a07ffaf12aadb6d166d98bc59c65498ba"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="InvSq__ZScanPlot_8cc.html#a07ffaf12aadb6d166d98bc59c65498ba">ZProf</a> (const double *vz, const double *param)</td></tr>
-<tr class="memdesc:a07ffaf12aadb6d166d98bc59c65498ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The inverse square law formula with just the z coordinate as the variable.  <a href="InvSq__ZScanPlot_8cc.html#a07ffaf12aadb6d166d98bc59c65498ba">More...</a><br /></td></tr>
-<tr class="separator:a07ffaf12aadb6d166d98bc59c65498ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c1dbb0a9f36a3e33c30c87c77506b4c"><td class="memItemLeft" align="right" valign="top">TGraphErrors&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="InvSq__ZScanPlot_8cc.html#a7c1dbb0a9f36a3e33c30c87c77506b4c">MakeZScanGraph</a> (const <a class="el" href="classStdFormat.html">StdFormat</a> &amp;sformat, const double uncscale)</td></tr>
 <tr class="memdesc:a7c1dbb0a9f36a3e33c30c87c77506b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Morphing the standard format into a ROOT TGraph container.  <a href="InvSq__ZScanPlot_8cc.html#a7c1dbb0a9f36a3e33c30c87c77506b4c">More...</a><br /></td></tr>
 <tr class="separator:a7c1dbb0a9f36a3e33c30c87c77506b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -157,7 +154,7 @@ Helper subroutines and functions</h2></td></tr>
 <p >The fit will be performed a first time to determined the pedestal and vertical off set. Then, the data will be shifted according to the fitted pedestal and vertical positions. Here we also scale the luminosity normalization such that the fit uncertainty on the luminosity should be the same as the vertical offset uncertainty. The pedestal and vertical offset will be stored in the latter input inputs.</p>
 <p >Once the data shifting is complete, we then perform the fit again such that the function parameters properly match the data. </p>
 
-<p class="definition">Definition at line <a class="el" href="InvSq__ZScanPlot_8cc_source.html#l00215">215</a> of file <a class="el" href="InvSq__ZScanPlot_8cc_source.html">InvSq_ZScanPlot.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="InvSq__ZScanPlot_8cc_source.html#l00192">192</a> of file <a class="el" href="InvSq__ZScanPlot_8cc_source.html">InvSq_ZScanPlot.cc</a>.</p>
 
 </div>
 </div>
@@ -187,7 +184,7 @@ Helper subroutines and functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="InvSq__ZScanPlot_8cc_source.html#l00083">83</a> of file <a class="el" href="InvSq__ZScanPlot_8cc_source.html">InvSq_ZScanPlot.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="InvSq__ZScanPlot_8cc_source.html#l00060">60</a> of file <a class="el" href="InvSq__ZScanPlot_8cc_source.html">InvSq_ZScanPlot.cc</a>.</p>
 
 </div>
 </div>
@@ -217,44 +214,14 @@ Helper subroutines and functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="InvSq__ZScanPlot_8cc_source.html#l00176">176</a> of file <a class="el" href="InvSq__ZScanPlot_8cc_source.html">InvSq_ZScanPlot.cc</a>.</p>
-
-</div>
-</div>
-<a id="a07ffaf12aadb6d166d98bc59c65498ba" name="a07ffaf12aadb6d166d98bc59c65498ba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07ffaf12aadb6d166d98bc59c65498ba">&#9670;&nbsp;</a></span>ZProf()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">double ZProf </td>
-          <td>(</td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>vz</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>param</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Notice the value of N0 is used to scale the fit function by some constant amount. As this parameter has perfect correlation with N, this parameter should only ever be set as a constant. </p>
-
-<p class="definition">Definition at line <a class="el" href="InvSq__ZScanPlot_8cc_source.html#l00055">55</a> of file <a class="el" href="InvSq__ZScanPlot_8cc_source.html">InvSq_ZScanPlot.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="InvSq__ZScanPlot_8cc_source.html#l00153">153</a> of file <a class="el" href="InvSq__ZScanPlot_8cc_source.html">InvSq_ZScanPlot.cc</a>.</p>
 
 </div>
 </div>
 
 <p><a href="InvSq__ZScanPlot_8cc_source.html">Go to the source code of this file.</a></p>
 <div class="textblock"><code>#include &quot;SiPMCalib/Common/interface/StdFormat.hpp&quot;</code><br />
+<code>#include &quot;SiPMCalib/InvSqCalc/interface/InvSqFunc.hpp&quot;</code><br />
 <code>#include &quot;UserUtils/Common/interface/ArgumentExtender.hpp&quot;</code><br />
 <code>#include &quot;UserUtils/Common/interface/STLUtils/OStreamUtils.hpp&quot;</code><br />
 <code>#include &quot;UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp&quot;</code><br />

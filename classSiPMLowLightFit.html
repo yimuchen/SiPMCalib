@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>SiPMCalibAnalyze: SiPMLowLightFit Class Reference</title>
+<title>SiPM Calibration Analyze Scripts: SiPMLowLightFit Class Reference</title>
 <!-- Overriding the tabs css with our own -->
 <!--link href="tabs.css" rel="stylesheet" type="text/css"/-->
 <script type="text/javascript" src="jquery.js"></script>
@@ -35,7 +35,7 @@ MathJax.Hub.Config({
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">SiPMCalibAnalyze
+   <div id="projectname">SiPM Calibration Analyze Scripts
    </div>
   </td>
  </tr>
@@ -82,12 +82,14 @@ $(function() {
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classSiPMLowLightFit-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SiPMLowLightFit Class Reference</div></div>
+  <div class="headertitle"><div class="title">SiPMLowLightFit Class Reference<div class="ingroups"><a class="el" href="group__SiPMCalc.html">SiPMCalc</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00020">20</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<div class="textblock"><p >Fitting routine class for fitting spectral data to the SiPM low light PDF.</p>
+<p >This is an example. </p>
+
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00022">22</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -95,94 +97,143 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afcc3b36fb7c7933859badb56c68681b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac2a871eb47e25215476ffd062e74ec43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ac2a871eb47e25215476ffd062e74ec43">UpdateSettings</a> (const usr::ArgumentExtender &amp;)</td></tr>
 <tr class="separator:ac2a871eb47e25215476ffd062e74ec43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:acc033529b25634c18179233e52ec4068"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#acc033529b25634c18179233e52ec4068">MakeBinnedData</a> ()</td></tr>
+<tr class="memdesc:acc033529b25634c18179233e52ec4068"><td class="mdescLeft">&#160;</td><td class="mdescRight">main control flow functions.  <a href="classSiPMLowLightFit.html#acc033529b25634c18179233e52ec4068">More...</a><br /></td></tr>
 <tr class="separator:acc033529b25634c18179233e52ec4068"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac045b1ebdfa609de25fc073f24dc5f3a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ac045b1ebdfa609de25fc073f24dc5f3a">RunPDFEstimation</a> ()</td></tr>
+<tr class="memdesc:ac045b1ebdfa609de25fc073f24dc5f3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">main control flow functions.  <a href="classSiPMLowLightFit.html#ac045b1ebdfa609de25fc073f24dc5f3a">More...</a><br /></td></tr>
 <tr class="separator:ac045b1ebdfa609de25fc073f24dc5f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a968cc7f1c7bf788688392583ddd88968"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a968cc7f1c7bf788688392583ddd88968">RunFit</a> ()</td></tr>
+<tr class="memdesc:a968cc7f1c7bf788688392583ddd88968"><td class="mdescLeft">&#160;</td><td class="mdescRight">main control flow functions.  <a href="classSiPMLowLightFit.html#a968cc7f1c7bf788688392583ddd88968">More...</a><br /></td></tr>
 <tr class="separator:a968cc7f1c7bf788688392583ddd88968"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a93a510d5764b53315d0d8f0f16614a78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a93a510d5764b53315d0d8f0f16614a78">PlotPeakFind</a> (const std::string &amp;)</td></tr>
+<tr class="memdesc:a93a510d5764b53315d0d8f0f16614a78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plotting results for the SiPM analysis.  <a href="classSiPMLowLightFit.html#a93a510d5764b53315d0d8f0f16614a78">More...</a><br /></td></tr>
 <tr class="separator:a93a510d5764b53315d0d8f0f16614a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56bf222f4b8876895847816d5fc705ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a56bf222f4b8876895847816d5fc705ae">PlotGainFit</a> (const std::string &amp;)</td></tr>
+<tr class="memdesc:a56bf222f4b8876895847816d5fc705ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plotting results for the SiPM analysis.  <a href="classSiPMLowLightFit.html#a56bf222f4b8876895847816d5fc705ae">More...</a><br /></td></tr>
 <tr class="separator:a56bf222f4b8876895847816d5fc705ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcb5cd52d893e4978f8b8de9f396ca0f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#adcb5cd52d893e4978f8b8de9f396ca0f">PlotWidthFit</a> (const std::string &amp;)</td></tr>
+<tr class="memdesc:adcb5cd52d893e4978f8b8de9f396ca0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plotting results for the SiPM analysis.  <a href="classSiPMLowLightFit.html#adcb5cd52d893e4978f8b8de9f396ca0f">More...</a><br /></td></tr>
 <tr class="separator:adcb5cd52d893e4978f8b8de9f396ca0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefdf5d6ba223540df2c7b44692fd8dcf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aefdf5d6ba223540df2c7b44692fd8dcf">PlotPoissonFit</a> (const std::string &amp;)</td></tr>
+<tr class="memdesc:aefdf5d6ba223540df2c7b44692fd8dcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plotting results for the SiPM analysis.  <a href="classSiPMLowLightFit.html#aefdf5d6ba223540df2c7b44692fd8dcf">More...</a><br /></td></tr>
 <tr class="separator:aefdf5d6ba223540df2c7b44692fd8dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2674c28e2871157173f3645d8b6cc89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#af2674c28e2871157173f3645d8b6cc89">PlotSpectrumFit</a> (const std::string &amp;)</td></tr>
+<tr class="memdesc:af2674c28e2871157173f3645d8b6cc89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Plotting results for the SiPM analysis.  <a href="classSiPMLowLightFit.html#af2674c28e2871157173f3645d8b6cc89">More...</a><br /></td></tr>
 <tr class="separator:af2674c28e2871157173f3645d8b6cc89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:a0cb8640c26a33470235f101e3c4b21ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a0cb8640c26a33470235f101e3c4b21ce">PrintRaw</a> (std::ostream &amp;sout=std::cout) const</td></tr>
+<tr class="memdesc:a0cb8640c26a33470235f101e3c4b21ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream output for fit results.  <a href="classSiPMLowLightFit.html#a0cb8640c26a33470235f101e3c4b21ce">More...</a><br /></td></tr>
 <tr class="separator:a0cb8640c26a33470235f101e3c4b21ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaf8cd4660c3c353e4f1b06cee65ded50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aaf8cd4660c3c353e4f1b06cee65ded50">PrintTable</a> (std::ostream &amp;sout=std::cout) const</td></tr>
+<tr class="memdesc:aaf8cd4660c3c353e4f1b06cee65ded50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream output for fit results.  <a href="classSiPMLowLightFit.html#aaf8cd4660c3c353e4f1b06cee65ded50">More...</a><br /></td></tr>
 <tr class="separator:aaf8cd4660c3c353e4f1b06cee65ded50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3347ca6fff4ea8ce27e8fdb9cf7531ea"><td class="memItemLeft" align="right" valign="top"><a id="a3347ca6fff4ea8ce27e8fdb9cf7531ea" name="a3347ca6fff4ea8ce27e8fdb9cf7531ea"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintFitResults</b> ()</td></tr>
+<tr class="memdesc:a3347ca6fff4ea8ce27e8fdb9cf7531ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stream output for fit results. <br /></td></tr>
 <tr class="separator:a3347ca6fff4ea8ce27e8fdb9cf7531ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:abaae1f23a84014de580ccb866425bcb9"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#abaae1f23a84014de580ccb866425bcb9">x</a> ()</td></tr>
+<tr class="memdesc:abaae1f23a84014de580ccb866425bcb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#abaae1f23a84014de580ccb866425bcb9">More...</a><br /></td></tr>
 <tr class="separator:abaae1f23a84014de580ccb866425bcb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e84713fdc9c5f6cffa23e6c70f9cc94"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a8e84713fdc9c5f6cffa23e6c70f9cc94">ped</a> ()</td></tr>
+<tr class="memdesc:a8e84713fdc9c5f6cffa23e6c70f9cc94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a8e84713fdc9c5f6cffa23e6c70f9cc94">More...</a><br /></td></tr>
 <tr class="separator:a8e84713fdc9c5f6cffa23e6c70f9cc94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac753efada962b80ae2681991e44e25bd"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ac753efada962b80ae2681991e44e25bd">gain</a> ()</td></tr>
+<tr class="memdesc:ac753efada962b80ae2681991e44e25bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#ac753efada962b80ae2681991e44e25bd">More...</a><br /></td></tr>
 <tr class="separator:ac753efada962b80ae2681991e44e25bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34f481dd8ca9908abb99021b6f82b12b"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a34f481dd8ca9908abb99021b6f82b12b">s0</a> ()</td></tr>
+<tr class="memdesc:a34f481dd8ca9908abb99021b6f82b12b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a34f481dd8ca9908abb99021b6f82b12b">More...</a><br /></td></tr>
 <tr class="separator:a34f481dd8ca9908abb99021b6f82b12b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf665e5325852c608840234d46393e65"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#acf665e5325852c608840234d46393e65">s1</a> ()</td></tr>
+<tr class="memdesc:acf665e5325852c608840234d46393e65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#acf665e5325852c608840234d46393e65">More...</a><br /></td></tr>
 <tr class="separator:acf665e5325852c608840234d46393e65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4e647d5f12ea33d30af609976b6ae7f"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ab4e647d5f12ea33d30af609976b6ae7f">mean</a> ()</td></tr>
+<tr class="memdesc:ab4e647d5f12ea33d30af609976b6ae7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#ab4e647d5f12ea33d30af609976b6ae7f">More...</a><br /></td></tr>
 <tr class="separator:ab4e647d5f12ea33d30af609976b6ae7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2c0bd4d377ddd925cd65833bfae7c14"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ad2c0bd4d377ddd925cd65833bfae7c14">lambda</a> ()</td></tr>
+<tr class="memdesc:ad2c0bd4d377ddd925cd65833bfae7c14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#ad2c0bd4d377ddd925cd65833bfae7c14">More...</a><br /></td></tr>
 <tr class="separator:ad2c0bd4d377ddd925cd65833bfae7c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e75b09c51c43b2223e9629e3a7ba5b8"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a2e75b09c51c43b2223e9629e3a7ba5b8">alpha</a> ()</td></tr>
+<tr class="memdesc:a2e75b09c51c43b2223e9629e3a7ba5b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a2e75b09c51c43b2223e9629e3a7ba5b8">More...</a><br /></td></tr>
 <tr class="separator:a2e75b09c51c43b2223e9629e3a7ba5b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d62f240c66b68860ccfddb08e1b498d"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a9d62f240c66b68860ccfddb08e1b498d">beta</a> ()</td></tr>
+<tr class="memdesc:a9d62f240c66b68860ccfddb08e1b498d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a9d62f240c66b68860ccfddb08e1b498d">More...</a><br /></td></tr>
 <tr class="separator:a9d62f240c66b68860ccfddb08e1b498d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a1587aed6964db0cf9dfe09070368ec"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a6a1587aed6964db0cf9dfe09070368ec">dcfrac</a> ()</td></tr>
+<tr class="memdesc:a6a1587aed6964db0cf9dfe09070368ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a6a1587aed6964db0cf9dfe09070368ec">More...</a><br /></td></tr>
 <tr class="separator:a6a1587aed6964db0cf9dfe09070368ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c969d5bf7a1aec5a561c113b4e2ca74"><td class="memItemLeft" align="right" valign="top">RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a3c969d5bf7a1aec5a561c113b4e2ca74">eps</a> ()</td></tr>
+<tr class="memdesc:a3c969d5bf7a1aec5a561c113b4e2ca74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a3c969d5bf7a1aec5a561c113b4e2ca74">More...</a><br /></td></tr>
 <tr class="separator:a3c969d5bf7a1aec5a561c113b4e2ca74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87eb47a92341eedafd5491cf75dd7491"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a87eb47a92341eedafd5491cf75dd7491">x</a> () const</td></tr>
+<tr class="memdesc:a87eb47a92341eedafd5491cf75dd7491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a87eb47a92341eedafd5491cf75dd7491">More...</a><br /></td></tr>
 <tr class="separator:a87eb47a92341eedafd5491cf75dd7491"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5796e21eb7de51c6a90192dbc85b8084"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a5796e21eb7de51c6a90192dbc85b8084">ped</a> () const</td></tr>
+<tr class="memdesc:a5796e21eb7de51c6a90192dbc85b8084"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a5796e21eb7de51c6a90192dbc85b8084">More...</a><br /></td></tr>
 <tr class="separator:a5796e21eb7de51c6a90192dbc85b8084"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19ef4846f0e40d03267c48dbad3e94d7"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a19ef4846f0e40d03267c48dbad3e94d7">gain</a> () const</td></tr>
+<tr class="memdesc:a19ef4846f0e40d03267c48dbad3e94d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a19ef4846f0e40d03267c48dbad3e94d7">More...</a><br /></td></tr>
 <tr class="separator:a19ef4846f0e40d03267c48dbad3e94d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4ff59b7fc6953bdaed6c4230f17128b"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ad4ff59b7fc6953bdaed6c4230f17128b">s0</a> () const</td></tr>
+<tr class="memdesc:ad4ff59b7fc6953bdaed6c4230f17128b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#ad4ff59b7fc6953bdaed6c4230f17128b">More...</a><br /></td></tr>
 <tr class="separator:ad4ff59b7fc6953bdaed6c4230f17128b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b33f79eb196c6893480d4a38803c252"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a1b33f79eb196c6893480d4a38803c252">s1</a> () const</td></tr>
+<tr class="memdesc:a1b33f79eb196c6893480d4a38803c252"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a1b33f79eb196c6893480d4a38803c252">More...</a><br /></td></tr>
 <tr class="separator:a1b33f79eb196c6893480d4a38803c252"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77ee8d429523cb796dbb6b520d1f3b6f"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a77ee8d429523cb796dbb6b520d1f3b6f">mean</a> () const</td></tr>
+<tr class="memdesc:a77ee8d429523cb796dbb6b520d1f3b6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a77ee8d429523cb796dbb6b520d1f3b6f">More...</a><br /></td></tr>
 <tr class="separator:a77ee8d429523cb796dbb6b520d1f3b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39e13ab18f7c775198fc3fe20458462a"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a39e13ab18f7c775198fc3fe20458462a">lambda</a> () const</td></tr>
+<tr class="memdesc:a39e13ab18f7c775198fc3fe20458462a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a39e13ab18f7c775198fc3fe20458462a">More...</a><br /></td></tr>
 <tr class="separator:a39e13ab18f7c775198fc3fe20458462a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e39cc716fae7455ec6fa7f8a1308e74"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a6e39cc716fae7455ec6fa7f8a1308e74">alpha</a> () const</td></tr>
+<tr class="memdesc:a6e39cc716fae7455ec6fa7f8a1308e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a6e39cc716fae7455ec6fa7f8a1308e74">More...</a><br /></td></tr>
 <tr class="separator:a6e39cc716fae7455ec6fa7f8a1308e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af66c1e4ff6ea6af5ba64f4c120fcbf4e"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#af66c1e4ff6ea6af5ba64f4c120fcbf4e">beta</a> () const</td></tr>
+<tr class="memdesc:af66c1e4ff6ea6af5ba64f4c120fcbf4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#af66c1e4ff6ea6af5ba64f4c120fcbf4e">More...</a><br /></td></tr>
 <tr class="separator:af66c1e4ff6ea6af5ba64f4c120fcbf4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71ece792ce5da490c40494d3d302316e"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a71ece792ce5da490c40494d3d302316e">dcfrac</a> () const</td></tr>
+<tr class="memdesc:a71ece792ce5da490c40494d3d302316e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#a71ece792ce5da490c40494d3d302316e">More...</a><br /></td></tr>
 <tr class="separator:a71ece792ce5da490c40494d3d302316e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae74c1d13900d4341ba2ed3f8fb7888ed"><td class="memItemLeft" align="right" valign="top">const RooRealVar &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ae74c1d13900d4341ba2ed3f8fb7888ed">eps</a> () const</td></tr>
+<tr class="memdesc:ae74c1d13900d4341ba2ed3f8fb7888ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access to fitting variables.  <a href="classSiPMLowLightFit.html#ae74c1d13900d4341ba2ed3f8fb7888ed">More...</a><br /></td></tr>
 <tr class="separator:ae74c1d13900d4341ba2ed3f8fb7888ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
 <tr class="memitem:ae56cf5b71a3a678eb628e75751b1d2e0"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ae56cf5b71a3a678eb628e75751b1d2e0">Pedestal</a> () const</td></tr>
+<tr class="memdesc:ae56cf5b71a3a678eb628e75751b1d2e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#ae56cf5b71a3a678eb628e75751b1d2e0">More...</a><br /></td></tr>
 <tr class="separator:ae56cf5b71a3a678eb628e75751b1d2e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28fb1503276b6d81338d5ebfb59677fa"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a28fb1503276b6d81338d5ebfb59677fa">Gain</a> () const</td></tr>
+<tr class="memdesc:a28fb1503276b6d81338d5ebfb59677fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#a28fb1503276b6d81338d5ebfb59677fa">More...</a><br /></td></tr>
 <tr class="separator:a28fb1503276b6d81338d5ebfb59677fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56067c8ea9c4740d2ddedd22c1d48338"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a56067c8ea9c4740d2ddedd22c1d48338">CommonNoise</a> () const</td></tr>
+<tr class="memdesc:a56067c8ea9c4740d2ddedd22c1d48338"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#a56067c8ea9c4740d2ddedd22c1d48338">More...</a><br /></td></tr>
 <tr class="separator:a56067c8ea9c4740d2ddedd22c1d48338"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aa0ac5863981dd47579a98ee710a29c"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a3aa0ac5863981dd47579a98ee710a29c">PixelNoise</a> () const</td></tr>
+<tr class="memdesc:a3aa0ac5863981dd47579a98ee710a29c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#a3aa0ac5863981dd47579a98ee710a29c">More...</a><br /></td></tr>
 <tr class="separator:a3aa0ac5863981dd47579a98ee710a29c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb2d9a82c49d062884e73e1793a70d38"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aeb2d9a82c49d062884e73e1793a70d38">MeanPhotons</a> () const</td></tr>
+<tr class="memdesc:aeb2d9a82c49d062884e73e1793a70d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#aeb2d9a82c49d062884e73e1793a70d38">More...</a><br /></td></tr>
 <tr class="separator:aeb2d9a82c49d062884e73e1793a70d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7926d70b1e56da1a8dcfb89e35bb092"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ac7926d70b1e56da1a8dcfb89e35bb092">MeanPhotonsFromFrac</a> () const</td></tr>
+<tr class="memdesc:ac7926d70b1e56da1a8dcfb89e35bb092"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#ac7926d70b1e56da1a8dcfb89e35bb092">More...</a><br /></td></tr>
 <tr class="separator:ac7926d70b1e56da1a8dcfb89e35bb092"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b2202e4cf1243fc01f9ea3c4d44334e"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a4b2202e4cf1243fc01f9ea3c4d44334e">ProbCrosstalk</a> () const</td></tr>
+<tr class="memdesc:a4b2202e4cf1243fc01f9ea3c4d44334e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#a4b2202e4cf1243fc01f9ea3c4d44334e">More...</a><br /></td></tr>
 <tr class="separator:a4b2202e4cf1243fc01f9ea3c4d44334e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7dbb3ad81ddfed54e03f62c713b3791f"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a7dbb3ad81ddfed54e03f62c713b3791f">ProbAfterpulse</a> () const</td></tr>
+<tr class="memdesc:a7dbb3ad81ddfed54e03f62c713b3791f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#a7dbb3ad81ddfed54e03f62c713b3791f">More...</a><br /></td></tr>
 <tr class="separator:a7dbb3ad81ddfed54e03f62c713b3791f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad173122e02ee96b8e4f558610815c3f5"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ad173122e02ee96b8e4f558610815c3f5">AfterpulseTimeNS</a> () const</td></tr>
+<tr class="memdesc:ad173122e02ee96b8e4f558610815c3f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#ad173122e02ee96b8e4f558610815c3f5">More...</a><br /></td></tr>
 <tr class="separator:ad173122e02ee96b8e4f558610815c3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c513aa941dee0e7523800046789905a"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a7c513aa941dee0e7523800046789905a">DarkcurrentTimeNS</a> () const</td></tr>
+<tr class="memdesc:a7c513aa941dee0e7523800046789905a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#a7c513aa941dee0e7523800046789905a">More...</a><br /></td></tr>
 <tr class="separator:a7c513aa941dee0e7523800046789905a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae88a178ad0f8688473b18bdfac2e3f5c"><td class="memItemLeft" align="right" valign="top">usr::Measurement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ae88a178ad0f8688473b18bdfac2e3f5c">ExcessNoiseFactor</a> (const usr::Measurement &amp;) const</td></tr>
+<tr class="memdesc:ae88a178ad0f8688473b18bdfac2e3f5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returing physically interpreted fit paramters in measurement containers.  <a href="classSiPMLowLightFit.html#ae88a178ad0f8688473b18bdfac2e3f5c">More...</a><br /></td></tr>
 <tr class="separator:ae88a178ad0f8688473b18bdfac2e3f5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -207,13 +258,18 @@ Private Member Functions</h2></td></tr>
 <tr class="separator:a172b95128be69f3ce72d278a85353f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aace1a5f2a105ac789c7bace1ffd35ba5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aace1a5f2a105ac789c7bace1ffd35ba5">make_array_from_sum</a> ()</td></tr>
 <tr class="separator:aace1a5f2a105ac789c7bace1ffd35ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebc19a0d9af1e39383408599c7de4858"><td class="memItemLeft" align="right" valign="top">TF1 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aebc19a0d9af1e39383408599c7de4858">good_local_peak_fit</a> (double x)</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:aebc19a0d9af1e39383408599c7de4858"><td class="memItemLeft" align="right" valign="top">TF1 *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aebc19a0d9af1e39383408599c7de4858">good_local_peak_fit</a> (double <a class="el" href="classSiPMLowLightFit.html#abaae1f23a84014de580ccb866425bcb9">x</a>)</td></tr>
+<tr class="memdesc:aebc19a0d9af1e39383408599c7de4858"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper functions for estimation routines  <a href="classSiPMLowLightFit.html#aebc19a0d9af1e39383408599c7de4858">More...</a><br /></td></tr>
 <tr class="separator:aebc19a0d9af1e39383408599c7de4858"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6151ba2c2c84b52d6fe98f50cab1024a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a6151ba2c2c84b52d6fe98f50cab1024a">run_gain_est</a> ()</td></tr>
+<tr class="memdesc:a6151ba2c2c84b52d6fe98f50cab1024a"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper functions for estimation routines  <a href="classSiPMLowLightFit.html#a6151ba2c2c84b52d6fe98f50cab1024a">More...</a><br /></td></tr>
 <tr class="separator:a6151ba2c2c84b52d6fe98f50cab1024a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c5940bf9d494b0a55341b3f1298aa8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a1c5940bf9d494b0a55341b3f1298aa8f">run_width_est</a> ()</td></tr>
+<tr class="memdesc:a1c5940bf9d494b0a55341b3f1298aa8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper functions for estimation routines  <a href="classSiPMLowLightFit.html#a1c5940bf9d494b0a55341b3f1298aa8f">More...</a><br /></td></tr>
 <tr class="separator:a1c5940bf9d494b0a55341b3f1298aa8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af93564b0b4d54d01b7ccfa8cfb399d61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#af93564b0b4d54d01b7ccfa8cfb399d61">run_height_est</a> ()</td></tr>
+<tr class="memdesc:af93564b0b4d54d01b7ccfa8cfb399d61"><td class="mdescLeft">&#160;</td><td class="mdescRight">helper functions for estimation routines  <a href="classSiPMLowLightFit.html#af93564b0b4d54d01b7ccfa8cfb399d61">More...</a><br /></td></tr>
 <tr class="separator:af93564b0b4d54d01b7ccfa8cfb399d61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
@@ -266,42 +322,6 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a5f8d17a02ca7f8da606b5a2cf4eec197"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65d2b10e6b9e791f760efa402e632e68"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a65d2b10e6b9e791f760efa402e632e68">_maxarea</a></td></tr>
 <tr class="separator:a65d2b10e6b9e791f760efa402e632e68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadce0537331fe723a8a5f3e8a616e27e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; TF1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aadce0537331fe723a8a5f3e8a616e27e">_peakfits</a></td></tr>
-<tr class="separator:aadce0537331fe723a8a5f3e8a616e27e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4978a15fa4bcdf7fc9662331eff34976"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TSpectrum &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a4978a15fa4bcdf7fc9662331eff34976">_spectrum</a></td></tr>
-<tr class="separator:a4978a15fa4bcdf7fc9662331eff34976"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa31f06ed22c5aa5df8a7187530d08904"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TH1D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aa31f06ed22c5aa5df8a7187530d08904">_est_hist</a></td></tr>
-<tr class="separator:aa31f06ed22c5aa5df8a7187530d08904"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63b338a8d7dcc9f226e705c4fb4d3994"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TGraphErrors &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a63b338a8d7dcc9f226e705c4fb4d3994">_gain_graph</a></td></tr>
-<tr class="separator:a63b338a8d7dcc9f226e705c4fb4d3994"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa9d49f598d635e6d416308e300d7ba5"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TGraphErrors &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aaa9d49f598d635e6d416308e300d7ba5">_width_graph</a></td></tr>
-<tr class="separator:aaa9d49f598d635e6d416308e300d7ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4de627b7375a0ed5472f152970f4cef6"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TGraphErrors &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a4de627b7375a0ed5472f152970f4cef6">_height_graph</a></td></tr>
-<tr class="separator:a4de627b7375a0ed5472f152970f4cef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9101b6652b96d7394bbc181e46e000ff"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TF1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a9101b6652b96d7394bbc181e46e000ff">_gain_fit</a></td></tr>
-<tr class="separator:a9101b6652b96d7394bbc181e46e000ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a690f1bed15ea856db4dd26a82119d019"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TF1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a690f1bed15ea856db4dd26a82119d019">_width_fit</a></td></tr>
-<tr class="separator:a690f1bed15ea856db4dd26a82119d019"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab969d5ce4f1da0fbe37129ac2d57f167"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TF1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ab969d5ce4f1da0fbe37129ac2d57f167">_height_fit</a></td></tr>
-<tr class="separator:ab969d5ce4f1da0fbe37129ac2d57f167"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8654f8ecb62ff2ac8593d9f107df544a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a8654f8ecb62ff2ac8593d9f107df544a">ignore_ped_est</a></td></tr>
-<tr class="separator:a8654f8ecb62ff2ac8593d9f107df544a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bdb618a94fb00211815315f8401c7b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a1bdb618a94fb00211815315f8401c7b9">ignore_gain_est</a></td></tr>
-<tr class="separator:a1bdb618a94fb00211815315f8401c7b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4680686b8008d5e937bea7c9721969d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aa4680686b8008d5e937bea7c9721969d">ignore_s0_est</a></td></tr>
-<tr class="separator:aa4680686b8008d5e937bea7c9721969d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56f10535c6b864588faef4bfa9befcc5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a56f10535c6b864588faef4bfa9befcc5">ignore_s1_est</a></td></tr>
-<tr class="separator:a56f10535c6b864588faef4bfa9befcc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cbd404a9ca3bb8a19faf85eca3dd6f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a7cbd404a9ca3bb8a19faf85eca3dd6f2">ignore_mean_est</a></td></tr>
-<tr class="separator:a7cbd404a9ca3bb8a19faf85eca3dd6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad36473e033c1bad8ae0592461a00b5d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ad36473e033c1bad8ae0592461a00b5d6">ignore_lambda_est</a></td></tr>
-<tr class="separator:ad36473e033c1bad8ae0592461a00b5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43841ad3a6f92b442d3def4c683697d1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a43841ad3a6f92b442d3def4c683697d1">_est_minpeak</a></td></tr>
-<tr class="separator:a43841ad3a6f92b442d3def4c683697d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a382ee856891e444fafdacac02a419be3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a382ee856891e444fafdacac02a419be3">_est_gausswindow</a></td></tr>
-<tr class="separator:a382ee856891e444fafdacac02a419be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64b7259a6073b57450cb27d409a0cdf3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a64b7259a6073b57450cb27d409a0cdf3">_est_maxgausswidth</a></td></tr>
-<tr class="separator:a64b7259a6073b57450cb27d409a0cdf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97b31fcd4a0ae1408e442fde4d1256f3"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a97b31fcd4a0ae1408e442fde4d1256f3">_intwindow</a></td></tr>
 <tr class="separator:a97b31fcd4a0ae1408e442fde4d1256f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d50d63841db4dd4433a84ec08a33b3a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a6d50d63841db4dd4433a84ec08a33b3a">_sipmtime</a></td></tr>
@@ -312,6 +332,61 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a484b74024da437edfde3b42efdd21b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd1f5837cacb3c0b30b1f9e9a493a964"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#acd1f5837cacb3c0b30b1f9e9a493a964">_biasv</a></td></tr>
 <tr class="separator:acd1f5837cacb3c0b30b1f9e9a493a964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader"></div></td></tr>
+<tr class="memitem:aadce0537331fe723a8a5f3e8a616e27e"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; TF1 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aadce0537331fe723a8a5f3e8a616e27e">_peakfits</a></td></tr>
+<tr class="memdesc:aadce0537331fe723a8a5f3e8a616e27e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#aadce0537331fe723a8a5f3e8a616e27e">More...</a><br /></td></tr>
+<tr class="separator:aadce0537331fe723a8a5f3e8a616e27e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4978a15fa4bcdf7fc9662331eff34976"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TSpectrum &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a4978a15fa4bcdf7fc9662331eff34976">_spectrum</a></td></tr>
+<tr class="memdesc:a4978a15fa4bcdf7fc9662331eff34976"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a4978a15fa4bcdf7fc9662331eff34976">More...</a><br /></td></tr>
+<tr class="separator:a4978a15fa4bcdf7fc9662331eff34976"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa31f06ed22c5aa5df8a7187530d08904"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TH1D &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aa31f06ed22c5aa5df8a7187530d08904">_est_hist</a></td></tr>
+<tr class="memdesc:aa31f06ed22c5aa5df8a7187530d08904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#aa31f06ed22c5aa5df8a7187530d08904">More...</a><br /></td></tr>
+<tr class="separator:aa31f06ed22c5aa5df8a7187530d08904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63b338a8d7dcc9f226e705c4fb4d3994"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TGraphErrors &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a63b338a8d7dcc9f226e705c4fb4d3994">_gain_graph</a></td></tr>
+<tr class="memdesc:a63b338a8d7dcc9f226e705c4fb4d3994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a63b338a8d7dcc9f226e705c4fb4d3994">More...</a><br /></td></tr>
+<tr class="separator:a63b338a8d7dcc9f226e705c4fb4d3994"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa9d49f598d635e6d416308e300d7ba5"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TGraphErrors &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aaa9d49f598d635e6d416308e300d7ba5">_width_graph</a></td></tr>
+<tr class="memdesc:aaa9d49f598d635e6d416308e300d7ba5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#aaa9d49f598d635e6d416308e300d7ba5">More...</a><br /></td></tr>
+<tr class="separator:aaa9d49f598d635e6d416308e300d7ba5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4de627b7375a0ed5472f152970f4cef6"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TGraphErrors &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a4de627b7375a0ed5472f152970f4cef6">_height_graph</a></td></tr>
+<tr class="memdesc:a4de627b7375a0ed5472f152970f4cef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a4de627b7375a0ed5472f152970f4cef6">More...</a><br /></td></tr>
+<tr class="separator:a4de627b7375a0ed5472f152970f4cef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9101b6652b96d7394bbc181e46e000ff"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TF1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a9101b6652b96d7394bbc181e46e000ff">_gain_fit</a></td></tr>
+<tr class="memdesc:a9101b6652b96d7394bbc181e46e000ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a9101b6652b96d7394bbc181e46e000ff">More...</a><br /></td></tr>
+<tr class="separator:a9101b6652b96d7394bbc181e46e000ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a690f1bed15ea856db4dd26a82119d019"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TF1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a690f1bed15ea856db4dd26a82119d019">_width_fit</a></td></tr>
+<tr class="memdesc:a690f1bed15ea856db4dd26a82119d019"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a690f1bed15ea856db4dd26a82119d019">More...</a><br /></td></tr>
+<tr class="separator:a690f1bed15ea856db4dd26a82119d019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab969d5ce4f1da0fbe37129ac2d57f167"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; TF1 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ab969d5ce4f1da0fbe37129ac2d57f167">_height_fit</a></td></tr>
+<tr class="memdesc:ab969d5ce4f1da0fbe37129ac2d57f167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#ab969d5ce4f1da0fbe37129ac2d57f167">More...</a><br /></td></tr>
+<tr class="separator:ab969d5ce4f1da0fbe37129ac2d57f167"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8654f8ecb62ff2ac8593d9f107df544a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a8654f8ecb62ff2ac8593d9f107df544a">ignore_ped_est</a></td></tr>
+<tr class="memdesc:a8654f8ecb62ff2ac8593d9f107df544a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a8654f8ecb62ff2ac8593d9f107df544a">More...</a><br /></td></tr>
+<tr class="separator:a8654f8ecb62ff2ac8593d9f107df544a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1bdb618a94fb00211815315f8401c7b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a1bdb618a94fb00211815315f8401c7b9">ignore_gain_est</a></td></tr>
+<tr class="memdesc:a1bdb618a94fb00211815315f8401c7b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a1bdb618a94fb00211815315f8401c7b9">More...</a><br /></td></tr>
+<tr class="separator:a1bdb618a94fb00211815315f8401c7b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4680686b8008d5e937bea7c9721969d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#aa4680686b8008d5e937bea7c9721969d">ignore_s0_est</a></td></tr>
+<tr class="memdesc:aa4680686b8008d5e937bea7c9721969d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#aa4680686b8008d5e937bea7c9721969d">More...</a><br /></td></tr>
+<tr class="separator:aa4680686b8008d5e937bea7c9721969d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56f10535c6b864588faef4bfa9befcc5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a56f10535c6b864588faef4bfa9befcc5">ignore_s1_est</a></td></tr>
+<tr class="memdesc:a56f10535c6b864588faef4bfa9befcc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a56f10535c6b864588faef4bfa9befcc5">More...</a><br /></td></tr>
+<tr class="separator:a56f10535c6b864588faef4bfa9befcc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cbd404a9ca3bb8a19faf85eca3dd6f2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a7cbd404a9ca3bb8a19faf85eca3dd6f2">ignore_mean_est</a></td></tr>
+<tr class="memdesc:a7cbd404a9ca3bb8a19faf85eca3dd6f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a7cbd404a9ca3bb8a19faf85eca3dd6f2">More...</a><br /></td></tr>
+<tr class="separator:a7cbd404a9ca3bb8a19faf85eca3dd6f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad36473e033c1bad8ae0592461a00b5d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#ad36473e033c1bad8ae0592461a00b5d6">ignore_lambda_est</a></td></tr>
+<tr class="memdesc:ad36473e033c1bad8ae0592461a00b5d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#ad36473e033c1bad8ae0592461a00b5d6">More...</a><br /></td></tr>
+<tr class="separator:ad36473e033c1bad8ae0592461a00b5d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43841ad3a6f92b442d3def4c683697d1"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a43841ad3a6f92b442d3def4c683697d1">_est_minpeak</a></td></tr>
+<tr class="memdesc:a43841ad3a6f92b442d3def4c683697d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a43841ad3a6f92b442d3def4c683697d1">More...</a><br /></td></tr>
+<tr class="separator:a43841ad3a6f92b442d3def4c683697d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a382ee856891e444fafdacac02a419be3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a382ee856891e444fafdacac02a419be3">_est_gausswindow</a></td></tr>
+<tr class="memdesc:a382ee856891e444fafdacac02a419be3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a382ee856891e444fafdacac02a419be3">More...</a><br /></td></tr>
+<tr class="separator:a382ee856891e444fafdacac02a419be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64b7259a6073b57450cb27d409a0cdf3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSiPMLowLightFit.html#a64b7259a6073b57450cb27d409a0cdf3">_est_maxgausswidth</a></td></tr>
+<tr class="memdesc:a64b7259a6073b57450cb27d409a0cdf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects used for fit function estimations.  <a href="classSiPMLowLightFit.html#a64b7259a6073b57450cb27d409a0cdf3">More...</a><br /></td></tr>
+<tr class="separator:a64b7259a6073b57450cb27d409a0cdf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5b3d2d1a61c08b2569ea0219400f20ad" name="a5b3d2d1a61c08b2569ea0219400f20ad"></a>
@@ -329,7 +404,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00092">92</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00102">102</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -349,7 +424,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00098">98</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00108">108</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -369,7 +444,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00475">475</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00487">487</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -396,7 +471,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00062">62</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00079">79</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -423,7 +498,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00082">82</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00099">99</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -450,7 +525,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00063">63</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00080">80</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -477,7 +552,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00084">84</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00101">101</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -496,7 +571,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00414">414</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00426">426</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -515,7 +590,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00483">483</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00495">495</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -543,7 +618,7 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p >Options unique to the waveform input format.</p>
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00112">112</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00122">122</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -570,7 +645,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00064">64</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00081">81</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -597,7 +672,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00086">86</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00103">103</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -624,7 +699,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00065">65</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00082">82</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -651,7 +726,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00088">88</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00105">105</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -678,7 +753,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00214">214</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00224">224</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -698,7 +773,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00491">491</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00503">503</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -725,7 +800,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00152">152</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00162">162</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -752,7 +827,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00057">57</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00074">74</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -779,7 +854,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00072">72</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00089">89</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -798,7 +873,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00407">407</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00419">419</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -853,7 +928,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00061">61</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00078">78</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -880,7 +955,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00080">80</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00097">97</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -907,7 +982,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00381">381</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00393">393</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -934,7 +1009,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00355">355</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00367">367</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -953,7 +1028,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00324">324</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00334">334</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -980,7 +1055,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00060">60</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00077">77</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1007,7 +1082,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00078">78</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00095">95</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1026,7 +1101,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00428">428</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00440">440</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1045,7 +1120,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00435">435</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00447">447</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1147,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00183">183</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00193">193</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1099,7 +1174,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00056">56</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00073">73</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1126,7 +1201,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00070">70</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00087">87</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1145,7 +1220,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00400">400</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00412">412</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1164,7 +1239,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00421">421</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00433">433</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1323,7 +1398,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00468">468</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00480">480</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1342,7 +1417,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00455">455</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00467">467</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1442,7 +1517,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00391">391</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00403">403</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1488,7 +1563,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00058">58</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00075">75</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1515,7 +1590,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00074">74</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00091">91</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1542,7 +1617,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00059">59</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00076">76</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1569,7 +1644,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00076">76</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00093">93</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1596,7 +1671,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00016">16</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00026">26</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1616,7 +1691,7 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00234">234</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8cc_source.html#l00244">244</a> of file <a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a>.</p>
 
 </div>
 </div>
@@ -1643,7 +1718,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00055">55</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00072">72</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1670,7 +1745,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00068">68</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00085">85</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1695,7 +1770,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00113">113</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00138">138</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1719,7 +1794,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00120">120</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00145">145</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1743,7 +1818,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00114">114</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00139">139</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1767,7 +1842,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00174">174</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00209">209</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1791,7 +1866,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00127">127</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00195">195</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1815,7 +1890,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00121">121</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00146">146</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1839,7 +1914,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00115">115</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00140">140</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1863,7 +1938,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00116">116</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00141">141</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1887,7 +1962,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00161">161</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00177">177</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1911,7 +1986,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00146">146</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00163">163</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1935,7 +2010,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00162">162</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00178">178</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1959,7 +2034,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00160">160</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00176">176</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -1983,7 +2058,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00108">108</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00133">133</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2007,7 +2082,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00150">150</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00167">167</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2031,7 +2106,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00147">147</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00164">164</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2055,7 +2130,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00152">152</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00169">169</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2079,7 +2154,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00149">149</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00166">166</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2103,7 +2178,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00125">125</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00193">193</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2127,7 +2202,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00129">129</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00197">197</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2151,7 +2226,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00130">130</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00198">198</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2175,7 +2250,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00170">170</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00205">205</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2199,7 +2274,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00112">112</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00137">137</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2223,7 +2298,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00173">173</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00208">208</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2247,7 +2322,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00134">134</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00202">202</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2271,7 +2346,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00111">111</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00136">136</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2295,7 +2370,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00117">117</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00142">142</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2319,7 +2394,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00144">144</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00161">161</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2343,7 +2418,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00107">107</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00132">132</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2367,7 +2442,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00133">133</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00201">201</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2391,7 +2466,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00131">131</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00199">199</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2415,7 +2490,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00132">132</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00200">200</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2439,7 +2514,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00109">109</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00134">134</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2463,7 +2538,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00110">110</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00135">135</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2487,7 +2562,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00171">171</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00206">206</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2511,7 +2586,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00172">172</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00207">207</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2535,7 +2610,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00145">145</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00162">162</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2559,7 +2634,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00128">128</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00196">196</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2583,7 +2658,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00126">126</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00194">194</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2607,7 +2682,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00151">151</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00168">168</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2631,7 +2706,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00148">148</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00165">165</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2655,7 +2730,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00122">122</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00147">147</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2679,7 +2754,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00154">154</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00171">171</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2703,7 +2778,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00158">158</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00175">175</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2727,7 +2802,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00157">157</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00174">174</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2751,7 +2826,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00153">153</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00170">170</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2775,7 +2850,7 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00155">155</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00172">172</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
@@ -2799,10 +2874,12 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00156">156</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="SiPMLowLightFit_8hpp_source.html#l00173">173</a> of file <a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>.</p>
 
 </div>
 </div>
+
+<p><code>#include &lt;<a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a>&gt;</code></p>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>/github/workspace/SiPMCalc/interface/<a class="el" href="SiPMLowLightFit_8hpp_source.html">SiPMLowLightFit.hpp</a></li>
 <li>/github/workspace/SiPMCalc/src/<a class="el" href="SiPMLowLightFit_8cc_source.html">SiPMLowLightFit.cc</a></li>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['x_0',['X',['../classStdFormat.html#a385704843be68a3320560f6bd9656e85',1,'StdFormat']]]
+  ['outputarguments_0',['OutputArguments',['../classSiPMNonLinearFit.html#a0529cc7d7f65ff33f8fb78417279ff66',1,'SiPMNonLinearFit']]]
 ];

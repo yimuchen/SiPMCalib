@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['setrange_0',['SetRange',['../group__Common.html#gab43611bc3a8c3eea4a709c813ffd82fc',1,'SetRange(RooRealVar &amp;var, const double binwidth, const double maxarea, const std::vector&lt; double &gt; &amp;datapoints):&#160;MakeRooData.cc'],['../group__Common.html#gab43611bc3a8c3eea4a709c813ffd82fc',1,'SetRange(RooRealVar &amp;var, const double binwidth, const double maxarea, const std::vector&lt; double &gt; &amp;datapoints):&#160;MakeRooData.cc']]],
-  ['sipmtemp_1',['SiPMTemp',['../classStdFormat.html#af8442c80ac5e1035af6d290ba4ee96da',1,'StdFormat']]],
-  ['stdformat_2',['StdFormat',['../classStdFormat.html#a7dd72ee5c7332e137bd6a88782006162',1,'StdFormat::StdFormat(const std::string &amp;)'],['../classStdFormat.html#a90cae54bcd25570628cfc987b817144d',1,'StdFormat::StdFormat()']]],
-  ['sumlist_3',['SumList',['../classWaveFormat.html#a3b6fc235d06185fa4da43849f0a8f177',1,'WaveFormat']]]
+  ['lambda_0',['lambda',['../classSiPMLowLightFit.html#ad2c0bd4d377ddd925cd65833bfae7c14',1,'SiPMLowLightFit::lambda()'],['../classSiPMLowLightFit.html#a39e13ab18f7c775198fc3fe20458462a',1,'SiPMLowLightFit::lambda() const']]],
+  ['ledtemp_1',['LedTemp',['../classStdFormat.html#a702d9fd4505846437acd3e25991000da',1,'StdFormat']]],
+  ['lomodel_2',['LOModel',['../group__SiPMCalc.html#ga2447d6d9d7fc7594b1327dc162b61cdb',1,'LOModel(const double *, const double *):&#160;NonLinearModel.cc'],['../group__SiPMCalc.html#ga2447d6d9d7fc7594b1327dc162b61cdb',1,'LOModel(const double *xx, const double *par):&#160;NonLinearModel.cc']]]
 ];

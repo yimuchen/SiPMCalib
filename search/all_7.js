@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['main_0',['main',['../InvSq__ZScanPlot_8cc.html#a3c04138a5bfe5d72780bb7e82a18e627',1,'InvSq_ZScanPlot.cc']]],
-  ['makedata_1',['MakeData',['../group__Common.html#ga6db01afacb6df577ce7c38c6b025c6ac',1,'MakeData(RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea):&#160;MakeRooData.cc'],['../group__Common.html#ga6db01afacb6df577ce7c38c6b025c6ac',1,'MakeData(RooRealVar &amp;var, const std::vector&lt; double &gt; &amp;data, const double maxarea):&#160;MakeRooData.cc']]],
-  ['makereduced_2',['MakeReduced',['../classStdFormat.html#aaafb7ece70a5bcf2679017b21634e0f2',1,'StdFormat']]],
-  ['makezscangraph_3',['MakeZScanGraph',['../InvSq__ZScanPlot_8cc.html#a7c1dbb0a9f36a3e33c30c87c77506b4c',1,'InvSq_ZScanPlot.cc']]],
-  ['mdistro_4',['MDistro',['../classMDistro.html',1,'']]]
+  ['gain_0',['gain',['../classSiPMLowLightFit.html#ac753efada962b80ae2681991e44e25bd',1,'SiPMLowLightFit::gain()'],['../classSiPMLowLightFit.html#a19ef4846f0e40d03267c48dbad3e94d7',1,'SiPMLowLightFit::gain() const']]],
+  ['gain_1',['Gain',['../classSiPMLowLightFit.html#a28fb1503276b6d81338d5ebfb59677fa',1,'SiPMLowLightFit']]],
+  ['getlookupmultiplier_2',['GetLookUpMultiplier',['../classSiPMNonLinearFit.html#a6d63d7a598e7a521b03ebf3052b6e628',1,'SiPMNonLinearFit']]],
+  ['getzposmultiplier_3',['GetZPosMultiplier',['../classSiPMNonLinearFit.html#a14de0bdebedfa769feca8f4c9f80b795',1,'SiPMNonLinearFit']]],
+  ['good_5flocal_5fpeak_5ffit_4',['good_local_peak_fit',['../classSiPMLowLightFit.html#aebc19a0d9af1e39383408599c7de4858',1,'SiPMLowLightFit']]]
 ];

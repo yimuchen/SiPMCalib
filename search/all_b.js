@@ -1,11 +1,8 @@
 var searchData=
 [
-  ['setrange_0',['SetRange',['../group__Common.html#gab43611bc3a8c3eea4a709c813ffd82fc',1,'SetRange(RooRealVar &amp;var, const double binwidth, const double maxarea, const std::vector&lt; double &gt; &amp;datapoints):&#160;MakeRooData.cc'],['../group__Common.html#gab43611bc3a8c3eea4a709c813ffd82fc',1,'SetRange(RooRealVar &amp;var, const double binwidth, const double maxarea, const std::vector&lt; double &gt; &amp;datapoints):&#160;MakeRooData.cc']]],
-  ['sipm_20calibration_20analysis_20package_1',['SiPM calibration analysis package',['../index.html',1,'']]],
-  ['sipmdarkpdf_2',['SiPMDarkPdf',['../classSiPMDarkPdf.html',1,'']]],
-  ['sipmlowlightfit_3',['SiPMLowLightFit',['../classSiPMLowLightFit.html',1,'']]],
-  ['sipmpdf_4',['SiPMPdf',['../classSiPMPdf.html',1,'']]],
-  ['sipmtemp_5',['SiPMTemp',['../classStdFormat.html#af8442c80ac5e1035af6d290ba4ee96da',1,'StdFormat']]],
-  ['stdformat_6',['StdFormat',['../classStdFormat.html',1,'StdFormat'],['../classStdFormat.html#a7dd72ee5c7332e137bd6a88782006162',1,'StdFormat::StdFormat(const std::string &amp;)'],['../classStdFormat.html#a90cae54bcd25570628cfc987b817144d',1,'StdFormat::StdFormat()']]],
-  ['sumlist_7',['SumList',['../classWaveFormat.html#a3b6fc235d06185fa4da43849f0a8f177',1,'WaveFormat']]]
+  ['nbits_0',['NBits',['../classWaveFormat.html#ab29bd0e1b0e9a75af428fea63f59e5d2',1,'WaveFormat']]],
+  ['nlomodel_1',['NLOModel',['../group__SiPMCalc.html#ga21b4b2e75096ab85dc2ec9adde9e63be',1,'NLOModel(const double *, const double *):&#160;NonLinearModel.cc'],['../group__SiPMCalc.html#ga21b4b2e75096ab85dc2ec9adde9e63be',1,'NLOModel(const double *xx, const double *par):&#160;NonLinearModel.cc']]],
+  ['noselect_2',['NoSelect',['../classStdFormat.html#aeff0944378bbbbf7030574b009d7b79b',1,'StdFormat']]],
+  ['nsamples_3',['NSamples',['../classWaveFormat.html#a8ea24c3e233f8d42eb5e09e40aa37006',1,'WaveFormat']]],
+  ['nwaveforms_4',['NWaveforms',['../classWaveFormat.html#a18d33e51dd87c5d13f68a2decd6cf672',1,'WaveFormat']]]
 ];
