@@ -16,8 +16,8 @@
  *
  * @brief Fitting Routine class for SiPM nonlinearity.
  *
- * @details The class takes the function of the input of a the zscan command from
- * the [control program][control-zscan], calculates the number of estimated
+ * @details The class takes the function of the input of a the zscan command
+ * from the [control program][control-zscan], calculates the number of estimated
  * incoming photons for each of the data rows collected via the inverse square
  * estimate and a corrector file for the LED bias settings, to get a graph for
  * the readout (in units of fired pixels) vs the estimated number of incoming
@@ -57,7 +57,8 @@
  * Look at each of the detailed documentation of the functions above to see how
  * each step is done. In addition to the analysis functions, the various `Plot`
  * methods can be called to get presentation ready-plots at each stage of the
- * analysis chain.
+ * analysis chain. For an example of how the class can be used, please refer to
+ * the FitNonLinear.cc file.
  *
  * [control-zscan]:
  * https://umdcms.github.io/SiPMCalibControl/classctlcmd_1_1motioncmd_1_1zscan.html
@@ -339,14 +340,17 @@ SiPMNonLinearFit::MakeLinearGraph()
 
   _lin_func = TF1( usr::RandomString( 12 ).c_str(), InvSq_Z, zmin, zmax, 5 );
   _lin_func.FixParameter( 4, 1.0 ); // Fixing the redundent scaling paramter
+  _lin_func.SetParLimits( 3, 0, 10 );
   _lin_data.Fit( &_lin_func, "Q EX0 M E N 0" ); // Running first fit
 
   // Scaling scaling parameter according to uncertainty ratio
   const double scale = _lin_func.GetParError( 0 ) / _lin_func.GetParError( 2 );
-  _lin_func.FixParameter( 4, 1 / scale  );
+  _lin_func.FixParameter( 4, 1 / scale );
   _lin_func.SetParameter( 2, _lin_func.GetParameter( 2 ) *  scale );
 
-  _lin_fit = *( _lin_data.Fit( &_lin_func, "Q EX0 M E N 0 S" ).Get()); // Saving fit result
+  // Rerunning the fit
+  _lin_fit = *( _lin_data.Fit( &_lin_func, "Q EX0 M E N 0 S" ).Get());
+  _lin_fit = *( _lin_data.Fit( &_lin_func, "Q EX0 M E N 0 S" ).Get());
 }
 
 
@@ -357,23 +361,26 @@ SiPMNonLinearFit::MakeLinearGraph()
  *
  * The function expects the following inputs, the ref_n, ref_z, and ref_bias
  * refers to that for this SiPM, we expect ref_n effective photons for when the
- * SiPM is at position ref_z and LED bias value ref_bias. As ref_n is going to be
- * obtain by a low-light spectral fit (external to the data collected via the
+ * SiPM is at position ref_z and LED bias value ref_bias. As ref_n is going to
+ * be obtain by a low-light spectral fit (external to the data collected via the
  * zscan data), these values need to be provided externally as function inputs.
- * As bias voltages can drift between the zscan command the data collection for a
- * low light spectrum, the closest value data row will be used as the "reference
- * row".
+ * As bias voltages can drift between the zscan command the data collection for
+ * a low light spectrum, the closest value data row will be used as the
+ * "reference row".
  *
- * Once the reference row has been determined, the photon multiplier according to
- * the z position (via the fit to inverse square) and the bias/temperature drifts
- * via the look up table, can be used to morph the data according to the two
- * multipliers to get the number of incoming photons vs the readout value.
+ * Once the reference row has been determined, the photon multiplier according
+ * to the z position (via the fit to inverse square) and the bias/temperature
+ * drifts via the look up table, can be used to morph the data according to the
+ * two multipliers to get the number of incoming photons vs the readout value.
  *
  * In addition to the 3 inputs above, the gain and the pedestal should also be
- * given to this function to further reduce the readout value to be equivalent to
- * the average number of pixels fired. One can of course, opt to leave these two
- * values at 1 and 0 if one wants to compare the raw readout value v.s. the
+ * given to this function to further reduce the readout value to be equivalent
+ * to the average number of pixels fired. One can of course, opt to leave these
+ * two values at 1 and 0 if one wants to compare the raw readout value v.s. the
  * number of incoming photons.
+ *
+ * Notice here we will still be saving the bias voltage for each of the data
+ * points, this is useful should the user need to debug the corrector file.
  */
 void
 SiPMNonLinearFit::MakeNonLinearGraph( const double ref_n,
@@ -399,6 +406,8 @@ SiPMNonLinearFit::MakeNonLinearGraph( const double ref_n,
   std::vector<double> n_out;
   std::vector<double> in_unc;
   std::vector<double> out_unc;
+  std::vector<double> bias;
+  std::vector<double> zeros;
 
   // Looping over all data
 
@@ -412,13 +421,18 @@ SiPMNonLinearFit::MakeNonLinearGraph( const double ref_n,
     n_out.push_back( row.data.at( 0 ) / gain );
     in_unc.push_back( 0 );  // FIXME!!
     out_unc.push_back( row.data.at( 1 ) / gain );
+
+    bias.push_back( row.bias );
+    zeros.push_back( 0 );
   }
 
-  _nl_data = TGraphErrors( n_in.size(),
-                           n_in.data(),
-                           n_out.data(),
-                           in_unc.data(),
-                           out_unc.data() );
+  _nl_data = TGraph2DErrors( n_in.size(),
+                             n_in.data(),
+                             n_out.data(),
+                             bias.data(),
+                             in_unc.data(),
+                             out_unc.data(),
+                             zeros.data() );
 }
 
 
@@ -449,8 +463,14 @@ SiPMNonLinearFit::RunNonLinearFit()
     _nl_func.SetParLimits( 1, _pixel_min, _pixel_max );
   }
 
+  TGraphErrors _nl_g = TGraphErrors( _nl_data.GetN(),
+                                     _nl_data.GetX(),
+                                     _nl_data.GetY(),
+                                     _nl_data.GetEX(),
+                                     _nl_data.GetEY() );
+
   // Running the simple
-  _nl_fit = *( _nl_data.Fit( &_nl_func, "Q EX0 M E N 0 S" ).Get());
+  _nl_fit = *( _nl_g.Fit( &_nl_func, "Q EX0 M E N 0 S" ).Get());
 
   _nl_fit.Print();
 }
@@ -459,28 +479,43 @@ SiPMNonLinearFit::RunNonLinearFit()
 /**
  * @brief Generating the plot for the inverse square fit.
  *
+ * To make the results easier to interpret. We are going to shift the plotting
+ * results. Such that the z offset is 0.
+ *
  */
 void
 SiPMNonLinearFit::PlotLinearity( const std::string& outfile )
 {
   usr::plt::Ratio1DCanvas c;
 
+  TF1          lfunc = _lin_func;
+  TGraphErrors ldata = _lin_data;
+
+  for( int i = 0 ; i <  ldata.GetN() ; ++i ){
+    ldata.GetX()[i] = ldata.GetX()[i]-_lin_func.GetParameter( 0 );
+  }
+
+  lfunc.SetParameter( 0, 0.0 );
+  lfunc.SetRange( usr::plt::GetXmin( ldata ), usr::plt::GetXmax( ldata ));
+  auto fittemp = *( ldata.Fit( &lfunc, "Q EX0 M E N 0 S" ).Get());
+
   auto& fitg = c.PlotFunc(
-    _lin_func,
+    lfunc,
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::EntryText(  "Fitted Data" ),
-    usr::plt::VisualizeError( _lin_fit, 1, false ),
+    usr::plt::VisualizeError( fittemp, 1, false ),
     usr::plt::FillColor( usr::plt::col::cyan ),
     usr::plt::TrackY( usr::plt::tracky::max ),
     usr::plt::LineColor( usr::plt::col::blue ));
   auto& datag = c.PlotGraph(
-    _lin_data,
+    ldata,
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::EntryText( "Readout" ),
     usr::plt::MarkerColor(  usr::plt::col::black ),
     usr::plt::MarkerStyle(  usr::plt::sty::mkrcircle ),
     usr::plt::MarkerSize( 0.2 ),
     usr::plt::LineColor( usr::plt::col::gray, 1.0 ) );
+
   c.PlotScale(
     fitg,
     fitg,
@@ -565,6 +600,31 @@ SiPMNonLinearFit::PlotOriginal( const std::string& outfile )
 
 
 /**
+ * @brief Plotting the morphed data with the bias voltage as colors.
+ *
+ * This can be done before the data points nonlinear fit has been performed to
+ * help debug with issues with the bias corrector files.
+ */
+void
+SiPMNonLinearFit::PlotMorphed( const std::string& outfile )
+{
+  usr::plt::Flat2DCanvas c;
+  c.PlotColGraph( _nl_data,
+                  usr::plt::MarkerSize( 0.5 ),
+                  usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ) );
+
+  c.Pad().Xaxis().SetTitle( "Estimated number of incident photons" );
+  c.Pad().Yaxis().SetTitle( ( "Readout "+_readout_units ).c_str() );
+  c.Pad().Zaxis().SetTitle( "LED Bias [mV]" );
+  c.Pad().DrawLuminosity( _setup );
+  c.Pad().DrawCMSLabel( "", "HGCAL" );
+  c.Pad().SetLogx( kTRUE );
+  c.Pad().SetLogy( kTRUE );
+  c.SaveAsPDF( outfile );
+}
+
+
+/**
  * @brief Ploting the fit results of the zscan data used for inverse square
  * estimation.
  */
@@ -572,6 +632,12 @@ void
 SiPMNonLinearFit::PlotNonLinearity( const std::string& outfile )
 {
   usr::plt::Ratio1DCanvas c;
+
+  TGraphErrors _nl_g = TGraphErrors( _nl_data.GetN(),
+                                     _nl_data.GetX(),
+                                     _nl_data.GetY(),
+                                     _nl_data.GetEX(),
+                                     _nl_data.GetEY() );
 
   auto& fitg = c.PlotFunc(
     _nl_func,
@@ -583,7 +649,7 @@ SiPMNonLinearFit::PlotNonLinearity( const std::string& outfile )
     usr::plt::Precision( 0.001, true ),
     usr::plt::TrackY( usr::plt::tracky::max ));
   auto& datag = c.PlotGraph(
-    _nl_data,
+    _nl_g,
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::EntryText( "Data" ),
     usr::plt::TrackY( usr::plt::tracky::both ),
@@ -602,7 +668,7 @@ SiPMNonLinearFit::PlotNonLinearity( const std::string& outfile )
                usr::plt::MarkerSize( 0.2 ) );
 
   // Axis decorators
-  c.TopPad().Yaxis().SetTitle( ( "Readout"+_readout_units ).c_str() );
+  c.TopPad().Yaxis().SetTitle( ( "Readout "+_readout_units ).c_str() );
   c.BottomPad().Xaxis().SetTitle( "Estimated number of incident photons" );
   c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
   c.TopPad().SetLogy( kTRUE );

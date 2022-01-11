@@ -60,6 +60,9 @@ main( int argc, char*argv[] )
     ( "linplot",
     usr::po::value<std::string>(),
     "Output PDF file to place linearity fit result" )
+    ( "morplot",
+    usr::po::value<std::string>(),
+    "Output PDF file to place morphed data" )
     ( "nlplot",
     usr::po::reqvalue<std::string>(),
     "Output PDF file to place non-linearity fit result" )
@@ -98,12 +101,23 @@ main( int argc, char*argv[] )
 
   // Running the linear fit
   fitter->MakeLinearGraph();
+
+  // Plotting the linearity fit plot
+  if( args.CheckArg( "linplot" ) ){
+    fitter->PlotLinearity( args.Arg<std::string>( "linplot" ) );
+  }
+
+  // Plotting the original graph (offset shifted)
+  if( args.CheckArg( "origplot" ) ){
+    fitter->PlotOriginal( args.Arg<std::string>( "origplot" ) );
+  }
+
+  // Creating the morphed data
   usr::log::PrintLog( usr::log::DEBUG, "Making the nonlinear graph" );
   fitter->MakeNonLinearGraph( ref_nphotons, ref_z, ref_bias, gain, ped );
 
-  // Plotting the original graph
-  if( args.CheckArg( "origplot" ) ){
-    fitter->PlotOriginal( args.Arg<std::string>( "origplot" ) );
+  if( args.CheckArg( "morplot" ) ){
+    fitter->PlotMorphed( args.Arg<std::string>( "morplot" ) );
   }
 
   // Running the fit
@@ -112,8 +126,6 @@ main( int argc, char*argv[] )
 
   usr::log::PrintLog( usr::log::DEBUG, "Making the plot" );
   fitter->PlotNonLinearity( args.Arg<std::string>( "nlplot" ) );
-
-  // Running additional objects
 
   return 0;
 }

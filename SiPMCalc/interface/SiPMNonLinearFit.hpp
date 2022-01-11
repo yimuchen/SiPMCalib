@@ -8,6 +8,7 @@
 #include "Math/Interpolator.h"
 #include "TF1.h"
 #include "TFitResult.h"
+#include "TGraph2DErrors.h"
 #include "TGraphErrors.h"
 #include "TProfile3D.h"
 
@@ -46,13 +47,14 @@ public:
    */
   void PlotOriginal( const std::string& );
   void PlotLinearity( const std::string& );
+  void PlotMorphed( const std::string& );
   void PlotNonLinearity( const std::string& );
 
   /** @} */
 
 private:
   std::unique_ptr<StdFormat> _raw_data;    //
-  TGraphErrors               _nl_data; // Container for the zscan data
+  TGraph2DErrors             _nl_data;   // Container for the zscan data
   TGraphErrors               _lin_data;
   TF1                        _nl_func;
   TF1                        _lin_func;

@@ -1,6 +1,13 @@
 #include "TMath.h"
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 
+/**
+ * @brief LInear model for the
+ *
+ * @param xx
+ * @param par
+ * @return double
+ */
 double
 LinearModel( const double* xx, const double* par )
 {
