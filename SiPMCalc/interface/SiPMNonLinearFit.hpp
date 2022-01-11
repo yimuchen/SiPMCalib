@@ -44,6 +44,7 @@ public:
    * @{
    * plotting variations
    */
+  void PlotOriginal( const std::string& );
   void PlotLinearity( const std::string& );
   void PlotNonLinearity( const std::string& );
 
