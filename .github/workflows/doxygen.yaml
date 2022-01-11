@@ -26,7 +26,7 @@ jobs:
       run: |
         sudo mkdir -p docs/html/customjs
         sudo cp docs/customjs/* docs/html/customjs
-        sudo image -p docs/html/image
+        sudo mkdir -p docs/html/image
         sudo cp docs/image/* docs/html/image
 
     - name: Deploy
