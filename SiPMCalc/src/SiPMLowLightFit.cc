@@ -12,6 +12,16 @@
 
 #include "RooDataHist.h"
 
+/**
+ * @class SiPMLowLightFit
+ * @ingroup SiPMCalc
+ * @brief Fitting routine class for fitting spectral data to the SiPM low light
+ * PDF.
+ *
+ * @details This is an example.
+ *
+ */
+
 void
 SiPMLowLightFit::set_all_defaults()
 {
