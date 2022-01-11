@@ -2,7 +2,7 @@
 #include "UserUtils/MathUtils/interface/Measurement/Measurement.hpp"
 
 double
-LinearModel( const double*xx, const double*par )
+LinearModel( const double* xx, const double* par )
 {
   const double x      = xx[0];
   const double gain   = par[0];
@@ -25,7 +25,7 @@ LinearModel( const double*xx, const double*par )
  * occupancy model.
  */
 double
-LOModel( const double*xx, const double*par )
+LOModel( const double* xx, const double* par )
 {
   const double x      = xx[0];
   const double gain   = par[0];
@@ -50,14 +50,14 @@ LOModel( const double*xx, const double*par )
  * occupancy model.
  */
 double
-NLOModel( const double*xx, const double*par )
+NLOModel( const double* xx, const double* par )
 {
-  const double x      = xx[0];
-  const double gain   = par[0];
-  const double N      = par[1];
-  const double ped = par[2];
-  const double alpha  = par[3];
-  const double beta   = par[4];
+  const double x     = xx[0];
+  const double gain  = par[0];
+  const double N     = par[1];
+  const double ped   = par[2];
+  const double alpha = par[3];
+  const double beta  = par[4];
 
   // Calculating number of fired pixel by LO approximation
   const double LOpar[3]  = {1.0, N, 0.0};
@@ -68,6 +68,29 @@ NLOModel( const double*xx, const double*par )
   const double NonLinCorr = ( beta+1 ) / ( beta+( x / Nfired_LO ));
 
   return ( gain * NLOLinear * NonLinCorr )+ped;
+}
+
+
+/**
+ * @brief Model of the luminosity power as a function of the bias voltage
+ *
+ * The model is done using the a exponential model with a vertical offset
+ * (pedestal):
+ *
+ * F(x) = exp( a*x ) + ped
+ *
+ * -x is the input bias voltage.
+ * - par[0] is the natural log of the exponent.
+ * - par[1] is the vertical offset.
+ */
+double
+BiasModel( const double* xx, const double* par  )
+{
+  const double x   = xx[0];
+  const double ex  = par[0];
+  const double ped = par[1];
+
+  return TMath::Exp( ex * x )+ped;
 }
 
 
