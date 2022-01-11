@@ -22,7 +22,46 @@
  * - `linplot`: Where to store the plot for the inverse square law fit plots.
  * - `origplot`: Where to store the plot for all data points as a function of
  *   fitted z coordinates.
- * - `nlplot`: Where to store the plots for the nonlinear fit results plot. *
+ * - `morplot`: Where to store the plots containing the morphed data before the
+ *   fit.
+ * - `nlplot`: Where to store the plots for the nonlinear fit results plot.
+ *
+ *
+ * Example command call:
+ * ```bash
+ * SiPM_FitNonLinear \
+ *       --zscandata zscan_data.txt   \
+ *       --corrdata corrector.txt     \
+ *       --linpmin 250 --linpmax 290  \
+ *       --refpoint 3.2 300 960       \
+ *       --gain 31  --ped 0           \
+ *       --origplot orig_plot.pdf     \
+ *       --linplot lin_plot.pdf       \
+ *       --morplot morph_plot.pdf     \
+ *       --nlplot nl_plot.pdf
+ * ```
+ *
+ * Example output plots:
+ *
+ * <div class="plot_example">
+ * Plot for demonstrating the inverse square fitting results.<br/>
+ * <img src="image/sipmcalc_nonlinear_lin_plot.png"/>
+ * </div><br/>
+ *
+ * <div class="plot_example">
+ * Plot for showing the raw data (with z offset subtracted)<br/>
+ * <img src="image/sipmcalc_nonlinear_orig_plot.png"/>
+ * </div><br/>
+ *
+ * <div class="plot_example">
+ * Plot for showing the morph data with the bias voltage<br/>
+ * <img src="image/sipmcalc_nonlinear_morph_plot.png"/>
+ * </div><br/>
+ *
+ * <div class="plot_example">
+ * Main plot of the number of fired pixels vs the number of estimated incident photons<br/>
+ * <img src="image/sipmcalc_nonlinear_nl_plot.png"/>
+ * </div><br/>
  *
  */
 
