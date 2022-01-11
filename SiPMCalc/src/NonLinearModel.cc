@@ -14,6 +14,7 @@ LinearModel( const double* xx, const double* par )
 
 /**
  * @brief Leading order model for nonlinearity
+ * @ingroup SiPMCalc
  *
  * - x is the estimated number of effective incoming photons (PDE multiplied).
  *
@@ -37,6 +38,7 @@ LOModel( const double* xx, const double* par )
 
 /**
  * @brief Next-to-Leading order model for nonlinearity
+ * @ingroup SiPMCalc
  *
  * - x is the estimated number of effective incoming photons (PDE multiplied).
  *
