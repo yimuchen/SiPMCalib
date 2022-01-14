@@ -38,6 +38,7 @@
 
 #include "UserUtils/Common/interface/ArgumentExtender.hpp"
 #include "UserUtils/Common/interface/STLUtils/OStreamUtils.hpp"
+#include "UserUtils/MathUtils/interface/RootMathTools/RootFit.hpp"
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/Simple1DCanvas.hpp"
 
@@ -81,7 +82,7 @@ main( int argc, char**argv )
   const double xmin  = usr::plt::GetXmin( dataz );
   const double xmax  = usr::plt::GetXmax( dataz );
 
-  TF1              func( "func", InvSq_Z, xmin, xmax, 5 );
+  TF1              func( "func", InvSq_Z, xmin, xmax, 4 );
   const TFitResult fit = FitAndShiftData( dataz, func, pedestal, zoffset );
 
   usr::plt::Ratio1DCanvas c;
@@ -90,7 +91,7 @@ main( int argc, char**argv )
     func,
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::EntryText(  "Fitted Data" ),
-    usr::plt::VisualizeError( fit, 1, false ),
+    usr::plt::VisualizeError( fit ),
     usr::plt::FillColor( usr::plt::col::cyan ),
     usr::plt::TrackY( usr::plt::tracky::max ),
     usr::plt::LineColor( usr::plt::col::blue ));
@@ -201,17 +202,13 @@ FitAndShiftData( TGraph& data, TF1& func, double& ped, double& zoffset )
   func.SetParameter( 1, 0 );
   func.SetParameter( 2, ( lumimax * ( zmin+5 ) * ( zmin+5 ) ) );
   func.SetParameter( 3, lumimin );
-  func.FixParameter( 4, 1.0 );
 
   usr::log::PrintLog( usr::log::INFO, "Running the fit" );
-  data.Fit( &func, "Q EX0 M E N 0" ).Get();
+  usr::fit::FitGraph( data, func );
 
   // Saving the original fit results for the pedestal and zoffset
   ped     = func.GetParameter( 3 );
   zoffset = func.GetParameter( 0 );
-  const double scale = func.GetParError( 0 ) / func.GetParError( 2 );
-  func.FixParameter( 4, 1 / scale  );
-  func.SetParameter( 2, func.GetParameter( 2 ) *  scale );
 
   usr::log::PrintLog( usr::log::INFO, "Shifting the data for better plotting" );
 
@@ -227,7 +224,7 @@ FitAndShiftData( TGraph& data, TF1& func, double& ped, double& zoffset )
 
   usr::log::PrintLog( usr::log::INFO,
                       "Refitting to get a correct result container" );
-  TFitResult*ans = data.Fit( &func, "Q EX0 M E N 0 S" ).Get();
+  TFitResult  ans = usr::fit::FitGraph( data, func );
 
   usr::log::PrintLog( usr::log::INFO, "Complete fitting routine" );
 
@@ -246,5 +243,5 @@ FitAndShiftData( TGraph& data, TF1& func, double& ped, double& zoffset )
                       usr::fstr( "Fitted ped: %.2lf +- %.2lf", ped,
                                  func.GetParError( 3 ) ) );
 
-  return *ans;
+  return ans;
 }

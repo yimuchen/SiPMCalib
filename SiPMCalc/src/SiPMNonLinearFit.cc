@@ -5,6 +5,7 @@
 
 #include "UserUtils/Common/interface/Maths.hpp"
 #include "UserUtils/Common/interface/STLUtils.hpp"
+#include "UserUtils/MathUtils/interface/RootMathTools.hpp"
 #include "UserUtils/PlotUtils/interface/Flat2DCanvas.hpp"
 #include "UserUtils/PlotUtils/interface/PlotCommon.hpp"
 #include "UserUtils/PlotUtils/interface/Ratio1DCanvas.hpp"
@@ -107,10 +108,13 @@ SiPMNonLinearFit::FitArguments()
   desc.add_options()
     ( "linpmin",
     usr::po::value<double>(),
-    "Minimum power level for linear power level fit" )
+    "Minimum bias voltage for inverse square fit" )
     ( "linpmax",
     usr::po::value<double>(),
-    "Maximum power level for linear power level fit" )
+    "Maximum bias voltage for the inverse square fit" )
+    ( "linzmin",
+    usr::po::value<double>(),
+    "Minimum coordinate z value to use for the inverse square fit" )
     ( "powerz",
     usr::po::value<double>(),
     "z value to use for power level look up, (ignored if a correction file is provided)" )
@@ -164,8 +168,9 @@ SiPMNonLinearFit::InitDefaults()
 {
   _lin_pmax  = 0;
   _lin_pmin  = 0;
+  _lin_zmin  = 0;
   _power_z   = 500;
-  _pixel_min = 1000;
+  _pixel_min = 500;
   _pixel_max = 7000;
 
   _readout_units = "[A.U.]";
@@ -184,6 +189,7 @@ SiPMNonLinearFit::UpdateSettings( const usr::ArgumentExtender& args )
 {
   _lin_pmin = args.ArgOpt<double>( "linpmin", _lin_pmin );
   _lin_pmax = args.ArgOpt<double>( "linpmax", _lin_pmax );
+  _lin_zmin = args.ArgOpt<double>( "linzmin", _lin_pmin );
   _power_z  = args.ArgOpt<double>( "powerz", _power_z );
 
   if( args.CheckArg( "npixels" ) ){
@@ -331,26 +337,30 @@ SiPMNonLinearFit::MakeLinearGraph()
                             z.data(),
                             lumi.data(),
                             zero.data(),
-                            zero.data() );
+                            unc.data() );
 
   const double zmin = usr::GetMinimum( z );
   const double zmax = usr::GetMaximum( z );
   const double lmin = usr::GetMinimum( lumi );
   const double lmax = usr::GetMaximum( lumi );
 
-  _lin_func = TF1( usr::RandomString( 12 ).c_str(), InvSq_Z, zmin, zmax, 5 );
-  _lin_func.FixParameter( 4, 1.0 ); // Fixing the redundent scaling paramter
-  _lin_func.SetParLimits( 3, 0, 10 );
-  _lin_data.Fit( &_lin_func, "Q EX0 M E N 0" ); // Running first fit
+  _lin_func = TF1( usr::RandomString( 12 ).c_str(), InvSq_Z, zmin, zmax, 4 );
 
-  // Scaling scaling parameter according to uncertainty ratio
-  const double scale = _lin_func.GetParError( 0 ) / _lin_func.GetParError( 2 );
-  _lin_func.FixParameter( 4, 1 / scale );
-  _lin_func.SetParameter( 2, _lin_func.GetParameter( 2 ) *  scale );
+  // Setting function limits
+  _lin_func.SetParLimits( 1, 0.0, 1e2 ); // Horizontal offset
+  _lin_func.SetParLimits( 3, 0.0, 1e2 ); // Pedestal
 
-  // Rerunning the fit
-  _lin_fit = *( _lin_data.Fit( &_lin_func, "Q EX0 M E N 0 S" ).Get());
-  _lin_fit = *( _lin_data.Fit( &_lin_func, "Q EX0 M E N 0 S" ).Get());
+  // Making estimates
+  _lin_func.SetParameter( 0, 0.0 );
+  _lin_func.SetParameter( 1, 0.0 );
+  _lin_func.SetParameter( 2, lmax );
+  _lin_func.SetParameter( 3, lmin );
+
+  // _lin_func.SetParLimits( 1, 0, 5.0 );
+  usr::fit::FitGraph( _lin_data,
+                      _lin_func,
+                      usr::fit::GraphXRange( std::max( zmin, _lin_zmin ),
+                                             zmax ) );
 }
 
 
@@ -449,8 +459,11 @@ SiPMNonLinearFit::RunNonLinearFit()
   _nl_func = TF1( usr::RandomString( 12 ).c_str(), NLOModel, xmin, xmax, 5 );
   _nl_func.SetParameter( 0, 1.0 ); // Gain
   _nl_func.SetParLimits( 0, 0, 1000 );
+
+  // _nl_func.FixParameter( 2, 1.0 );
   _nl_func.SetParameter( 2, 0.0 );  // Pedestal
-  _nl_func.SetParLimits( 2, 0.0, 100 );
+  _nl_func.SetParLimits( 2, 0.0, 10 );
+
   _nl_func.SetParameter( 3, 0.0 ); // Alpha
   _nl_func.SetParLimits( 3, 0, 1.0 );
   _nl_func.SetParameter( 4, 0.0 ); // Beta
@@ -470,8 +483,9 @@ SiPMNonLinearFit::RunNonLinearFit()
                                      _nl_data.GetEY() );
 
   // Running the simple
-  _nl_fit = *( _nl_g.Fit( &_nl_func, "Q EX0 M E N 0 S" ).Get());
+  _nl_fit = usr::fit::FitGraph( _nl_g, _nl_func );
 
+  // Always printing the results for the non-linear fit.
   _nl_fit.Print();
 }
 
@@ -488,22 +502,35 @@ SiPMNonLinearFit::PlotLinearity( const std::string& outfile )
 {
   usr::plt::Ratio1DCanvas c;
 
-  TF1          lfunc = _lin_func;
-  TGraphErrors ldata = _lin_data;
+  TF1                 lfunc = _lin_func;
+  TGraphErrors        ldata = _lin_data;
+  static const double z0    = _lin_func.GetParameter( 0 );
 
   for( int i = 0 ; i <  ldata.GetN() ; ++i ){
-    ldata.GetX()[i] = ldata.GetX()[i]-_lin_func.GetParameter( 0 );
+    ldata.GetX()[i] = ldata.GetX()[i]-z0;
   }
 
+  const double zmin = usr::plt::GetXmin( ldata );
+  const double zmax = usr::plt::GetXmax( ldata );
   lfunc.SetParameter( 0, 0.0 );
-  lfunc.SetRange( usr::plt::GetXmin( ldata ), usr::plt::GetXmax( ldata ));
-  auto fittemp = *( ldata.Fit( &lfunc, "Q EX0 M E N 0 S" ).Get());
+  lfunc.SetRange( zmin, zmax );
+  auto fittemp =
+    usr::fit::FitGraph( ldata,
+                        lfunc,
+                        usr::fit::GraphXRange( zmin+_lin_zmin,
+                                               zmax ) );
 
+  c.PlotGraph(
+    ldata,
+    usr::plt::PlotType( usr::plt::scatter ),
+    usr::plt::MarkerStyle( usr::plt::sty::mkrcircle ),
+    usr::plt::MarkerSize( 0.1 ),
+    usr::plt::ExtendXRange( false ) );
   auto& fitg = c.PlotFunc(
     lfunc,
     usr::plt::PlotType( usr::plt::fittedfunc ),
     usr::plt::EntryText(  "Fitted Data" ),
-    usr::plt::VisualizeError( fittemp, 1, false ),
+    usr::plt::VisualizeError( fittemp ),
     usr::plt::FillColor( usr::plt::col::cyan ),
     usr::plt::TrackY( usr::plt::tracky::max ),
     usr::plt::LineColor( usr::plt::col::blue ));
@@ -516,6 +543,10 @@ SiPMNonLinearFit::PlotLinearity( const std::string& outfile )
     usr::plt::MarkerSize( 0.2 ),
     usr::plt::LineColor( usr::plt::col::gray, 1.0 ) );
 
+  c.TopPad().DrawVLine( zmin+_lin_zmin,
+                        usr::plt::LineStyle( usr::plt::sty::lindashed ),
+                        usr::plt::LineColor( usr::plt::col::gray, 0.5 ) );
+
   c.PlotScale(
     fitg,
     fitg,
@@ -526,8 +557,11 @@ SiPMNonLinearFit::PlotLinearity( const std::string& outfile )
     fitg,
     usr::plt::PlotType( usr::plt::scatter ),
     usr::plt::MarkerSize( 0.2 ) );
+  c.BottomPad().DrawVLine( zmin+_lin_zmin,
+                           usr::plt::LineStyle( usr::plt::sty::lindashed ),
+                           usr::plt::LineColor( usr::plt::col::gray, 0.5 ) );
 
-  c.TopPad().Yaxis().SetTitle( "Luminosity - Ped. [mV-ns]" );
+  c.TopPad().Yaxis().SetTitle( "Luminosity [mV-ns]" );
   c.BottomPad().Xaxis().SetTitle( "Gantry z + z_{0} [mm]" );
   c.BottomPad().Yaxis().SetTitle( "Data/Fit" );
 

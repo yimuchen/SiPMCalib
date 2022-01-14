@@ -7,7 +7,7 @@
 <use name="UserUtils/Common"/>
 <use name="UserUtils/MathUtils"/>
 
-<bin file="PlotFunc.cc"         name="SiPM_PlotFunc"/>
+<bin file="PlotFunc.cc"       name="SiPM_PlotFunc"/>
 <bin file="testplot.cc"       name="SiPM_testplot"/>
-<bin file="calc_variance.cc"       name="SiPM_calcvariance"/>
+<bin file="calc_variance.cc"  name="SiPM_calcvariance"/>
 <flags CXXFLAGS="-g"/>

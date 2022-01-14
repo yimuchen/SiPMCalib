@@ -1,6 +1,7 @@
 <use name="root"/>
 <use name="roofit"/>
 <use name="UserUtils/Common"/>
+<use name="UserUtils/MathUtils"/>
 <use name="UserUtils/PlotUtils"/>
 <use name="SiPMCalib/Common"/>
 

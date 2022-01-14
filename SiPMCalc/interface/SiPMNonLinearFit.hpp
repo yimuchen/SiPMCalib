@@ -64,6 +64,7 @@ private:
   // Settings for the linear-style fit
   double _lin_pmin;
   double _lin_pmax;
+  double _lin_zmin;
   double _power_z;
   double _pixel_min;
   double _pixel_max;
